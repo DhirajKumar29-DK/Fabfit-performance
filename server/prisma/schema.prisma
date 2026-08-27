@@ -1,0 +1,142 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+enum AssessmentStatus {
+  NEW
+  REVIEWING
+  CONTACTED
+  ACCEPTED
+  REJECTED
+}
+
+model Assessment {
+  id              String   @id @default(uuid())
+  
+  firstName       String
+  lastName        String
+  age             Int
+  gender          String
+  height          String
+  weight          String
+  email           String
+  phone           String
+  activityLevel   String
+
+  primaryGoal     String
+  experience      String
+  frequency       String
+  equipment       String
+  cardio          String
+
+  occupation      String
+  steps           String
+  sleep           String
+  stress          String
+
+  diet            String
+  meals           String
+  alcohol         String
+  tobacco         String
+  supplements     String?   
+
+  conditions      String
+  medications     String
+  injuries        String
+  allergies       String
+  waist           String
+  bloodReportUrl  String?
+  physiqueImageUrl String?
+
+  commitmentLevel Int
+  notes           String?
+  status          AssessmentStatus @default(NEW)
+  
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  deletedAt       DateTime?
+}
+
+enum HeroStatus {
+  DRAFT
+  ACTIVE
+  INACTIVE
+}
+
+model Hero {
+  id                  String     @id @default(uuid())
+  badge               String?
+  title               String
+  subtitle            String?
+  description         String?
+  primaryButtonText   String?
+  primaryButtonLink   String?
+  secondaryButtonText String?
+  secondaryButtonLink String?
+  backgroundImage     String?
+  foregroundImage     String?
+  status              HeroStatus @default(DRAFT)
+  displayOrder        Int        @default(0)
+  
+  createdAt           DateTime   @default(now())
+  updatedAt           DateTime   @updatedAt
+  deletedAt           DateTime?
+}
+
+model SystemStat {
+  id            String @id @default("global_stats")
+  totalVisitors Int    @default(0)
+}
+
+enum CounterStatus {
+  DRAFT
+  ACTIVE
+  INACTIVE
+}
+
+model Counter {
+  id            String        @id @default(uuid())
+  label         String
+  value         String
+  suffix        String?
+  icon          String?
+  status        CounterStatus @default(ACTIVE)
+  displayOrder  Int           @default(0)
+  
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+  deletedAt     DateTime?
+}
+
+enum GalleryType {
+  IMAGE
+  VIDEO
+}
+
+enum GalleryStatus {
+  DRAFT
+  ACTIVE
+  INACTIVE
+}
+
+model Gallery {
+  id            String        @id @default(uuid())
+  title         String
+  category      String
+  description   String?       @db.Text
+  type          GalleryType   @default(IMAGE)
+  mediaUrl      String
+  thumbnailUrl  String?
+  isFeatured    Boolean       @default(false)
+  status        GalleryStatus @default(ACTIVE)
+  displayOrder  Int           @default(0)
+  
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+  deletedAt     DateTime?
+}

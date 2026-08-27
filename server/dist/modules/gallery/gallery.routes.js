@@ -1,0 +1,13 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const gallery_controller_1 = require("./gallery.controller");
+const router = (0, express_1.Router)();
+router.post('/', gallery_controller_1.GalleryController.createGallery);
+router.get('/', gallery_controller_1.GalleryController.getAllGallery);
+router.get('/preview', gallery_controller_1.GalleryController.getPreviewGallery);
+router.post('/bulk-delete', gallery_controller_1.GalleryController.bulkDelete);
+router.get('/:id', gallery_controller_1.GalleryController.getGalleryById);
+router.patch('/:id', gallery_controller_1.GalleryController.updateGallery);
+router.delete('/:id', gallery_controller_1.GalleryController.deleteGallery);
+exports.default = router;
