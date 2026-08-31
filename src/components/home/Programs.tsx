@@ -1,8 +1,48 @@
 "use client";
 
-import React, { useRef } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { motion, useInView, Variants } from "framer-motion";
 import { homeData } from "@/data/dummy";
+import { api } from "@/services/api";
+import { Dumbbell, Activity, HeartPulse, PersonStanding, Accessibility, Footprints, Bike, Timer, Flame, Target, Trophy, Medal, Award, Star, Zap, CircleDot, BadgeCheck, Users, UserRound, Shield, ShieldCheck, Apple, Utensils, Salad, Waves, Wind, Sparkles, CalendarDays, Clock, TrendingUp } from 'lucide-react';
+
+const LUCIDE_ICONS: Record<string, React.ElementType> = {
+  'dumbbell': Dumbbell,
+  'activity': Activity,
+  'heart-pulse': HeartPulse,
+  'person-standing': PersonStanding,
+  'accessibility': Accessibility,
+  'footprints': Footprints,
+  'bike': Bike,
+  'timer': Timer,
+  'flame': Flame,
+  'target': Target,
+  'trophy': Trophy,
+  'medal': Medal,
+  'award': Award,
+  'star': Star,
+  'zap': Zap,
+  'circle-dot': CircleDot,
+  'badge-check': BadgeCheck,
+  'users': Users,
+  'user-round': UserRound,
+  'shield': Shield,
+  'shield-check': ShieldCheck,
+  'apple': Apple,
+  'utensils': Utensils,
+  'salad': Salad,
+  'waves': Waves,
+  'wind': Wind,
+  'sparkles': Sparkles,
+  'calendar-days': CalendarDays,
+  'clock': Clock,
+  'trending-up': TrendingUp,
+};
+
+const getLucideIcon = (name: string) => {
+  const IconComponent = LUCIDE_ICONS[name];
+  return IconComponent ? <IconComponent size={20} /> : null;
+};
 
 // --- SVG Icons ---
 // Main Cards
@@ -44,7 +84,41 @@ const getIcon = (type: string) => {
 };
 
 export function Programs() {
-  const { programs } = homeData;
+  const [sectionData, setSectionData] = useState<any>(null);
+  const [programsList, setProgramsList] = useState<any[]>([]);
+  const [highlights, setHighlights] = useState<any[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const loadData = async () => {
+      try {
+        const [secRes, progRes, highRes] = await Promise.all([
+          api.get('/program-section'),
+          api.get('/programs'),
+          api.get('/program-highlights')
+        ]);
+        
+        if (secRes.ok) {
+          const d = await secRes.json();
+          setSectionData(d.data?.find((s: any) => s.status === 'ACTIVE') || null);
+        }
+        if (progRes.ok) {
+          const d = await progRes.json();
+          setProgramsList(d.data || []);
+        }
+        if (highRes.ok) {
+          const d = await highRes.json();
+          setHighlights(d.data || []);
+        }
+      } catch (e) {
+        console.error(e);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    loadData();
+  }, []);
+
   const sectionRef = useRef<HTMLElement>(null);
   const isInView = useInView(sectionRef, { once: true, margin: "-10%" });
 
@@ -69,142 +143,212 @@ export function Programs() {
     visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" as const } }
   };
 
+  const regularPrograms = programsList.filter(p => !p.isFeatured && p.status === 'ACTIVE').sort((a,b) => a.displayOrder - b.displayOrder);
+  const featuredProgram = programsList.find(p => p.isFeatured && p.status === 'ACTIVE');
+  const activeHighlights = highlights.filter(h => h.status === 'ACTIVE').sort((a,b) => a.displayOrder - b.displayOrder);
+
   return (
-    <section ref={sectionRef} id="programs" className="bg-[#050505] relative overflow-hidden py-12 md:py-16">
-      <div className="container mx-auto px-4 md:px-8 max-w-[1400px]">
+    <section ref={sectionRef} id="programs" className="bg-[#050505] relative overflow-hidden py-12 md:py-16 min-h-[600px]">
+      {isLoading ? (
+        <div className="absolute inset-0 flex items-center justify-center">
+          <div className="w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
+        </div>
+      ) : !sectionData ? null : (
+        <div className="container mx-auto px-4 md:px-8 max-w-[1400px]">
         
         {/* Header Block */}
         <motion.div 
           variants={fadeUp}
           initial="hidden"
           animate={isInView ? "visible" : "hidden"}
-          className="flex flex-col items-center text-center mb-10"
+          className="flex flex-col items-center text-center mb-16"
         >
-          <div className="flex items-center gap-4 mb-3">
-            <div className="w-8 h-[1px] bg-primary/40"></div>
-            <span className="text-primary font-bold text-[10px] tracking-[0.3em] uppercase drop-shadow-[0_0_10px_rgba(var(--primary-rgb),0.5)]">
-              {programs.badge}
+          <div className="flex items-center gap-4 mb-4">
+            <div className="w-12 h-[1px] bg-[#333]"></div>
+            <span className="text-primary font-black text-xs md:text-sm lg:text-base tracking-[0.2em] uppercase">
+              {sectionData.badge}
             </span>
-            <div className="w-8 h-[1px] bg-primary/40"></div>
+            <div className="w-12 h-[1px] bg-[#333]"></div>
           </div>
           
-          <h2 className="font-heading text-3xl md:text-4xl lg:text-5xl font-black leading-tight uppercase tracking-tighter mb-3">
-            <span className="bg-gradient-to-br from-white to-zinc-500 bg-clip-text text-transparent">{programs.headingLine1}</span> <br/>
-            <span className="bg-gradient-to-br from-white to-zinc-500 bg-clip-text text-transparent">{programs.headingLine2}</span> <span className="text-primary drop-shadow-[0_0_15px_rgba(var(--primary-rgb),0.3)]">{programs.headingLine3}</span>
+          <h2 className="font-heading text-3xl md:text-4xl lg:text-5xl font-black leading-[1.1] uppercase tracking-tight mb-6 text-white">
+            {(() => {
+              const title = sectionData.title || "";
+              const parts = title.split('.');
+              if (parts.length >= 2 && parts[0] && parts[1]) {
+                const firstLine = parts[0] + '.';
+                const secondLine = parts.slice(1).join('.').trim();
+                const words = secondLine.split(' ');
+                
+                if (words.length >= 2) {
+                  const normalWords = words.slice(0, words.length - 2).join(' ');
+                  const highlightWords = words.slice(words.length - 2).join(' ');
+                  return (
+                    <>
+                      <div className="text-gray-200 drop-shadow-md">{firstLine}</div>
+                      <div>
+                        <span className="text-gray-200 drop-shadow-md">{normalWords} </span>
+                        <span className="text-primary drop-shadow-[0_0_15px_rgba(var(--primary-rgb),0.3)]">{highlightWords}</span>
+                      </div>
+                    </>
+                  );
+                }
+              }
+              return <span className="text-gray-200">{title}</span>;
+            })()}
           </h2>
           
-          <p className="text-zinc-400 text-[13px] md:text-sm font-medium max-w-xl mx-auto leading-relaxed">
-            {programs.subHeader}
+          <p className="text-[#8ba3b8] font-medium max-w-3xl mx-auto text-base md:text-lg leading-relaxed whitespace-pre-wrap">
+            {sectionData.description}
           </p>
         </motion.div>
 
         {/* 4-Card Grid Block */}
-        <motion.div 
-          variants={staggerContainer}
-          initial="hidden"
-          animate={isInView ? "visible" : "hidden"}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8"
-        >
-          {programs.mainCards.map((card) => (
-            <motion.div 
-              key={card.id}
-              variants={itemVariants}
-              className="bg-[#0a0a0a] border border-zinc-800/60 rounded-xl overflow-hidden flex flex-col group hover:border-primary/50 transition-colors duration-500"
-            >
-              <div className="relative h-[320px] w-full overflow-hidden">
-                <img src={card.image} alt={card.titleLine1} className="absolute inset-0 w-full h-full object-cover grayscale-[30%] group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700" />
-                <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#0a0a0a]/50 to-[#0a0a0a]"></div>
-                
-                {/* Neon Icon Circle */}
-                <div className="absolute top-6 left-6 w-12 h-12 rounded-full border-2 border-primary text-primary flex items-center justify-center bg-black/40 backdrop-blur-sm group-hover:bg-primary group-hover:text-black transition-colors duration-500 shadow-[0_0_15px_rgba(var(--primary-rgb),0.2)]">
-                  {getIcon(card.iconType)}
-                </div>
-              </div>
-              
-              <div className="p-6 md:p-8 flex-1 flex flex-col pt-0 z-10 -mt-6">
-                <h3 className="font-black text-2xl tracking-tighter uppercase leading-none mb-3">
-                  <span className="block text-white mb-1">{card.titleLine1}</span>
-                  <span className="block text-primary">{card.titleLine2}</span>
-                </h3>
-                <p className="text-zinc-400 text-sm font-medium leading-relaxed flex-1">
-                  {card.description}
-                </p>
-              </div>
-            </motion.div>
-          ))}
-        </motion.div>
-
-        {/* Wide Competition Prep Card Block */}
-        <motion.div
-          variants={fadeUp}
-          initial="hidden"
-          animate={isInView ? "visible" : "hidden"}
-          className="bg-[#0a0a0a] border border-zinc-800/60 hover:border-primary/50 transition-colors duration-500 rounded-xl overflow-hidden flex flex-col lg:flex-row mb-8 group"
-        >
-          {/* Left Image */}
-          <div className="relative w-full lg:w-[40%] h-64 lg:h-auto">
-            <img src={programs.stagePrep.image} alt={programs.stagePrep.titleLine1} className="absolute inset-0 w-full h-full object-cover grayscale-[30%] group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700" />
-            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-[#0a0a0a]/50 to-[#0a0a0a] hidden lg:block"></div>
-            <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#0a0a0a]/50 to-[#0a0a0a] block lg:hidden"></div>
-            
-            <div className="absolute top-6 left-6 w-12 h-12 rounded-full border-2 border-primary text-primary flex items-center justify-center bg-black/40 backdrop-blur-sm group-hover:bg-primary group-hover:text-black transition-colors duration-500 shadow-[0_0_15px_rgba(var(--primary-rgb),0.2)]">
-              <AwardIcon />
-            </div>
-          </div>
-
-          {/* Right Content */}
-          <div className="w-full lg:w-[60%] p-8 lg:p-12 flex flex-col justify-center relative z-10 lg:-ml-12">
-            <h3 className="font-black text-3xl md:text-4xl tracking-tighter uppercase mb-4">
-              <span className="text-white">{programs.stagePrep.titleLine1} </span>
-              <span className="text-primary">{programs.stagePrep.titleLine2}</span>
-            </h3>
-            <p className="text-zinc-400 text-sm font-medium leading-relaxed max-w-2xl mb-8">
-              {programs.stagePrep.description}
-            </p>
-            
-            <div className="flex flex-col md:flex-row md:items-center justify-between gap-8">
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-6 w-full">
-                {programs.stagePrep.features.map((feature: any, idx: number) => (
-                  <div key={idx} className="flex items-center gap-3">
-                    <div className="text-primary opacity-80 group-hover:opacity-100 transition-opacity">
-                      {getIcon(feature.iconType)}
+        {regularPrograms.length > 0 && (
+          <motion.div 
+            variants={staggerContainer}
+            initial="hidden"
+            animate={isInView ? "visible" : "hidden"}
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8"
+          >
+            {regularPrograms.map((card) => (
+              <motion.div 
+                key={card.id}
+                variants={itemVariants}
+                className="bg-[#0a0a0a] border border-primary/40 rounded-xl overflow-hidden flex flex-col group hover:border-primary transition-colors duration-500"
+              >
+                <div className="relative h-[320px] w-full overflow-hidden">
+                  <img src={card.image || 'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=600&auto=format&fit=crop'} alt={card.title} className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-all duration-700" />
+                  <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#0a0a0a]/50 to-[#0a0a0a]"></div>
+                  
+                  {/* Bordered Primary Icon Circle (Solid on Hover) */}
+                  <div className="absolute top-6 left-6 w-12 h-12 rounded-full border-2 border-primary text-primary flex items-center justify-center bg-transparent group-hover:bg-primary group-hover:text-black transition-colors duration-500 shadow-lg">
+                    <div className="-rotate-45">
+                      {getIcon(card.icon)}
                     </div>
-                    <span className="text-zinc-300 font-bold text-[10px] uppercase leading-tight">
-                      <span className="block">{feature.text1}</span>
-                      <span className="block">{feature.text2}</span>
-                    </span>
                   </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </motion.div>
-
-        {/* Bottom Features Strip Block */}
-        <motion.div
-          variants={fadeUp}
-          initial="hidden"
-          animate={isInView ? "visible" : "hidden"}
-          className="bg-[#0a0a0a] border border-zinc-800/60 rounded-xl p-6 md:p-8"
-        >
-          <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-8">
-            {programs.footerFeatures.map((feat) => (
-              <div key={feat.id} className="flex flex-col md:flex-row lg:flex-col xl:flex-row items-center lg:items-start xl:items-center gap-4 group cursor-pointer text-center md:text-left lg:text-center xl:text-left">
-                <div className="w-12 h-12 rounded-full border border-zinc-800 flex items-center justify-center text-primary group-hover:border-primary group-hover:bg-primary/10 transition-colors duration-300 shrink-0">
-                  {getIcon(feat.iconType)}
                 </div>
-                <div>
-                  <h4 className="text-white font-black text-[11px] tracking-widest uppercase mb-1 group-hover:text-primary transition-colors">{feat.title}</h4>
-                  <p className="text-zinc-500 text-[10px] font-medium leading-relaxed max-w-[160px] mx-auto xl:mx-0">
-                    {feat.description}
+                
+                <div className="p-6 md:p-8 flex-1 flex flex-col pt-0 z-10 -mt-6">
+                  <h3 className="font-black text-3xl tracking-tighter uppercase leading-none mb-4">
+                    {(() => {
+                      const title = card.title || "";
+                      const parts = title.trim().split(' ');
+                      if (parts.length > 1) {
+                        const lastWord = parts.pop();
+                        return (
+                          <>
+                            <span className="text-white">{parts.join(' ')}</span>
+                            <br />
+                            <span className="text-primary">{lastWord}</span>
+                          </>
+                        );
+                      }
+                      return <span className="text-white">{title}</span>;
+                    })()}
+                  </h3>
+                  <p className="text-slate-300 text-sm font-medium leading-relaxed flex-1">
+                    {card.shortDescription}
                   </p>
                 </div>
-              </div>
+              </motion.div>
             ))}
-          </div>
-        </motion.div>
+          </motion.div>
+        )}
 
+        {/* Wide Competition Prep Card Block (Featured Program) */}
+        {featuredProgram && (
+          <motion.div
+            variants={fadeUp}
+            initial="hidden"
+            animate={isInView ? "visible" : "hidden"}
+            className="bg-[#0a0a0a] border border-zinc-800/60 hover:border-primary/50 transition-colors duration-500 rounded-xl overflow-hidden flex flex-col lg:flex-row mb-8 group"
+          >
+            {/* Left Image */}
+            <div className="relative w-full lg:w-[40%] h-64 lg:h-auto">
+              <img src={featuredProgram.image || 'https://images.unsplash.com/photo-1554284126-aa88f22d8b74?q=80&w=1200&auto=format&fit=crop'} alt={featuredProgram.title} className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-all duration-700" />
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-[#0a0a0a]/50 to-[#0a0a0a] hidden lg:block"></div>
+              <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#0a0a0a]/50 to-[#0a0a0a] block lg:hidden"></div>
+              
+              {/* Bordered Primary Icon Circle (Solid on Hover) */}
+              <div className="absolute top-6 left-6 w-12 h-12 rounded-full border-2 border-primary text-primary flex items-center justify-center bg-transparent group-hover:bg-primary group-hover:text-black transition-colors duration-500 shadow-lg">
+                <div className="-rotate-45">
+                  {getIcon(featuredProgram.icon)}
+                </div>
+              </div>
+            </div>
+
+            {/* Right Content */}
+            <div className="w-full lg:w-[60%] p-8 lg:p-12 flex flex-col justify-center relative z-10 lg:-ml-12">
+              <h3 className="font-black text-3xl md:text-4xl tracking-tighter uppercase mb-4 text-white drop-shadow-md">
+                {(() => {
+                  const title = featuredProgram.title || "";
+                  if (title.includes('/')) {
+                    const [first, ...rest] = title.split('/');
+                    return (
+                      <>
+                        <span>{first.trim()} / </span>
+                        <span className="text-primary">{rest.join('/').trim()}</span>
+                      </>
+                    );
+                  }
+                  return title;
+                })()}
+              </h3>
+              <p className="text-zinc-300 text-[15px] md:text-base font-medium leading-relaxed max-w-2xl mb-8">
+                {featuredProgram.shortDescription}
+              </p>
+              
+              {/* Featured Items */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+                {[1, 2, 3, 4].map((num) => {
+                  const title = featuredProgram[`featuredItem${num}Title`];
+                  const icon = featuredProgram[`featuredItem${num}Icon`];
+                  if (!title && !icon) return null;
+                  
+                  return (
+                    <div key={num} className="flex items-center gap-3 group/item cursor-default">
+                      <div className="w-8 h-8 rounded border border-primary bg-black/40 flex items-center justify-center text-primary group-hover/item:bg-primary/10 transition-colors duration-300 shrink-0 shadow-[0_0_10px_rgba(var(--primary-rgb),0.15)]">
+                        {icon && getLucideIcon(icon)}
+                      </div>
+                      <span className="text-white font-bold text-[10px] tracking-widest uppercase leading-tight group-hover/item:text-primary transition-colors max-w-[80px]">
+                        {title}
+                      </span>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          </motion.div>
+        )}
+
+        {/* Bottom Features Strip Block */}
+        {activeHighlights.length > 0 && (
+          <motion.div
+            variants={fadeUp}
+            initial="hidden"
+            animate={isInView ? "visible" : "hidden"}
+            className="bg-[#0a0a0a] border border-zinc-800/60 rounded-xl p-6 md:p-8"
+          >
+            <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-8">
+              {activeHighlights.map((feat) => (
+                <div key={feat.id} className="flex flex-col md:flex-row lg:flex-col xl:flex-row items-center lg:items-start xl:items-center gap-4 group cursor-pointer text-center md:text-left lg:text-center xl:text-left">
+                  <div className="w-12 h-12 rounded-full border border-primary flex items-center justify-center text-primary bg-transparent group-hover:bg-primary/10 transition-colors duration-300 shrink-0 shadow-[0_0_10px_rgba(var(--primary-rgb),0.15)]">
+                    {getIcon(feat.icon)}
+                  </div>
+                  <div>
+                    <h4 className="text-white font-black text-xs tracking-widest uppercase mb-1.5 group-hover:text-primary transition-colors">{feat.title}</h4>
+                    <p className="text-zinc-400 text-[11px] font-medium leading-relaxed max-w-[180px] mx-auto xl:mx-0">
+                      {feat.description}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </motion.div>
+        )}
       </div>
+      )}
     </section>
   );
 }

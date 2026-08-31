@@ -1,6 +1,7 @@
 "use client";
 
 import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 
@@ -9,13 +10,48 @@ const WhatsAppIcon = () => <svg xmlns="http://www.w3.org/2000/svg" width="28" he
 export function LayoutWrapper({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const isAssessment = pathname === "/assessment";
+  const [showFloating, setShowFloating] = useState(true);
+
+  // Scroll to top on route change
+  useEffect(() => {
+    if (typeof window !== "undefined" && !window.location.hash) {
+      window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+    }
+  }, [pathname]);
+
+  useEffect(() => {
+    // Force scroll to top on page load/refresh
+    if (typeof window !== "undefined") {
+      window.history.scrollRestoration = "manual";
+      window.scrollTo(0, 0);
+      
+      // If there's a hash in the URL (like /#about), the browser thinks we're already there.
+      // So if we force scroll to top, we must also remove the hash so clicking the link works again.
+      if (window.location.hash) {
+        window.history.replaceState(null, "", window.location.pathname + window.location.search);
+      }
+    }
+
+    const handleScroll = () => {
+      const scrolledToBottom =
+        window.innerHeight + window.scrollY >= document.body.offsetHeight - 300;
+      setShowFloating(!scrolledToBottom);
+    };
+    // Check initial state
+    handleScroll();
+    
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   const FloatingWhatsApp = () => (
-    <a 
-      href="https://wa.me/919220393004" 
-      target="_blank" 
+    <a
+      href="https://wa.me/919220393004"
+      target="_blank"
       rel="noopener noreferrer"
-      className="fixed bottom-6 right-6 w-14 h-14 bg-[#25D366] text-white rounded-full flex items-center justify-center shadow-lg shadow-[#25D366]/30 hover:scale-110 hover:bg-[#128C7E] transition-all duration-300 z-[100] cursor-pointer"
+      className={`fixed bottom-6 right-6 w-14 h-14 bg-[#25D366] text-white rounded-full flex items-center justify-center shadow-lg shadow-[#25D366]/30 hover:scale-110 hover:bg-[#128C7E] transition-all duration-300 z-[100] cursor-pointer ${
+        showFloating ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4 pointer-events-none"
+      }`}
       aria-label="Chat on WhatsApp"
     >
       <WhatsAppIcon />

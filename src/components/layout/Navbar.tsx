@@ -3,12 +3,26 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Menu, X, ArrowRight, Mountain } from "lucide-react";
-import { globalData } from "@/data/dummy";
+
+const navbarData = {
+  links: [
+    { name: "HOME", href: "/#home" },
+    { name: "ABOUT", href: "/#about" },
+    { name: "PROGRAMS", href: "/#programs" },
+    { name: "SERVICES", href: "/#services" },
+    { name: "COACHES", href: "/#coaches" },
+    { name: "TRANSFORMATIONS", href: "/#transformations" },
+    { name: "MEMBERSHIP", href: "/#pricing" },
+    { name: "GALLERY", href: "/#gallery" },
+    { name: "CONTACT", href: "/#contact" },
+  ],
+  cta: "BOOK ASSESSMENT"
+};
 
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
-  const { navbar } = globalData;
+  const navbar = navbarData;
 
   // Track active link (hardcoded for now, can be dynamic later)
   const activeLink = "HOME";
@@ -17,6 +31,10 @@ export function Navbar() {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50);
     };
+    
+    // Initialize immediately on mount
+    handleScroll();
+    
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);

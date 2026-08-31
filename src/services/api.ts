@@ -1,13 +1,16 @@
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
+const API_BASE_URL = `${(process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000').replace(/\/api$/, '')}/api`;
 
 export const api = {
   get: async (endpoint: string) => {
     // Placeholder GET
-    return fetch(`${API_BASE_URL}${endpoint}`);
+    return fetch(`${API_BASE_URL}${endpoint}`, {
+      credentials: 'include',
+    });
   },
   post: async (endpoint: string, data: any) => {
     return fetch(`${API_BASE_URL}${endpoint}`, {
       method: 'POST',
+      credentials: 'include',
       headers: {
         'Content-Type': 'application/json',
       },
@@ -17,6 +20,7 @@ export const api = {
   patch: async (endpoint: string, data: any) => {
     return fetch(`${API_BASE_URL}${endpoint}`, {
       method: 'PATCH',
+      credentials: 'include',
       headers: {
         'Content-Type': 'application/json',
       },
@@ -26,6 +30,7 @@ export const api = {
   put: async (endpoint: string, data: any) => {
     return fetch(`${API_BASE_URL}${endpoint}`, {
       method: 'PUT',
+      credentials: 'include',
       headers: {
         'Content-Type': 'application/json',
       },
@@ -35,6 +40,7 @@ export const api = {
   delete: async (endpoint: string) => {
     return fetch(`${API_BASE_URL}${endpoint}`, {
       method: 'DELETE',
+      credentials: 'include',
     });
   },
 };

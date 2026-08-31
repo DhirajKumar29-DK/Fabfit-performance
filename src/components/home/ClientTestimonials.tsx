@@ -1,8 +1,10 @@
 "use client";
 
-import React, { useRef } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { homeData } from "@/data/dummy";
 import { motion, useInView, Variants } from "framer-motion";
+import { api } from "@/services/api";
+import { FITNESS_ICONS } from "@/components/ui/IconSelect";
 
 // Custom SVG Icons
 const QuoteIcon = () => <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="currentColor" className="text-primary"><path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/></svg>;
@@ -23,6 +25,12 @@ const CheckCircleIcon = () => <svg xmlns="http://www.w3.org/2000/svg" width="24"
 const HeartIcon = () => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-primary"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>;
 
 const getIcon = (iconName: string) => {
+  const selectedIcon = FITNESS_ICONS.find(i => i.id === iconName);
+  if (selectedIcon) {
+    const IconComponent = selectedIcon.icon;
+    return <IconComponent size={24} className="text-primary" />;
+  }
+
   switch (iconName) {
     case 'arrowDown': return <ArrowDownIcon />;
     case 'bicep': return <BicepIcon />;
@@ -42,10 +50,44 @@ const getIcon = (iconName: string) => {
   }
 };
 
+// Convert flat API testimonial to the card format the UI expects
+const toReviewCard = (t: any) => ({
+  id: t.id,
+  name: t.name,
+  role: t.profession,
+  quote: t.quote,
+  image: t.image || 'https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?q=80&w=400&auto=format&fit=crop',
+  stats: [
+    t.stat1Value && { value: t.stat1Value, label: t.stat1Label || '', icon: t.stat1Icon || 'arrowDown' },
+    t.stat2Value && { value: t.stat2Value, label: t.stat2Label || '', icon: t.stat2Icon || 'bicep' },
+    t.stat3Value && { value: t.stat3Value, label: t.stat3Label || '', icon: t.stat3Icon || 'star' },
+  ].filter(Boolean),
+});
+
 export function ClientTestimonials() {
   const { clientTestimonials } = homeData;
   const sectionRef = useRef<HTMLElement>(null);
   const isInView = useInView(sectionRef, { once: false, margin: "-10%" });
+
+  // Live data from API; falls back to dummy while loading
+  const [reviews, setReviews] = useState<any[]>(clientTestimonials.reviews);
+
+  useEffect(() => {
+    const fetchTestimonials = async () => {
+      try {
+        const res = await api.get('/testimonials?status=ACTIVE');
+        if (res.ok) {
+          const data = await res.json();
+          if (data.success && data.data && data.data.length > 0) {
+            setReviews(data.data.map(toReviewCard));
+          }
+        }
+      } catch (err) {
+        console.error('Failed to fetch testimonials:', err);
+      }
+    };
+    fetchTestimonials();
+  }, []);
 
   const easePremium = [0.16, 1, 0.3, 1] as const;
 
@@ -92,7 +134,7 @@ export function ClientTestimonials() {
             <div className="w-12 h-[1px] bg-primary/40"></div>
           </div>
           
-          <h2 className="font-heading text-4xl md:text-6xl font-black leading-tight uppercase tracking-tighter mb-4">
+          <h2 className="font-heading text-3xl md:text-4xl lg:text-5xl font-black leading-tight uppercase tracking-tighter mb-4">
             <span className="text-white">{clientTestimonials.headingLine1} </span>
             <span className="text-primary">{clientTestimonials.headingLine2}</span>
           </h2>
@@ -108,7 +150,7 @@ export function ClientTestimonials() {
 
         {/* Reviews List */}
         <div className="flex flex-col gap-4 mb-4">
-          {clientTestimonials.reviews.map((review: any, index: number) => (
+          {reviews.map((review: any, index: number) => (
             <motion.div
               key={review.id}
               custom={index}
@@ -122,8 +164,6 @@ export function ClientTestimonials() {
               {/* Left: Client Image */}
               <div className="w-full lg:w-[220px] h-[220px] lg:h-auto shrink-0 relative overflow-hidden">
                 <img src={review.image} alt={review.name} className="w-full h-full object-cover object-center grayscale-[20%] transition-all duration-700 group-hover:grayscale-0 group-hover:scale-110" />
-                <div className="absolute inset-0 bg-gradient-to-r from-transparent to-[#0a0a0a] opacity-0 lg:opacity-100 pointer-events-none"></div>
-                <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] to-transparent lg:opacity-0 opacity-100"></div>
               </div>
 
               {/* Middle: Content */}

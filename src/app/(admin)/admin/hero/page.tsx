@@ -189,8 +189,8 @@ export default function HeroPage() {
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>, field: 'backgroundImage' | 'foregroundImage') => {
     const file = e.target.files?.[0];
     if (file) {
-      if (file.size > 2 * 1024 * 1024) {
-        alert("File size must be less than 2MB");
+      if (file.size > 50 * 1024 * 1024) {
+        alert("File size must be less than 50MB");
         return;
       }
       
@@ -199,7 +199,7 @@ export default function HeroPage() {
       
       setIsUploading(true);
       try {
-        const response = await fetch('http://localhost:5000/api/upload', {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/upload`, {
           method: 'POST',
           body: formData,
         });
@@ -228,14 +228,14 @@ export default function HeroPage() {
   const getStatusBadge = (status: string) => {
     switch (status) {
       case 'ACTIVE': return <span className="px-2 py-1 rounded bg-green-50 text-green-600 border border-green-200 text-[10px] font-bold tracking-wider">ACTIVE</span>;
-      case 'INACTIVE': return <span className="px-2 py-1 rounded bg-gray-100 text-gray-600 border border-gray-200 text-[10px] font-bold tracking-wider">INACTIVE</span>;
+      case 'INACTIVE': return <span className="px-2 py-1 rounded bg-gray-100 text-gray-600 border border-zinc-300 text-[10px] font-bold tracking-wider">INACTIVE</span>;
       case 'DRAFT': return <span className="px-2 py-1 rounded bg-yellow-50 text-yellow-600 border border-yellow-200 text-[10px] font-bold tracking-wider">DRAFT</span>;
-      default: return <span className="px-2 py-1 rounded bg-gray-100 text-gray-600 border border-gray-200 text-[10px] font-bold tracking-wider">{status}</span>;
+      default: return <span className="px-2 py-1 rounded bg-gray-100 text-gray-600 border border-zinc-300 text-[10px] font-bold tracking-wider">{status}</span>;
     }
   };
 
   return (
-    <div className="flex h-full bg-[#F8FAFC] overflow-hidden">
+    <div className="flex h-full bg-[#f8f9fa] overflow-hidden">
       <div className="flex-1 flex flex-col transition-all duration-300">
         <div className="p-8 flex-1 overflow-y-auto">
           {/* Header */}
@@ -256,7 +256,7 @@ export default function HeroPage() {
               )}
               <button 
                 onClick={openAddModal}
-                className="flex items-center gap-2 px-5 py-2.5 bg-[#6320ee] text-white rounded-lg hover:bg-[#521ac6] font-medium text-sm shadow-sm transition-colors"
+                className="flex items-center gap-2 px-5 py-2.5 bg-primary text-black rounded-lg hover:bg-primary-hover font-medium text-sm shadow-sm transition-colors"
               >
                 <Plus size={16} />
                 Add Hero
@@ -265,10 +265,11 @@ export default function HeroPage() {
           </div>
 
           {/* Table */}
-          <div className="bg-white rounded-xl shadow-[0_2px_10px_-3px_rgba(6,81,237,0.1)] border border-gray-100 overflow-hidden">
-            <table className="w-full text-left border-collapse">
+          <div className="bg-white rounded-xl shadow-[0_2px_10px_-3px_rgba(6,81,237,0.1)] border border-zinc-200 overflow-hidden">
+            <div className="overflow-x-auto w-full">
+            <table className="w-full text-left border-collapse min-w-[800px]">
               <thead>
-                <tr className="border-b border-gray-100 bg-gray-50/50">
+                <tr className="border-b border-zinc-200 bg-zinc-50">
                   <th className="py-4 pl-6 pr-2 w-10">
                     <input 
                       type="checkbox" 
@@ -293,7 +294,7 @@ export default function HeroPage() {
                   <tr><td colSpan={7} className="py-12 text-center text-gray-500">No hero sections found.</td></tr>
                 ) : (
                   heroes.sort((a, b) => a.displayOrder - b.displayOrder).map((hero, index) => (
-                    <tr key={hero.id} className={`border-b border-gray-100 hover:bg-gray-50/50 transition-colors ${selectedIds.includes(hero.id) ? 'bg-[#6320ee]/5' : ''}`}>
+                    <tr key={hero.id} className={`border-b border-zinc-200 hover:bg-zinc-50 transition-colors ${selectedIds.includes(hero.id) ? 'bg-primary text-black/5' : ''}`}>
                       <td className="py-4 pl-6 pr-2">
                         <input 
                           type="checkbox" 
@@ -306,12 +307,9 @@ export default function HeroPage() {
                       <td className="py-4 px-6">
                         <div className="flex items-center gap-4">
                           {hero.backgroundImage ? (
-                            <button onClick={() => setPreviewImage(hero.backgroundImage)} className="block hover:opacity-80 transition-opacity relative group" title="Click to view full image">
+                            <div className="block relative">
                               <img src={hero.backgroundImage} alt={hero.title} className="w-16 h-12 object-cover rounded-md bg-gray-100 shadow-sm" />
-                              <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 flex items-center justify-center rounded-md transition-opacity">
-                                <Eye size={16} className="text-white" />
-                              </div>
-                            </button>
+                            </div>
                           ) : (
                             <div className="w-16 h-12 bg-gray-100 rounded-md flex items-center justify-center text-gray-400">
                               <ImageIcon size={20} />
@@ -330,7 +328,7 @@ export default function HeroPage() {
                         <div className="flex items-center gap-2">
                           <button 
                             onClick={() => openEditModal(hero)}
-                            className="p-1.5 text-violet-600 hover:bg-violet-50 border border-violet-200 rounded transition-colors"
+                            className="p-1.5 text-primary hover:bg-primary/10 border border-violet-200 rounded transition-colors"
                             title="Edit"
                           >
                             <Edit3 size={16} />
@@ -349,9 +347,10 @@ export default function HeroPage() {
                 )}
               </tbody>
             </table>
+          </div>
             
             {!isLoading && heroes.length > 0 && (
-              <div className="px-6 py-4 border-t border-gray-100">
+              <div className="px-6 py-4 border-t border-zinc-200">
                 <div className="text-sm text-gray-500">
                   Showing 1 to {heroes.length} of {heroes.length} results
                 </div>
@@ -366,7 +365,7 @@ export default function HeroPage() {
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6">
           <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={() => setIsModalOpen(false)}></div>
           <div className="relative bg-white rounded-2xl shadow-2xl w-full max-w-5xl max-h-[90vh] flex flex-col overflow-hidden animate-in fade-in zoom-in-95 duration-200">
-            <div className="px-8 py-5 border-b border-gray-100 flex justify-between items-center bg-white">
+            <div className="px-8 py-5 border-b border-zinc-200 flex justify-between items-center bg-white">
               <h2 className="text-xl font-bold text-gray-900">{selectedHero ? 'Edit Hero' : 'Add New Hero'}</h2>
               <button onClick={() => setIsModalOpen(false)} className="p-2 text-gray-400 hover:text-gray-700 hover:bg-gray-100 rounded-full transition-colors">
                 <X size={20} />
@@ -374,7 +373,7 @@ export default function HeroPage() {
             </div>
 
             <div className="p-8 flex-1 overflow-y-auto">
-              <div className="grid grid-cols-2 gap-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 {/* Left Column */}
                 <div className="space-y-5">
                   <div>
@@ -382,7 +381,7 @@ export default function HeroPage() {
                     <input 
                       type="text" 
                       placeholder="e.g. ELITE PERFORMANCE COACHING"
-                      className="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-lg focus:outline-none focus:border-violet-500 focus:ring-1 focus:ring-violet-500 text-sm"
+                      className="w-full px-4 py-2.5 bg-white border border-zinc-300 rounded-lg focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/20 text-sm"
                       value={formData.badge}
                       onChange={e => setFormData({...formData, badge: e.target.value})}
                     />
@@ -392,7 +391,7 @@ export default function HeroPage() {
                     <input 
                       type="text" 
                       placeholder="e.g. TRANSFORM YOUR BODY."
-                      className="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-lg focus:outline-none focus:border-violet-500 focus:ring-1 focus:ring-violet-500 text-sm"
+                      className="w-full px-4 py-2.5 bg-white border border-zinc-300 rounded-lg focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/20 text-sm"
                       value={formData.title}
                       onChange={e => setFormData({...formData, title: e.target.value})}
                     />
@@ -402,7 +401,7 @@ export default function HeroPage() {
                     <input 
                       type="text" 
                       placeholder="e.g. Science-Based Training. Real Results."
-                      className="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-lg focus:outline-none focus:border-violet-500 focus:ring-1 focus:ring-violet-500 text-sm"
+                      className="w-full px-4 py-2.5 bg-white border border-zinc-300 rounded-lg focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/20 text-sm"
                       value={formData.subtitle}
                       onChange={e => setFormData({...formData, subtitle: e.target.value})}
                     />
@@ -412,18 +411,18 @@ export default function HeroPage() {
                     <textarea 
                       placeholder="Enter description here..."
                       rows={5}
-                      className="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-lg focus:outline-none focus:border-violet-500 focus:ring-1 focus:ring-violet-500 text-sm resize-none"
+                      className="w-full px-4 py-2.5 bg-white border border-zinc-300 rounded-lg focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/20 text-sm resize-none"
                       value={formData.description}
                       onChange={e => setFormData({...formData, description: e.target.value})}
                     ></textarea>
                   </div>
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                       <label className="block text-xs font-bold text-gray-900 mb-1.5">Primary Button Text</label>
                       <input 
                         type="text" 
                         placeholder="e.g. Start Your Journey"
-                        className="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-lg focus:outline-none focus:border-violet-500 focus:ring-1 focus:ring-violet-500 text-sm"
+                        className="w-full px-4 py-2.5 bg-white border border-zinc-300 rounded-lg focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/20 text-sm"
                         value={formData.primaryButtonText}
                         onChange={e => setFormData({...formData, primaryButtonText: e.target.value})}
                       />
@@ -433,7 +432,7 @@ export default function HeroPage() {
                       <input 
                         type="text" 
                         placeholder="e.g. /assessment"
-                        className="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-lg focus:outline-none focus:border-violet-500 focus:ring-1 focus:ring-violet-500 text-sm"
+                        className="w-full px-4 py-2.5 bg-white border border-zinc-300 rounded-lg focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/20 text-sm"
                         value={formData.primaryButtonLink}
                         onChange={e => setFormData({...formData, primaryButtonLink: e.target.value})}
                       />
@@ -443,13 +442,13 @@ export default function HeroPage() {
 
                 {/* Right Column */}
                 <div className="space-y-5">
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="col-span-1">
                       <label className="block text-xs font-bold text-gray-900 mb-1.5">Secondary Button Text</label>
                       <input 
                         type="text" 
                         placeholder="e.g. View Programs"
-                        className="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-lg focus:outline-none focus:border-violet-500 focus:ring-1 focus:ring-violet-500 text-sm"
+                        className="w-full px-4 py-2.5 bg-white border border-zinc-300 rounded-lg focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/20 text-sm"
                         value={formData.secondaryButtonText}
                         onChange={e => setFormData({...formData, secondaryButtonText: e.target.value})}
                       />
@@ -459,7 +458,7 @@ export default function HeroPage() {
                       <input 
                         type="text" 
                         placeholder="e.g. /programs"
-                        className="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-lg focus:outline-none focus:border-violet-500 focus:ring-1 focus:ring-violet-500 text-sm"
+                        className="w-full px-4 py-2.5 bg-white border border-zinc-300 rounded-lg focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/20 text-sm"
                         value={formData.secondaryButtonLink}
                         onChange={e => setFormData({...formData, secondaryButtonLink: e.target.value})}
                       />
@@ -486,17 +485,17 @@ export default function HeroPage() {
                         <>
                           <UploadCloud className="text-gray-400 mb-2" size={24} />
                           <div className="text-xs text-gray-600 font-medium">Click to upload or drag & drop</div>
-                          <div className="text-[10px] text-gray-400 mt-1">PNG, JPG, WEBP (Max 2MB)</div>
+                          <div className="text-[10px] text-gray-400 mt-1">PNG, JPG, WEBP (Max 50MB)</div>
                         </>
                       )}
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                       <label className="block text-xs font-bold text-gray-900 mb-1.5">Status</label>
                       <select 
-                        className="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-lg focus:outline-none focus:border-violet-500 focus:ring-1 focus:ring-violet-500 text-sm"
+                        className="w-full px-4 py-2.5 bg-white border border-zinc-300 rounded-lg focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/20 text-sm"
                         value={formData.status}
                         onChange={e => setFormData({...formData, status: e.target.value})}
                       >
@@ -510,7 +509,7 @@ export default function HeroPage() {
                       <input 
                         type="number" 
                         min="1"
-                        className="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-lg focus:outline-none focus:border-violet-500 focus:ring-1 focus:ring-violet-500 text-sm"
+                        className="w-full px-4 py-2.5 bg-white border border-zinc-300 rounded-lg focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/20 text-sm"
                         value={formData.displayOrder || ''}
                         onChange={e => {
                           const val = parseInt(e.target.value, 10);
@@ -523,16 +522,16 @@ export default function HeroPage() {
               </div>
             </div>
 
-            <div className="p-6 border-t border-gray-100 flex justify-end gap-3 bg-gray-50/50">
+            <div className="p-6 border-t border-zinc-200 flex justify-end gap-3 bg-zinc-50">
               <button 
                 onClick={() => setIsModalOpen(false)}
-                className="px-6 py-2.5 border border-gray-200 text-gray-700 rounded-lg font-medium text-sm hover:bg-gray-100 transition-colors"
+                className="px-6 py-2.5 border border-zinc-300 text-gray-700 rounded-lg font-medium text-sm hover:bg-gray-100 transition-colors"
               >
                 Cancel
               </button>
               <button 
                 onClick={handleSave}
-                className="px-6 py-2.5 bg-[#6320ee] text-white rounded-lg font-medium text-sm hover:bg-[#521ac6] transition-colors"
+                className="px-6 py-2.5 bg-primary text-black rounded-lg font-medium text-sm hover:bg-primary-hover transition-colors"
               >
                 Save Hero
               </button>

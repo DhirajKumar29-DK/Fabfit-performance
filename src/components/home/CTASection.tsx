@@ -11,7 +11,7 @@ export function CTASection() {
       <div className="absolute top-0 right-0 -translate-y-1/2 translate-x-1/3 w-[800px] h-[800px] bg-primary/5 rounded-full blur-3xl" />
       
       <div className="container relative z-10 mx-auto px-4 md:px-8 text-center max-w-4xl">
-        <h2 className="font-heading text-4xl md:text-5xl lg:text-7xl font-bold text-text-primary mb-6">
+        <h2 className="font-heading text-3xl md:text-4xl lg:text-5xl font-bold text-text-primary mb-6">
           Ready to demand more?
         </h2>
         <p className="text-text-secondary text-lg md:text-xl mb-10 max-w-2xl mx-auto">

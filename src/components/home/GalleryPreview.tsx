@@ -2,7 +2,7 @@
 
 import React, { useRef, useState, useEffect } from "react";
 import { homeData } from "@/data/dummy";
-import { motion, useInView, Variants } from "framer-motion";
+import { motion, useInView, Variants, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import { api } from "@/services/api";
 
@@ -12,11 +12,28 @@ const PlayIcon = () => (
   </svg>
 );
 
+const getEmbedUrl = (url: string) => {
+  if (!url) return '';
+  if (url.includes('youtube.com') || url.includes('youtu.be')) {
+    let videoId = '';
+    if (url.includes('youtu.be/')) videoId = url.split('youtu.be/')[1]?.split('?')[0];
+    else if (url.includes('watch?v=')) videoId = url.split('watch?v=')[1]?.split('&')[0];
+    else if (url.includes('shorts/')) videoId = url.split('shorts/')[1]?.split('?')[0];
+    return videoId ? `https://www.youtube.com/embed/${videoId}?autoplay=1` : url;
+  }
+  if (url.includes('vimeo.com')) {
+    const videoId = url.split('vimeo.com/')[1]?.split('?')[0];
+    return videoId ? `https://player.vimeo.com/video/${videoId}?autoplay=1` : url;
+  }
+  return url;
+};
+
 export function GalleryPreview() {
   const { gallery } = homeData;
   const sectionRef = useRef<HTMLElement>(null);
   const isInView = useInView(sectionRef, { once: false, margin: "-10%" });
   const [items, setItems] = useState<any[]>([]);
+  const [selectedItem, setSelectedItem] = useState<any | null>(null);
 
   useEffect(() => {
     const fetchPreview = async () => {
@@ -73,7 +90,7 @@ export function GalleryPreview() {
             <span className="text-primary font-bold text-[10px] tracking-widest uppercase mb-4 block">
               {gallery.badge}
             </span>
-            <h2 className="font-heading text-4xl md:text-[55px] font-black leading-[0.9] uppercase tracking-tighter mb-4">
+            <h2 className="font-heading text-3xl md:text-4xl lg:text-5xl font-black leading-[0.9] uppercase tracking-tighter mb-4">
               <span className="block text-white mb-2">{gallery.headingLine1}</span>
               <span className="block text-primary">{gallery.headingLine2}</span>
             </h2>
@@ -101,13 +118,14 @@ export function GalleryPreview() {
             <motion.div 
               key={item.id}
               variants={itemVariants}
+              onClick={() => setSelectedItem(item)}
               className={`group relative rounded-xl overflow-hidden cursor-pointer border border-zinc-800/60 hover:border-primary transition-colors duration-500 bg-[#0a0a0a]
                 ${index === 0 ? 'md:col-span-2 md:row-span-2' : 'col-span-1 row-span-1'}
               `}
             >
               {/* Background Image */}
               <img 
-                src={item.type === 'VIDEO' ? item.thumbnailUrl : item.mediaUrl} 
+                src={(item.type === 'VIDEO' ? item.thumbnailUrl : item.mediaUrl) || undefined} 
                 alt={item.title} 
                 className="absolute inset-0 w-full h-full object-cover grayscale-[40%] group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700" 
               />
@@ -146,6 +164,57 @@ export function GalleryPreview() {
         </motion.div>
 
       </div>
+
+      <AnimatePresence>
+        {selectedItem && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setSelectedItem(null)}
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 md:p-8 bg-black/90 backdrop-blur-sm"
+          >
+            <div className="relative w-full max-w-5xl flex flex-col items-end">
+              <button 
+                onClick={() => setSelectedItem(null)}
+                className="mb-4 z-10 w-10 h-10 bg-black/50 hover:bg-primary text-white hover:text-black rounded-full flex items-center justify-center transition-colors border border-white/20"
+              >
+                ✕
+              </button>
+              <div 
+                className="relative w-full max-h-[85vh] aspect-video flex items-center justify-center rounded-xl overflow-hidden bg-black border border-zinc-800"
+                onClick={(e) => e.stopPropagation()}
+              >
+              
+              {selectedItem.type === 'VIDEO' ? (
+                (selectedItem.mediaUrl?.includes('youtube.com') || selectedItem.mediaUrl?.includes('youtu.be') || selectedItem.mediaUrl?.includes('vimeo.com')) ? (
+                  <iframe
+                    src={getEmbedUrl(selectedItem.mediaUrl)}
+                    className="w-full h-full max-h-[90vh] object-contain bg-black"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                  />
+                ) : (
+                  <video 
+                    src={selectedItem.mediaUrl}
+                    controls
+                    autoPlay
+                    playsInline
+                    className="w-full h-full max-h-[90vh] object-contain bg-black"
+                  />
+                )
+              ) : (
+                <img 
+                  src={selectedItem.mediaUrl || undefined}
+                  alt={selectedItem.title}
+                  className="w-full h-full object-contain bg-black"
+                />
+              )}
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </section>
   );
 }

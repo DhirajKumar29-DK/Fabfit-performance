@@ -78,9 +78,9 @@ export function Contact() {
         
         {/* Wall Text */}
         <div className="absolute top-[40%] right-[10%] flex flex-col items-start transform -rotate-2 opacity-60">
-          <span className="font-heading text-4xl text-zinc-500 uppercase tracking-tighter">DISCIPLINE</span>
-          <span className="font-heading text-4xl text-primary uppercase tracking-tighter">DEDICATION</span>
-          <span className="font-heading text-4xl text-primary uppercase tracking-tighter">TRANSFORMATION</span>
+          <span className="font-heading text-3xl md:text-4xl lg:text-5xl text-zinc-500 uppercase tracking-tighter">DISCIPLINE</span>
+          <span className="font-heading text-3xl md:text-4xl lg:text-5xl text-primary uppercase tracking-tighter">DEDICATION</span>
+          <span className="font-heading text-3xl md:text-4xl lg:text-5xl text-primary uppercase tracking-tighter">TRANSFORMATION</span>
         </div>
       </div>
 
@@ -102,7 +102,7 @@ export function Contact() {
                 <span className="w-4 h-[1px] bg-primary"></span>
               </span>
               
-              <h2 className="font-heading text-4xl md:text-[55px] font-black leading-[1] uppercase tracking-tighter mb-6">
+              <h2 className="font-heading text-3xl md:text-4xl lg:text-5xl font-black leading-[1] uppercase tracking-tighter mb-6">
                 <span className="block text-white mb-2">{contact.headingLine1}</span>
                 <span className="block text-white mb-2">{contact.headingLine2}</span>
                 <span className="block text-primary">{contact.headingLine3}</span>
@@ -179,7 +179,7 @@ export function Contact() {
           </motion.div>
 
           {/* Right Column: Form & Map */}
-          <motion.div 
+          <motion.div
             variants={fadeUp}
             initial="hidden"
             animate={isInView ? "visible" : "hidden"}
@@ -188,14 +188,14 @@ export function Contact() {
             {/* Contact Form */}
             <div className="bg-[#050505] border border-white/5 rounded-2xl p-6 md:p-8 shadow-[0_0_40px_rgba(0,0,0,0.8)] relative overflow-hidden group">
               <div className="mb-6">
-                <h3 className="font-heading text-3xl md:text-4xl font-black uppercase tracking-tighter flex flex-col sm:flex-row sm:gap-2 mb-2 leading-none">
+                <h3 className="font-heading text-3xl md:text-4xl lg:text-5xl font-black uppercase tracking-tighter flex flex-col sm:flex-row sm:gap-2 mb-2 leading-none">
                   <span className="text-white drop-shadow-md">SEND US A</span>
                   <span className="text-primary drop-shadow-md">MESSAGE</span>
                 </h3>
               </div>
-              
-              <form className="flex flex-col gap-4" onSubmit={(e) => { 
-                e.preventDefault(); 
+
+              <form className="flex flex-col gap-4" onSubmit={(e) => {
+                e.preventDefault();
                 const formData = new FormData(e.currentTarget);
                 const name = formData.get('name');
                 const subject = formData.get('subject');
@@ -203,31 +203,31 @@ export function Contact() {
                 const text = `Hi Fab Fit! I'm ${name}. Subject: ${subject}. Message: ${message}`;
                 window.open(`https://wa.me/919220393004?text=${encodeURIComponent(text)}`, '_blank');
               }}>
-                
+
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   {/* Full Name */}
                   <div className="relative group/input">
                     <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-zinc-500 group-focus-within/input:text-primary transition-colors">
                       <UserIcon />
                     </div>
-                    <input 
-                      type="text" 
+                    <input
+                      type="text"
                       name="name"
-                      placeholder="Full Name" 
+                      placeholder="Full Name"
                       className="w-full bg-[#0a0a0a] border border-zinc-800/80 text-white text-sm rounded-xl pl-12 pr-5 py-4 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/50 transition-all duration-300 placeholder-zinc-500"
                       required
                     />
                   </div>
-                  
+
                   {/* Email Address */}
                   <div className="relative group/input">
                     <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-zinc-500 group-focus-within/input:text-primary transition-colors">
                       <MailIcon />
                     </div>
-                    <input 
-                      type="email" 
+                    <input
+                      type="email"
                       name="email"
-                      placeholder="Email Address" 
+                      placeholder="Email Address"
                       className="w-full bg-[#0a0a0a] border border-zinc-800/80 text-white text-sm rounded-xl pl-12 pr-5 py-4 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/50 transition-all duration-300 placeholder-zinc-500"
                       required
                     />
@@ -239,10 +239,10 @@ export function Contact() {
                   <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-zinc-500 group-focus-within/input:text-primary transition-colors">
                     <PhoneInputIcon />
                   </div>
-                  <input 
-                    type="tel" 
+                  <input
+                    type="tel"
                     name="phone"
-                    placeholder="Phone Number" 
+                    placeholder="Phone Number"
                     className="w-full bg-[#0a0a0a] border border-zinc-800/80 text-white text-sm rounded-xl pl-12 pr-5 py-4 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/50 transition-all duration-300 placeholder-zinc-500"
                     required
                   />
@@ -253,10 +253,10 @@ export function Contact() {
                   <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-zinc-500 group-focus-within/input:text-primary transition-colors">
                     <SubjectIcon />
                   </div>
-                  <input 
-                    type="text" 
+                  <input
+                    type="text"
                     name="subject"
-                    placeholder="Subject" 
+                    placeholder="Subject"
                     className="w-full bg-[#0a0a0a] border border-zinc-800/80 text-white text-sm rounded-xl pl-12 pr-5 py-4 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/50 transition-all duration-300 placeholder-zinc-500"
                     required
                   />
@@ -267,9 +267,9 @@ export function Contact() {
                   <div className="absolute top-4 left-4 flex pointer-events-none text-zinc-500 group-focus-within/input:text-primary transition-colors">
                     <EditIcon />
                   </div>
-                  <textarea 
+                  <textarea
                     name="message"
-                    placeholder="Your Message" 
+                    placeholder="Your Message"
                     rows={4}
                     className="w-full bg-[#0a0a0a] border border-zinc-800/80 text-white text-sm rounded-xl pl-12 pr-5 py-4 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/50 transition-all duration-300 placeholder-zinc-500 resize-none"
                     required
@@ -277,30 +277,29 @@ export function Contact() {
                 </div>
 
                 {/* Submit Button */}
-                <button 
+                <button
                   type="submit"
                   className="w-full bg-primary text-black font-black text-sm tracking-widest uppercase rounded-xl py-4 mt-2 flex items-center justify-center gap-2 hover:bg-white transition-all duration-500 hover:shadow-[0_0_20px_rgba(var(--primary-rgb),0.5)] group/btn"
                 >
-                  SEND MESSAGE 
+                  SEND MESSAGE
                   <span className="text-lg leading-none transform group-hover/btn:translate-x-1 transition-transform duration-300">→</span>
                 </button>
               </form>
             </div>
 
-            {/* Small Map Box */}
-            <div className="relative w-full h-[400px] bg-zinc-900 border border-white/10 rounded-3xl overflow-hidden group shadow-2xl">
-              <iframe 
+            {/* Map Box */}
+            <div className="relative w-full h-[220px] bg-zinc-900 border border-white/10 rounded-3xl overflow-hidden group shadow-2xl">
+              <iframe
                 src="https://maps.google.com/maps?q=Supermart+1,+DLF+Phase-4,+Gurgaon&t=&z=15&ie=UTF8&iwloc=&output=embed"
-                width="100%" 
-                height="100%" 
+                width="100%"
+                height="100%"
                 style={{ border: 0 }}
-                allowFullScreen={false} 
-                loading="lazy" 
+                allowFullScreen={false}
+                loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
                 className="opacity-50 grayscale group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-700"
               ></iframe>
               <div className="absolute inset-0 bg-primary/0 group-hover:bg-primary/10 transition-colors duration-1000 pointer-events-none mix-blend-overlay"></div>
-              
               {/* Floating Address Mini-Card */}
               <div className="absolute top-4 left-4 bg-black/80 backdrop-blur-md border border-white/10 rounded-xl px-4 py-2 flex items-center gap-3">
                 <MapPinIcon />

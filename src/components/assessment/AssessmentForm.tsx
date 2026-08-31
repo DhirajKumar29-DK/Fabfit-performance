@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { 
+import {
   User, Calendar, Ruler, Scale, Mail, Phone, ArrowLeft, ArrowRight, Lightbulb, ShieldCheck,
   Target, Flame, BicepsFlexed, Dumbbell, Activity, Heart, RefreshCcw, MoreHorizontal,
   Briefcase, Footprints, Moon, Smile, Check, ClipboardCheck, Pill, Bandage, Leaf, Camera, FileText, Lock, Send, Edit3, AlertCircle
@@ -11,7 +11,7 @@ export function AssessmentForm() {
   const [step, setStep] = useState(1);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
-  
+
   // -- Form State --
   // Step 1
   const [firstName, setFirstName] = useState("");
@@ -160,7 +160,7 @@ export function AssessmentForm() {
         if (physiqueImage) formData.append('physiqueImage', physiqueImage);
         if (bloodReport) formData.append('bloodReport', bloodReport);
 
-        const response = await fetch('http://localhost:5000/api/assessments', {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/assessments`, {
           method: 'POST',
           body: formData
         });
@@ -190,18 +190,16 @@ export function AssessmentForm() {
     );
   };
 
-  const inputClasses = (field: string) => 
-    `w-full bg-[#1a1a1a] border rounded-lg py-3 px-4 text-white text-sm focus:outline-none transition-all placeholder:text-zinc-600 ${
-      errors[field] 
-        ? 'border-red-500/50 focus:border-red-500 focus:ring-1 focus:ring-red-500/50' 
-        : 'border-white/10 focus:border-primary/50 focus:ring-1 focus:ring-primary/50'
+  const inputClasses = (field: string) =>
+    `w-full bg-[#1a1a1a] border rounded-lg py-3 px-4 text-white text-sm focus:outline-none transition-all placeholder:text-zinc-600 ${errors[field]
+      ? 'border-red-500/50 focus:border-red-500 focus:ring-1 focus:ring-red-500/50'
+      : 'border-white/10 focus:border-primary/50 focus:ring-1 focus:ring-primary/50'
     }`;
 
-  const selectClasses = (field: string) => 
-    `w-full bg-[#1a1a1a] border rounded-lg py-3 pl-4 pr-10 text-white text-sm focus:outline-none transition-all appearance-none cursor-pointer ${
-      errors[field] 
-        ? 'border-red-500/50 focus:border-red-500 focus:ring-1 focus:ring-red-500/50' 
-        : 'border-white/10 focus:border-primary/50 focus:ring-1 focus:ring-primary/50'
+  const selectClasses = (field: string) =>
+    `w-full bg-[#1a1a1a] border rounded-lg py-3 pl-4 pr-10 text-white text-sm focus:outline-none transition-all appearance-none cursor-pointer ${errors[field]
+      ? 'border-red-500/50 focus:border-red-500 focus:ring-1 focus:ring-red-500/50'
+      : 'border-white/10 focus:border-primary/50 focus:ring-1 focus:ring-primary/50'
     }`;
 
   if (isSubmitted) {
@@ -223,7 +221,7 @@ export function AssessmentForm() {
     <div className="flex-1 bg-[#09090b] flex flex-col h-full">
       {/* Top Progress Indicator */}
       <div className="px-8 py-6 border-b border-white/5 bg-[#0c0c0c] flex items-center justify-between overflow-x-auto custom-scrollbar">
-        
+
         {/* Step 1 Indicator */}
         <div className={`flex items-center gap-4 min-w-max pr-8 transition-opacity duration-300 ${step >= 1 ? 'opacity-100' : 'opacity-40'}`}>
           <div className={`w-8 h-8 rounded-full border-2 flex items-center justify-center font-bold text-sm relative transition-colors ${step > 1 ? 'border-primary bg-primary text-black' : step === 1 ? 'border-primary text-primary' : 'border-white/20 text-white/50'}`}>
@@ -266,7 +264,7 @@ export function AssessmentForm() {
 
       <div id="form-scroll-container" className="flex-1 overflow-y-auto scrollbar-hide p-8 lg:p-12 scroll-smooth">
         <div className="max-w-4xl mx-auto bg-[#121212] border border-white/5 rounded-2xl p-8 shadow-2xl relative">
-          
+
           {/* STEP 1 CONTENT */}
           {step === 1 && (
             <div className="animate-in fade-in slide-in-from-right-4 duration-500">
@@ -289,12 +287,12 @@ export function AssessmentForm() {
                       <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                         <User className={`h-4 w-4 ${errors.firstName ? 'text-red-500' : 'text-primary'}`} />
                       </div>
-                      <input 
-                        type="text" 
+                      <input
+                        type="text"
                         value={firstName}
                         onChange={(e) => { setFirstName(e.target.value); clearError('firstName'); }}
-                        className={`${inputClasses('firstName')} pl-10`} 
-                        placeholder="Enter first name" 
+                        className={`${inputClasses('firstName')} pl-10`}
+                        placeholder="Enter first name"
                       />
                     </div>
                     <ErrorMsg field="firstName" />
@@ -306,12 +304,12 @@ export function AssessmentForm() {
                       <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                         <User className={`h-4 w-4 ${errors.lastName ? 'text-red-500' : 'text-primary'}`} />
                       </div>
-                      <input 
-                        type="text" 
+                      <input
+                        type="text"
                         value={lastName}
                         onChange={(e) => { setLastName(e.target.value); clearError('lastName'); }}
-                        className={`${inputClasses('lastName')} pl-10`} 
-                        placeholder="Enter last name or title" 
+                        className={`${inputClasses('lastName')} pl-10`}
+                        placeholder="Enter last name or title"
                       />
                     </div>
                     <ErrorMsg field="lastName" />
@@ -324,15 +322,15 @@ export function AssessmentForm() {
                       <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                         <Calendar className={`h-4 w-4 ${errors.age ? 'text-red-500' : 'text-primary'}`} />
                       </div>
-                      <input 
-                        type="number" 
+                      <input
+                        type="number"
                         min="1"
                         max="120"
                         onKeyDown={(e) => { if (e.key === '-' || e.key === 'e') e.preventDefault(); }}
                         value={age}
                         onChange={(e) => { setAge(e.target.value); clearError('age'); }}
-                        className={`${inputClasses('age')} pl-10`} 
-                        placeholder="Enter your age" 
+                        className={`${inputClasses('age')} pl-10`}
+                        placeholder="Enter your age"
                       />
                     </div>
                     <ErrorMsg field="age" />
@@ -341,7 +339,7 @@ export function AssessmentForm() {
                   <div className="space-y-2 flex flex-col">
                     <label className="text-white text-sm font-semibold flex items-center gap-1">Gender <span className="text-red-500">*</span></label>
                     <div className="relative">
-                      <div 
+                      <div
                         onClick={() => setGenderOpen(!genderOpen)}
                         className={`w-full bg-[#1a1a1a] border rounded-lg py-3 pl-10 pr-4 text-sm focus:outline-none transition-all cursor-pointer flex items-center justify-between ${errors.gender ? 'border-red-500/50 ring-1 ring-red-500/50' : 'border-white/10 hover:border-white/30'}`}
                       >
@@ -351,13 +349,13 @@ export function AssessmentForm() {
                         <span className={gender ? "text-white" : "text-zinc-600"}>{gender || "Select gender"}</span>
                         <svg className={`w-4 h-4 text-zinc-500 transition-transform ${genderOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path></svg>
                       </div>
-                      
+
                       {genderOpen && (
                         <>
                           <div className="fixed inset-0 z-10" onClick={() => setGenderOpen(false)} />
                           <div className="absolute top-full left-0 mt-2 w-full bg-[#222] border border-white/10 rounded-lg shadow-xl z-20 overflow-hidden animate-in fade-in slide-in-from-top-2 duration-150">
                             {["Male", "Female", "Other"].map(opt => (
-                              <div 
+                              <div
                                 key={opt}
                                 onClick={() => {
                                   setGender(opt);
@@ -383,12 +381,12 @@ export function AssessmentForm() {
                       <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                         <Ruler className={`h-4 w-4 ${errors.height ? 'text-red-500' : 'text-primary'}`} />
                       </div>
-                      <input 
-                        type="text" 
+                      <input
+                        type="text"
                         value={height}
                         onChange={(e) => { setHeight(e.target.value); clearError('height'); }}
-                        className={`${inputClasses('height')} pl-10`} 
-                        placeholder="Enter height (cm)" 
+                        className={`${inputClasses('height')} pl-10`}
+                        placeholder="Enter height (cm)"
                       />
                     </div>
                     <ErrorMsg field="height" />
@@ -400,12 +398,12 @@ export function AssessmentForm() {
                       <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                         <Scale className={`h-4 w-4 ${errors.weight ? 'text-red-500' : 'text-primary'}`} />
                       </div>
-                      <input 
-                        type="text" 
+                      <input
+                        type="text"
                         value={weight}
                         onChange={(e) => { setWeight(e.target.value); clearError('weight'); }}
-                        className={`${inputClasses('weight')} pl-10`} 
-                        placeholder="Enter weight (kg)" 
+                        className={`${inputClasses('weight')} pl-10`}
+                        placeholder="Enter weight (kg)"
                       />
                     </div>
                     <ErrorMsg field="weight" />
@@ -418,12 +416,12 @@ export function AssessmentForm() {
                       <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                         <Mail className={`h-4 w-4 ${errors.email ? 'text-red-500' : 'text-primary'}`} />
                       </div>
-                      <input 
-                        type="email" 
+                      <input
+                        type="email"
                         value={email}
                         onChange={(e) => { setEmail(e.target.value); clearError('email'); }}
-                        className={`${inputClasses('email')} pl-10`} 
-                        placeholder="Enter your email" 
+                        className={`${inputClasses('email')} pl-10`}
+                        placeholder="Enter your email"
                       />
                     </div>
                     <ErrorMsg field="email" />
@@ -432,19 +430,19 @@ export function AssessmentForm() {
                   <div className="space-y-2 flex flex-col">
                     <label className="text-white text-sm font-semibold flex items-center gap-1">Phone Number <span className="text-red-500">*</span></label>
                     <div className={`flex h-[46px] border rounded-lg bg-[#1a1a1a] transition-all overflow-hidden ${errors.phone ? 'border-red-500/50 focus-within:border-red-500 focus-within:ring-1 focus-within:ring-red-500/50' : 'border-white/10 focus-within:border-primary/50 focus-within:ring-1 focus-within:ring-primary/50'}`}>
-                      
+
                       {/* Fixed +91 Prefix */}
                       <div className="flex items-center pl-3 pr-3 border-r border-white/10 bg-[#1a1a1a]">
                         <span className="text-xl leading-none">🇮🇳</span>
                         <span className="text-white text-sm ml-2 font-medium">+91</span>
                       </div>
 
-                      <input 
-                        type="tel" 
+                      <input
+                        type="tel"
                         value={phone}
                         onChange={(e) => { setPhone(e.target.value); clearError('phone'); }}
-                        className="flex-1 bg-transparent px-4 text-white text-sm focus:outline-none placeholder:text-zinc-600 h-full" 
-                        placeholder="Enter phone number" 
+                        className="flex-1 bg-transparent px-4 text-white text-sm focus:outline-none placeholder:text-zinc-600 h-full"
+                        placeholder="Enter phone number"
                       />
                     </div>
                     <ErrorMsg field="phone" />
@@ -453,7 +451,7 @@ export function AssessmentForm() {
 
                 <div className="space-y-4 pt-4">
                   <label className="text-white text-sm font-semibold flex items-center gap-1">Current Activity Level <span className="text-red-500">*</span></label>
-                  
+
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                     {[
                       { id: 'A', title: 'Sedentary', desc: '(mostly sitting)', icon: '🛋️' },
@@ -463,7 +461,7 @@ export function AssessmentForm() {
                     ].map((item) => {
                       const isActive = activityLevel === item.id;
                       return (
-                        <div 
+                        <div
                           key={item.id}
                           onClick={() => { setActivityLevel(item.id); clearError('activityLevel'); }}
                           className={`relative p-4 rounded-xl border cursor-pointer transition-all duration-300 ${isActive ? 'bg-primary/5 border-primary shadow-[0_0_15px_rgba(var(--primary-rgb),0.15)]' : errors.activityLevel ? 'bg-red-500/5 border-red-500/50 hover:border-red-500' : 'bg-[#1a1a1a] border-white/5 hover:border-white/20'}`}
@@ -498,7 +496,7 @@ export function AssessmentForm() {
                     <ArrowLeft className="mr-2 h-4 w-4" />
                     Back
                   </button>
-                  
+
                   <div className="flex-1 max-w-xs w-full flex flex-col items-center gap-2">
                     <div className="w-full h-1 bg-white/10 rounded-full overflow-hidden">
                       <div className="h-full bg-primary w-1/3 rounded-full transition-all duration-500" />
@@ -536,7 +534,7 @@ export function AssessmentForm() {
                   <h3 className="text-white font-bold text-lg flex items-center gap-2">
                     <span className="text-primary">1.</span> Primary Goal <span className="text-zinc-500 text-sm font-normal ml-1">(Select your main goal)</span> <span className="text-red-500 text-sm">*</span>
                   </h3>
-                  
+
                   <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-hide snap-x">
                     {[
                       { id: 'A', title: 'Fat Loss', icon: Flame },
@@ -550,7 +548,7 @@ export function AssessmentForm() {
                       const isActive = primaryGoal === item.id;
                       const Icon = item.icon;
                       return (
-                        <div 
+                        <div
                           key={item.id}
                           onClick={() => { setPrimaryGoal(item.id); clearError('primaryGoal'); }}
                           className={`min-w-[140px] flex-1 snap-start relative p-5 rounded-xl border cursor-pointer transition-all duration-300 ${isActive ? 'bg-primary/5 border-primary shadow-[0_0_15px_rgba(var(--primary-rgb),0.15)]' : errors.primaryGoal ? 'bg-red-500/5 border-red-500/50 hover:border-red-500' : 'bg-[#1a1a1a] border-white/5 hover:border-white/20'}`}
@@ -578,12 +576,12 @@ export function AssessmentForm() {
                   <h3 className="text-white font-bold text-lg flex items-center gap-2">
                     <span className="text-primary">2.</span> Training Background
                   </h3>
-                  
+
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                     <div className="space-y-2 flex flex-col">
-                      <label className="text-white text-sm font-semibold flex items-center gap-1">Years of resistance<br/>training experience <span className="text-red-500">*</span></label>
+                      <label className="text-white text-sm font-semibold flex items-center gap-1">Years of resistance<br />training experience <span className="text-red-500">*</span></label>
                       <div className="relative mt-2">
-                        <select 
+                        <select
                           value={experience}
                           onChange={(e) => { setExperience(e.target.value); clearError('experience'); }}
                           className={`${selectClasses('experience')}`}
@@ -602,9 +600,9 @@ export function AssessmentForm() {
                     </div>
 
                     <div className="space-y-2 flex flex-col">
-                      <label className="text-white text-sm font-semibold flex items-center gap-1">Current workout<br/>frequency <span className="text-red-500">*</span></label>
+                      <label className="text-white text-sm font-semibold flex items-center gap-1">Current workout<br />frequency <span className="text-red-500">*</span></label>
                       <div className="relative mt-2">
-                        <select 
+                        <select
                           value={frequency}
                           onChange={(e) => { setFrequency(e.target.value); clearError('frequency'); }}
                           className={`${selectClasses('frequency')}`}
@@ -627,7 +625,7 @@ export function AssessmentForm() {
                         <span>Access to equipment <span className="text-red-500">*</span></span>
                         <span className="hidden lg:inline text-white text-sm font-semibold">Current cardio routine <span className="text-red-500">*</span></span>
                       </label>
-                      
+
                       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-2 h-full">
                         <div className="col-span-1 md:col-span-2 grid grid-cols-3 gap-2">
                           {[
@@ -638,7 +636,7 @@ export function AssessmentForm() {
                             const isActive = equipment === item.id;
                             const Icon = item.icon;
                             return (
-                              <div 
+                              <div
                                 key={item.id}
                                 onClick={() => { setEquipment(item.id); clearError('equipment'); }}
                                 className={`flex flex-col items-center justify-center p-2 rounded-lg border cursor-pointer transition-all duration-300 text-center gap-1 ${isActive ? 'bg-primary/5 border-primary text-primary shadow-[0_0_10px_rgba(var(--primary-rgb),0.1)]' : errors.equipment ? 'bg-red-500/5 border-red-500/50 text-zinc-400' : 'bg-[#1a1a1a] border-white/10 hover:border-white/20 text-zinc-400'}`}
@@ -650,11 +648,11 @@ export function AssessmentForm() {
                             );
                           })}
                         </div>
-                        
+
                         <div className="col-span-1 flex flex-col">
                           <label className="lg:hidden text-white text-sm font-semibold flex items-center gap-1 mb-2 mt-4 md:mt-0">Current cardio routine <span className="text-red-500">*</span></label>
                           <div className="relative h-full min-h-[44px]">
-                            <select 
+                            <select
                               value={cardio}
                               onChange={(e) => { setCardio(e.target.value); clearError('cardio'); }}
                               className={`${selectClasses('cardio')} h-full`}
@@ -690,12 +688,12 @@ export function AssessmentForm() {
                         <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                           <Briefcase className={`h-4 w-4 ${errors.occupation ? 'text-red-500' : 'text-zinc-500'}`} />
                         </div>
-                        <input 
-                          type="text" 
+                        <input
+                          type="text"
                           value={occupation}
                           onChange={(e) => { setOccupation(e.target.value); clearError('occupation'); }}
-                          className={`${inputClasses('occupation')} pl-10`} 
-                          placeholder="Enter occupation" 
+                          className={`${inputClasses('occupation')} pl-10`}
+                          placeholder="Enter occupation"
                         />
                       </div>
                       <ErrorMsg field="occupation" />
@@ -707,12 +705,12 @@ export function AssessmentForm() {
                         <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                           <Footprints className={`h-4 w-4 ${errors.steps ? 'text-red-500' : 'text-zinc-500'}`} />
                         </div>
-                        <input 
-                          type="text" 
+                        <input
+                          type="text"
                           value={steps}
                           onChange={(e) => { setSteps(e.target.value); clearError('steps'); }}
-                          className={`${inputClasses('steps')} pl-10`} 
-                          placeholder="e.g. 8000" 
+                          className={`${inputClasses('steps')} pl-10`}
+                          placeholder="e.g. 8000"
                         />
                       </div>
                       <ErrorMsg field="steps" />
@@ -724,12 +722,12 @@ export function AssessmentForm() {
                         <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                           <Moon className={`h-4 w-4 ${errors.sleep ? 'text-red-500' : 'text-zinc-500'}`} />
                         </div>
-                        <input 
-                          type="text" 
+                        <input
+                          type="text"
                           value={sleep}
                           onChange={(e) => { setSleep(e.target.value); clearError('sleep'); }}
-                          className={`${inputClasses('sleep')} pl-10`} 
-                          placeholder="e.g. 7-8" 
+                          className={`${inputClasses('sleep')} pl-10`}
+                          placeholder="e.g. 7-8"
                         />
                       </div>
                       <ErrorMsg field="sleep" />
@@ -741,7 +739,7 @@ export function AssessmentForm() {
                         <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none z-10">
                           <Smile className={`h-4 w-4 ${errors.stress ? 'text-red-500' : 'text-zinc-500'}`} />
                         </div>
-                        <select 
+                        <select
                           value={stress}
                           onChange={(e) => { setStress(e.target.value); clearError('stress'); }}
                           className={`${selectClasses('stress')} pl-10 relative z-0`}
@@ -777,7 +775,7 @@ export function AssessmentForm() {
                         ].map((item) => {
                           const isActive = diet === item.id;
                           return (
-                            <div 
+                            <div
                               key={item.id}
                               onClick={() => { setDiet(item.id); clearError('diet'); }}
                               className={`flex flex-col items-center justify-center p-3 rounded-lg border cursor-pointer transition-all duration-300 text-center gap-1 ${isActive ? 'bg-primary/5 border-primary text-primary shadow-[0_0_10px_rgba(var(--primary-rgb),0.1)]' : errors.diet ? 'bg-red-500/5 border-red-500/50 text-zinc-400' : 'bg-[#1a1a1a] border-white/10 hover:border-white/20 text-zinc-400'}`}
@@ -798,7 +796,7 @@ export function AssessmentForm() {
                           Number of meals/day <span className="text-red-500">*</span>
                         </label>
                         <div className="relative mt-auto">
-                          <select 
+                          <select
                             value={meals}
                             onChange={(e) => { setMeals(e.target.value); clearError('meals'); }}
                             className={`${selectClasses('meals')} h-11 xl:h-12 pl-3 xl:pl-4`}
@@ -845,12 +843,12 @@ export function AssessmentForm() {
                       <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                         <div className="w-4 h-4 border border-zinc-500 rounded-sm" />
                       </div>
-                      <input 
-                        type="text" 
+                      <input
+                        type="text"
                         value={supplements}
                         onChange={(e) => setSupplements(e.target.value)}
-                        className="w-full bg-[#1a1a1a] border border-white/10 rounded-lg py-3 pl-10 pr-4 text-white text-sm focus:outline-none focus:border-primary/50 focus:ring-1 focus:ring-primary/50 transition-all placeholder:text-zinc-600" 
-                        placeholder="e.g. Whey Protein, Creatine, Fish Oil, etc." 
+                        className="w-full bg-[#1a1a1a] border border-white/10 rounded-lg py-3 pl-10 pr-4 text-white text-sm focus:outline-none focus:border-primary/50 focus:ring-1 focus:ring-primary/50 transition-all placeholder:text-zinc-600"
+                        placeholder="e.g. Whey Protein, Creatine, Fish Oil, etc."
                       />
                     </div>
                   </div>
@@ -861,7 +859,7 @@ export function AssessmentForm() {
                     <ArrowLeft className="mr-2 h-4 w-4 transition-transform group-hover:-translate-x-1" />
                     Back
                   </button>
-                  
+
                   <div className="flex-1 max-w-xs w-full flex flex-col items-center gap-2">
                     <div className="w-full h-1 bg-white/10 rounded-full overflow-hidden">
                       <div className="h-full bg-primary w-2/3 rounded-full transition-all duration-500" />
@@ -895,13 +893,13 @@ export function AssessmentForm() {
               </div>
 
               <form className="space-y-10" onSubmit={handleSubmit}>
-                
+
                 {/* 1. Medical & Health History */}
                 <div className="space-y-6 border-t border-white/10 pt-8">
                   <h3 className="text-white font-bold text-lg flex items-center gap-2">
                     <span className="text-primary">1.</span> Medical & Health History
                   </h3>
-                  
+
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
                     <div className="space-y-2 flex flex-col">
                       <label className="text-white text-sm font-semibold flex items-center gap-1">
@@ -911,12 +909,12 @@ export function AssessmentForm() {
                         <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                           <Activity className={`h-5 w-5 ${errors.conditions ? 'text-red-500' : 'text-zinc-500'}`} />
                         </div>
-                        <input 
-                          type="text" 
+                        <input
+                          type="text"
                           value={conditions}
                           onChange={(e) => { setConditions(e.target.value); clearError('conditions'); }}
-                          className={`${inputClasses('conditions')} pl-12 py-4`} 
-                          placeholder="Type 'None' if not applicable" 
+                          className={`${inputClasses('conditions')} pl-12 py-4`}
+                          placeholder="Type 'None' if not applicable"
                         />
                       </div>
                       <ErrorMsg field="conditions" />
@@ -930,12 +928,12 @@ export function AssessmentForm() {
                         <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                           <Pill className={`h-5 w-5 ${errors.medications ? 'text-red-500' : 'text-zinc-500'}`} />
                         </div>
-                        <input 
-                          type="text" 
+                        <input
+                          type="text"
                           value={medications}
                           onChange={(e) => { setMedications(e.target.value); clearError('medications'); }}
-                          className={`${inputClasses('medications')} pl-12 py-4`} 
-                          placeholder="Type 'None' if not applicable" 
+                          className={`${inputClasses('medications')} pl-12 py-4`}
+                          placeholder="Type 'None' if not applicable"
                         />
                       </div>
                       <ErrorMsg field="medications" />
@@ -949,12 +947,12 @@ export function AssessmentForm() {
                         <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                           <Bandage className={`h-5 w-5 ${errors.injuries ? 'text-red-500' : 'text-zinc-500'}`} />
                         </div>
-                        <input 
-                          type="text" 
+                        <input
+                          type="text"
                           value={injuries}
                           onChange={(e) => { setInjuries(e.target.value); clearError('injuries'); }}
-                          className={`${inputClasses('injuries')} pl-12 py-4`} 
-                          placeholder="Type 'None' if not applicable" 
+                          className={`${inputClasses('injuries')} pl-12 py-4`}
+                          placeholder="Type 'None' if not applicable"
                         />
                       </div>
                       <ErrorMsg field="injuries" />
@@ -968,12 +966,12 @@ export function AssessmentForm() {
                         <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                           <Leaf className={`h-5 w-5 ${errors.allergies ? 'text-red-500' : 'text-zinc-500'}`} />
                         </div>
-                        <input 
-                          type="text" 
+                        <input
+                          type="text"
                           value={allergies}
                           onChange={(e) => { setAllergies(e.target.value); clearError('allergies'); }}
-                          className={`${inputClasses('allergies')} pl-12 py-4`} 
-                          placeholder="Type 'None' if not applicable" 
+                          className={`${inputClasses('allergies')} pl-12 py-4`}
+                          placeholder="Type 'None' if not applicable"
                         />
                       </div>
                       <ErrorMsg field="allergies" />
@@ -996,12 +994,12 @@ export function AssessmentForm() {
                         <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                           <Ruler className={`h-5 w-5 ${errors.waist ? 'text-red-500' : 'text-zinc-500'}`} />
                         </div>
-                        <input 
-                          type="text" 
+                        <input
+                          type="text"
                           value={waist}
                           onChange={(e) => { setWaist(e.target.value); clearError('waist'); }}
-                          className={`${inputClasses('waist')} pl-12 py-4`} 
-                          placeholder="Enter measurement" 
+                          className={`${inputClasses('waist')} pl-12 py-4`}
+                          placeholder="Enter measurement"
                         />
                       </div>
                       <ErrorMsg field="waist" />
@@ -1014,10 +1012,10 @@ export function AssessmentForm() {
                           Progress Photos
                         </label>
                         <label className="border-2 border-dashed border-white/20 rounded-xl bg-[#1a1a1a]/50 p-8 flex flex-col items-center justify-center text-center cursor-pointer hover:bg-[#1a1a1a] hover:border-primary/50 transition-all mt-2 h-40 group block">
-                          <input 
-                            type="file" 
-                            className="hidden" 
-                            accept="image/jpeg, image/png" 
+                          <input
+                            type="file"
+                            className="hidden"
+                            accept="image/jpeg, image/png"
                             onChange={(e) => setPhysiqueImage(e.target.files?.[0] || null)}
                           />
                           <div className="w-12 h-12 rounded-full border border-primary/20 bg-primary/5 flex items-center justify-center text-primary mb-3 group-hover:scale-110 transition-transform mx-auto">
@@ -1036,10 +1034,10 @@ export function AssessmentForm() {
                           Recent blood work
                         </label>
                         <label className="border-2 border-dashed border-white/20 rounded-xl bg-[#1a1a1a]/50 p-8 flex flex-col items-center justify-center text-center cursor-pointer hover:bg-[#1a1a1a] hover:border-primary/50 transition-all mt-2 h-40 group block">
-                          <input 
-                            type="file" 
-                            className="hidden" 
-                            accept=".pdf, image/jpeg, image/png" 
+                          <input
+                            type="file"
+                            className="hidden"
+                            accept=".pdf, image/jpeg, image/png"
                             onChange={(e) => setBloodReport(e.target.files?.[0] || null)}
                           />
                           <div className="w-12 h-12 rounded-full border border-primary/20 bg-primary/5 flex items-center justify-center text-primary mb-3 group-hover:scale-110 transition-transform mx-auto">
@@ -1066,10 +1064,10 @@ export function AssessmentForm() {
                       <label className="text-white text-base font-semibold leading-relaxed block max-w-2xl">
                         On a scale of 1-10, how committed are you to following a structured nutrition and training plan for the next 12 weeks? <span className="text-red-500">*</span>
                       </label>
-                      
+
                       <div className="flex gap-2 sm:gap-3 flex-wrap sm:flex-nowrap max-w-4xl">
                         {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((num) => (
-                          <div 
+                          <div
                             key={num}
                             onClick={() => { setCommitmentLevel(num); clearError('commitmentLevel'); }}
                             className={`flex-1 min-w-[35px] sm:min-w-[40px] h-12 sm:h-14 flex items-center justify-center rounded-lg border-2 text-base sm:text-lg font-black cursor-pointer transition-all ${commitmentLevel === num ? 'bg-primary border-primary text-black shadow-[0_0_20px_rgba(var(--primary-rgb),0.4)] scale-110 z-10' : errors.commitmentLevel ? 'border-red-500/50 text-red-500' : 'bg-[#1a1a1a] border-white/10 text-zinc-500 hover:border-white/30 hover:text-white'}`}
@@ -1090,10 +1088,10 @@ export function AssessmentForm() {
                         Is there anything else you think I should know before designing your program?
                       </label>
                       <div className="relative mt-2">
-                        <textarea 
+                        <textarea
                           value={notes}
                           onChange={(e) => setNotes(e.target.value)}
-                          className="w-full bg-[#1a1a1a] border border-white/10 rounded-xl p-5 text-white text-sm focus:outline-none focus:border-primary/50 focus:ring-1 focus:ring-primary/50 transition-all placeholder:text-zinc-600 min-h-[140px] resize-none custom-scrollbar" 
+                          className="w-full bg-[#1a1a1a] border border-white/10 rounded-xl p-5 text-white text-sm focus:outline-none focus:border-primary/50 focus:ring-1 focus:ring-primary/50 transition-all placeholder:text-zinc-600 min-h-[140px] resize-none custom-scrollbar"
                           placeholder="Type your message here... Any specific preferences, constraints, or previous experiences?"
                         />
                         <div className="absolute bottom-5 right-5 pointer-events-none text-primary">
@@ -1107,7 +1105,7 @@ export function AssessmentForm() {
                 {/* Minimal Footer & Quote */}
                 <div className="border-t border-white/10 pt-8 mt-8">
                   <div className="flex flex-col lg:flex-row items-start justify-between gap-8">
-                    
+
                     <div className="flex-1 space-y-5">
                       <div className="flex items-start gap-3">
                         <ShieldCheck className="w-5 h-5 text-primary shrink-0 mt-0.5 opacity-80" />
@@ -1132,7 +1130,7 @@ export function AssessmentForm() {
                           Your transformation starts with the right plan. Let&apos;s build a stronger, healthier you.
                         </p>
                       </div>
-                      <div className="text-primary text-2xl mt-3" style={{fontFamily: "'Dancing Script', cursive"}}>
+                      <div className="text-primary text-2xl mt-3" style={{ fontFamily: "'Dancing Script', cursive" }}>
                         - Anil
                       </div>
                     </div>
@@ -1146,7 +1144,7 @@ export function AssessmentForm() {
                     <ArrowLeft className="mr-2 h-4 w-4 lg:h-5 lg:w-5 transition-transform group-hover:-translate-x-1" />
                     Back
                   </button>
-                  
+
                   <div className="flex-1 max-w-sm w-full flex flex-col items-center gap-2 lg:gap-3">
                     <div className="w-full h-1.5 bg-white/10 rounded-full overflow-hidden">
                       <div className="h-full bg-primary w-full rounded-full transition-all duration-500 shadow-[0_0_15px_rgba(var(--primary-rgb),0.6)]" />

@@ -14,7 +14,7 @@ export function Hero() {
     // Fetch dynamic heroes from backend
     const fetchHeroes = async () => {
       try {
-        const response = await fetch("http://localhost:5000/api/heroes");
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/heroes`);
         const result = await response.json();
         
         if (result.success && result.data && result.data.length > 0) {
@@ -89,13 +89,13 @@ export function Hero() {
                 muted
                 loop
                 playsInline
-                className="w-full h-full object-cover object-center md:object-right grayscale contrast-[1.2] brightness-[0.7]"
+                className="w-full h-full object-contain object-center grayscale contrast-[1.2] brightness-[0.7]"
               />
             ) : (
               <img
                 src={slide.src}
                 alt="Hero Slide"
-                className="w-full h-full object-cover object-center md:object-right grayscale contrast-[1.2] brightness-[0.7]"
+                className="w-full h-full object-contain object-center grayscale contrast-[1.2] brightness-[0.7]"
               />
             )}
 

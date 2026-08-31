@@ -1,8 +1,10 @@
 "use client";
 
-import React, { useRef } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { homeData } from "@/data/dummy";
 import { motion, useInView, Variants } from "framer-motion";
+import { api } from "@/services/api";
+import { Activity, Dumbbell, Flame, Heart, Zap, Crosshair, Users, Trophy } from 'lucide-react';
 
 // Reusing Icons from previous sections
 const CalendarIcon = () => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="text-primary"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><line x1="9" y1="14" x2="15" y2="14"/><line x1="12" y1="11" x2="12" y2="17"/></svg>;
@@ -36,6 +38,47 @@ export function Membership() {
   const { membership } = homeData;
   const sectionRef = useRef<HTMLElement>(null);
   const isInView = useInView(sectionRef, { once: false, margin: "-10%" });
+  
+  const [sectionData, setSectionData] = useState({
+    badge: membership.badge,
+    title: membership.headingLine1 + "." + membership.headingLine2,
+    description: membership.subHeader,
+  });
+  
+  const [plans, setPlans] = useState<any[]>(membership.plans);
+
+  useEffect(() => {
+    const fetchMembershipData = async () => {
+      try {
+        const [sectionRes, plansRes] = await Promise.all([
+          api.get('/membership-section'),
+          api.get('/membership-plans?status=ACTIVE')
+        ]);
+
+        if (sectionRes.ok) {
+          const sectionData = await sectionRes.json();
+          if (sectionData.success && sectionData.data) {
+            setSectionData({
+              badge: sectionData.data.badge,
+              title: sectionData.data.title,
+              description: sectionData.data.description,
+            });
+          }
+        }
+
+        if (plansRes.ok) {
+          const plansData = await plansRes.json();
+          if (plansData.success && plansData.data && plansData.data.length > 0) {
+            setPlans(plansData.data);
+          }
+        }
+      } catch (error) {
+        console.error('Error fetching membership data:', error);
+      }
+    };
+    
+    fetchMembershipData();
+  }, []);
 
   const easePremium = [0.16, 1, 0.3, 1] as const;
 
@@ -80,19 +123,33 @@ export function Membership() {
           className="flex flex-col mb-8 max-w-2xl relative z-20 pt-4"
         >
           <span className="text-primary font-bold text-[10px] tracking-widest uppercase mb-2">
-            {membership.badge}
+            {sectionData.badge}
           </span>
           
-          <h2 className="font-heading text-4xl md:text-[55px] font-black leading-[0.9] uppercase tracking-tighter mb-4">
-            <span className="block text-white mb-1">{membership.headingLine1}</span>
-            <span className="block text-primary">{membership.headingLine2}</span>
+          <h2 className="font-heading text-3xl md:text-4xl lg:text-5xl font-black leading-[0.9] uppercase tracking-tighter mb-4">
+            {(() => {
+              const title = sectionData.title || "";
+              if (title.includes(".")) {
+                const parts = title.split(".");
+                const firstPart = parts[0] + ".";
+                const secondPart = parts.slice(1).join(".").trim();
+                if (!secondPart) return <span className="block text-white mb-1">{title}</span>;
+                return (
+                  <>
+                    <span className="block text-white mb-1">{firstPart}</span>
+                    <span className="block text-primary">{secondPart}</span>
+                  </>
+                );
+              }
+              return <span className="block text-white mb-1">{title}</span>;
+            })()}
           </h2>
           
           <p className="text-zinc-400 text-sm font-medium max-w-lg leading-relaxed">
-            {membership.subHeader.split('full access').map((part, i, arr) => (
+            {sectionData.description.split('full access').map((part, i, arr) => (
               <React.Fragment key={i}>
                 {part}
-                {i === 0 && <span className="text-primary">full access</span>}
+                {i === 0 && arr.length > 1 && <span className="text-primary">full access</span>}
               </React.Fragment>
             ))}
           </p>
@@ -100,7 +157,7 @@ export function Membership() {
 
         {/* Pricing Cards List */}
         <div className="flex flex-col gap-4 mb-10">
-          {membership.plans.map((plan: any, index: number) => {
+          {plans.map((plan: any, index: number) => {
             const isHighlighted = plan.isPopular;
             
             return (
@@ -111,8 +168,7 @@ export function Membership() {
                 initial="hidden"
                 whileInView="visible"
                 viewport={{ once: true, margin: "-10%" }}
-                whileHover={{ scale: 1.015, transition: { duration: 0.25, ease: "easeOut" as const } }}
-                className={`relative w-full rounded-xl flex flex-col md:flex-row overflow-hidden group bg-[#080808] border ${isHighlighted ? 'border-primary/40' : 'border-zinc-800/60'} hover:border-primary/80 hover:shadow-[0_0_40px_rgba(var(--primary-rgb),0.2)] transition-all duration-300 z-10 hover:z-30`}
+                className={`relative w-full rounded-xl flex flex-col md:flex-row overflow-hidden group bg-[#080808] border ${isHighlighted ? 'border-primary/40' : 'border-zinc-800/60'} hover:scale-[1.015] hover:border-primary/80 hover:shadow-[0_0_40px_rgba(var(--primary-rgb),0.2)] transition-all duration-300 z-10 hover:z-30`}
               >
                 {/* Animated Background Glow on Hover */}
                 <div className="absolute inset-0 bg-gradient-to-r from-primary/0 via-primary/5 to-primary/0 opacity-0 group-hover:opacity-100 transform -translate-x-full group-hover:translate-x-full transition-all duration-500 ease-out pointer-events-none"></div>
@@ -127,7 +183,7 @@ export function Membership() {
                 )}
 
                 {/* Left: Icon & Title */}
-                <div className="w-full md:w-[240px] p-6 md:p-8 flex items-center gap-5 border-b md:border-b-0 md:border-r border-zinc-800/60 pl-16 md:pl-10 relative overflow-hidden group-hover:border-primary/30 transition-colors duration-300">
+                <div className={`w-full md:w-[240px] p-6 md:p-8 flex items-center gap-5 border-b md:border-b-0 md:border-r border-zinc-800/60 ${isHighlighted ? 'pl-16 md:pl-10' : 'pl-6 md:pl-8'} relative overflow-hidden group-hover:border-primary/30 transition-colors duration-300`}>
                   {/* Subtle highlight behind icon */}
                   <div className="absolute -left-10 top-1/2 -translate-y-1/2 w-32 h-32 bg-primary/10 rounded-full blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                   
@@ -141,39 +197,65 @@ export function Membership() {
                     </div>
                   </div>
                   <div className="relative z-10">
-                    <h3 className="text-white font-black text-xl md:text-2xl tracking-tighter leading-none mb-1.5 uppercase group-hover:text-primary transition-colors duration-300">{plan.duration}</h3>
-                    <p className="text-zinc-400 font-bold text-[9px] tracking-widest uppercase group-hover:text-zinc-300 transition-colors duration-300">{plan.subtitle}</p>
+                    <h3 className="text-white font-black text-lg md:text-xl tracking-tighter leading-tight uppercase group-hover:text-zinc-200 transition-colors duration-300 max-w-[200px]">
+                      {plan.name}
+                    </h3>
+                    <p className="text-zinc-400 font-black text-xs md:text-sm tracking-widest uppercase mt-1.5 group-hover:text-primary transition-colors duration-300">
+                      {plan.duration ? `${plan.duration} ` : ''}{plan.pricePeriod ? `${plan.pricePeriod} ` : ''}PLAN
+                    </p>
                   </div>
                 </div>
 
                 {/* Middle: Features List */}
                 <div className="flex-1 p-6 md:p-8 flex flex-col justify-center gap-3 relative z-10">
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-3 gap-x-6">
-                    {plan.features.map((feature: string, i: number) => (
-                      <motion.div 
-                        key={i} 
-                        initial={{ opacity: 0.8, x: 0 }}
-                        whileHover={{ opacity: 1, x: 5 }}
-                        className="flex items-start gap-3 group/feat cursor-default"
-                      >
-                        <div className="mt-0.5 transform group-hover/feat:scale-125 group-hover/feat:drop-shadow-[0_0_8px_rgba(var(--primary-rgb),0.8)] transition-all duration-200">
-                          <CheckIconSmall />
+                    {plan.features.map((feature: any, i: number) => {
+                      const featureTitle = typeof feature === 'string' ? feature : feature.title;
+                      const featureIconName = typeof feature === 'string' ? 'check' : feature.icon;
+                      
+                      const renderIcon = () => {
+                        const className = "text-primary mt-1 shrink-0";
+                        switch (featureIconName) {
+                          case 'activity': return <Activity size={12} strokeWidth={3} className={className} />;
+                          case 'dumbbell': return <Dumbbell size={12} strokeWidth={3} className={className} />;
+                          case 'flame': return <Flame size={12} strokeWidth={3} className={className} />;
+                          case 'heart': return <Heart size={12} strokeWidth={3} className={className} />;
+                          case 'zap': return <Zap size={12} strokeWidth={3} className={className} />;
+                          case 'crosshair': return <Crosshair size={12} strokeWidth={3} className={className} />;
+                          case 'users': return <Users size={12} strokeWidth={3} className={className} />;
+                          case 'trophy': return <Trophy size={12} strokeWidth={3} className={className} />;
+                          case 'check':
+                          default:
+                            return <CheckIconSmall />;
+                        }
+                      };
+
+                      return (
+                        <div 
+                          key={i} 
+                          className="flex items-start gap-3 cursor-default"
+                        >
+                          <div className="mt-0.5">
+                            {renderIcon()}
+                          </div>
+                          <span className="text-zinc-300 text-xs md:text-sm font-bold">{featureTitle}</span>
                         </div>
-                        <span className="text-zinc-300 text-xs md:text-sm font-medium group-hover/feat:text-white transition-colors duration-200">{feature}</span>
-                      </motion.div>
-                    ))}
+                      );
+                    })}
                   </div>
                 </div>
 
                 {/* Right: Price & CTA */}
                 <div className="w-full md:w-[260px] p-6 md:p-8 flex flex-row md:flex-col items-center justify-between md:justify-center gap-4 border-t md:border-t-0 md:border-l border-zinc-800/60 bg-[#050505] relative z-10 group-hover:border-primary/30 transition-colors duration-300">
                   <div className="flex flex-col text-center">
-                    <span className="text-white font-black text-3xl md:text-4xl tracking-tighter leading-none mb-2 drop-shadow-md group-hover:scale-105 transition-transform duration-300">₹{plan.price}</span>
-                    <span className="text-primary font-black text-[9px] tracking-widest uppercase">/ MONTH</span>
+                    <span className="text-white font-black text-3xl md:text-4xl tracking-tighter leading-none mb-2 drop-shadow-md group-hover:scale-105 transition-transform duration-300">
+                      ₹{plan.price?.toLocaleString('en-IN')}
+                    </span>
+                    <span className="text-primary font-black text-[9px] tracking-widest uppercase">/ {plan.pricePeriod || 'MONTH'}</span>
                   </div>
                   
                   <a 
-                    href={`https://wa.me/919220393004?text=${encodeURIComponent(`Hi Fab Fit Performance! I want to enquire about the ${plan.duration} plan.`)}`}
+                    href={plan.enquiryLink || `https://wa.me/919220393004?text=${encodeURIComponent(`Hi Fab Fit Performance! I want to enquire about the ${plan.duration} ${plan.name} plan.`)}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className={`
@@ -181,7 +263,7 @@ export function Membership() {
                     border border-primary text-primary hover:bg-primary hover:text-black hover:shadow-[0_0_20px_rgba(var(--primary-rgb),0.5)] group-hover:bg-primary group-hover:text-black group-hover:shadow-[0_0_20px_rgba(var(--primary-rgb),0.3)] hover:!scale-105
                   `}>
                     <span className="relative z-10 flex items-center gap-2">
-                      ENQUIRE
+                      {plan.enquiryText || 'ENQUIRE'}
                       <span className="text-lg leading-none transform group-hover:translate-x-2 transition-transform duration-300">→</span>
                     </span>
                   </a>
@@ -220,10 +302,19 @@ export function Membership() {
                 ))}
               </p>
               <p className="text-zinc-500 text-xs font-medium">
-                {membership.ptBanner.subtitle.split('Ask about PT').map((part, i, arr) => (
+                {membership.ptBanner.subtitle.split('Contact for PT').map((part, i, arr) => (
                   <React.Fragment key={i}>
                     {part}
-                    {i === 0 && <span className="text-primary cursor-pointer hover:text-white transition-colors">Ask about PT →</span>}
+                    {i === 0 && (
+                      <a 
+                        href={`https://wa.me/919220393004?text=${encodeURIComponent('Hi Fab Fit! I am interested in Personal Training. Can you share more details?')}`} 
+                        target="_blank" 
+                        rel="noopener noreferrer" 
+                        className="text-primary cursor-pointer hover:text-white transition-colors"
+                      >
+                        Contact for PT →
+                      </a>
+                    )}
                   </React.Fragment>
                 ))}
               </p>

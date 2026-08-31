@@ -1,13 +1,42 @@
 "use client";
 
-import React, { useRef } from "react";
-import { homeData } from "@/data/dummy";
+import React, { useRef, useEffect, useState } from "react";
+import { api } from "@/services/api";
 import { motion, useScroll, useTransform, useInView } from "framer-motion";
 import Link from "next/link";
 
+interface HeadCoachData {
+  coachName: string;
+  label: string;
+  subtitle: string;
+  heading: string;
+  description: string;
+  image: string;
+  badgeText: string;
+  ctaText: string;
+  ctaLink: string;
+}
+
 export function Coaches() {
-  const { coaches } = homeData;
-  const expert = coaches.items[0];
+  const [expert, setExpert] = useState<HeadCoachData | null>(null);
+
+  useEffect(() => {
+    const fetchHeadCoach = async () => {
+      try {
+        const response = await api.get('/head-coach?public=true');
+        if (response.ok) {
+          const data = await response.json();
+          const items = data.success ? data.data : data;
+          if (Array.isArray(items) && items.length > 0) {
+            setExpert(items[0]);
+          }
+        }
+      } catch (error) {
+        console.error("Failed to fetch head coach:", error);
+      }
+    };
+    fetchHeadCoach();
+  }, []);
 
   const sectionRef = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({
@@ -55,14 +84,15 @@ export function Coaches() {
   };
 
   return (
-    <section ref={sectionRef} id="coaches" className="flex items-center py-12 md:py-16 bg-[#070709] relative overflow-hidden">
+    <section ref={sectionRef} id="coaches" className="flex items-center min-h-[60vh] py-12 md:py-16 bg-[#070709] relative overflow-hidden">
       {/* Background Glow */}
       <motion.div
         style={{ scale: scaleGlow }}
         className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-primary/10 rounded-full blur-[150px] pointer-events-none"
       />
 
-      <div className="container mx-auto px-4 md:px-12 relative z-10 max-w-[1400px]">
+      {expert && (
+        <div className="container mx-auto px-4 md:px-12 relative z-10 max-w-[1400px]">
 
         <div className="flex flex-col lg:flex-row items-center justify-between gap-16 lg:gap-8">
 
@@ -84,7 +114,7 @@ export function Coaches() {
                   animate={isInView ? "visible" : "hidden"}
                   className="font-heading text-4xl md:text-5xl lg:text-[4.5rem] font-black text-white leading-[0.9] uppercase tracking-tighter drop-shadow-lg"
                 >
-                  {expert.name}
+                  {expert.coachName}
                 </motion.h2>
               </div>
               <div className="overflow-hidden mt-3">
@@ -93,25 +123,27 @@ export function Coaches() {
                   variants={textRevealVariants}
                   initial="hidden"
                   animate={isInView ? "visible" : "hidden"}
-                  className="text-primary font-bold text-xs md:text-sm lg:text-base uppercase tracking-[0.2em]"
+                  className="text-primary font-bold uppercase text-xs md:text-sm lg:text-base tracking-[0.2em]"
                 >
-                  {expert.role}
+                  {expert.label} • {expert.subtitle}
                 </motion.p>
               </div>
             </div>
 
             {/* Catchy Text */}
             <div className="mb-6">
-              {expert.catchyText?.split('\n').map((line: string, idx: number) => (
+              {expert.heading?.split(/\.\s+/).map((sentence: string, idx: number, arr: string[]) => (
                 <div key={idx} className="overflow-hidden py-1">
                   <motion.h3
                     custom={3 + idx}
                     variants={textRevealVariants}
                     initial="hidden"
                     animate={isInView ? "visible" : "hidden"}
-                    className="font-heading text-3xl md:text-4xl lg:text-5xl font-extrabold text-white/95 leading-[1.1] tracking-tight uppercase"
+                    className={`font-heading text-3xl md:text-4xl lg:text-5xl font-extrabold leading-[1.1] tracking-tight uppercase ${
+                      idx % 2 === 0 ? 'text-white/95' : 'text-primary'
+                    }`}
                   >
-                    {line}
+                    {sentence}{idx < arr.length - 1 ? '.' : ''}
                   </motion.h3>
                 </div>
               ))}
@@ -136,7 +168,7 @@ export function Coaches() {
               animate={isInView ? "visible" : "hidden"}
             >
               <Link
-                href="/assessment"
+                href={expert.ctaLink || "/assessment"}
                 target="_blank"
                 className="inline-flex items-center justify-center bg-primary text-black font-black text-base md:text-lg px-8 py-4 md:px-10 md:py-5 rounded-sm uppercase tracking-widest transition-all duration-500 shadow-[0_0_20px_rgba(var(--primary-rgb),0.3)] hover:shadow-[0_0_40px_rgba(255,255,255,0.4)] relative overflow-hidden group"
               >
@@ -161,7 +193,7 @@ export function Coaches() {
                   initial="hidden"
                   animate={isInView ? "visible" : "hidden"}
                   src={expert.image}
-                  alt={expert.name}
+                  alt={expert.coachName}
                   className="w-auto h-auto max-h-[600px] lg:max-h-[750px] object-contain object-bottom drop-shadow-[0_10px_30px_rgba(0,0,0,0.5)]"
                 />
               </motion.div>
@@ -176,21 +208,24 @@ export function Coaches() {
             />
 
             {/* Bottom Credentials */}
-            <motion.div
-              custom={8}
-              variants={fadeUpVariants}
-              initial="hidden"
-              animate={isInView ? "visible" : "hidden"}
-              className="relative z-30 mt-6 lg:mt-8 text-center bg-[#070709]/90 backdrop-blur-xl px-10 py-5 rounded-full border border-primary/30 shadow-[0_15px_40px_rgba(var(--primary-rgb),0.2)]"
-            >
-              <p className="text-white font-black text-sm md:text-base lg:text-lg tracking-widest">
-                {expert.bottomCredentials}
-              </p>
-            </motion.div>
+            {expert.badgeText && (
+              <motion.div
+                custom={8}
+                variants={fadeUpVariants}
+                initial="hidden"
+                animate={isInView ? "visible" : "hidden"}
+                className="relative z-30 -mt-8 lg:-mt-12 text-center bg-[#070709]/90 backdrop-blur-xl px-10 py-5 rounded-full border border-primary/40 shadow-[0_15px_40px_rgba(var(--primary-rgb),0.3)]"
+              >
+                <p className="text-primary font-black text-sm md:text-base lg:text-lg tracking-widest">
+                  {expert.badgeText}
+                </p>
+              </motion.div>
+            )}
           </div>
 
         </div>
       </div>
+      )}
     </section>
   );
 }

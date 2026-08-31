@@ -1,9 +1,10 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { homeData } from "@/data/dummy";
-import { Check, ArrowRight } from "lucide-react";
-import Link from "next/link";
+import { Check } from "lucide-react";
 import { motion } from "framer-motion";
+import { api } from "@/services/api";
 
 const containerVariants = {
   hidden: {},
@@ -33,8 +34,38 @@ const imageVariants = {
   },
 };
 
+interface AboutData {
+  badge: string;
+  headingLine1: string;
+  headingLine2: string;
+  description: string;
+  checklist: string[];
+  images: string[];
+}
+
 export function About() {
-  const { intro } = homeData;
+  const [data, setData] = useState<AboutData>(homeData.intro);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchAboutData = async () => {
+      try {
+        const response = await api.get('/about/active');
+        if (response.ok) {
+          const resData = await response.json();
+          if (resData.success && resData.data) {
+            setData(resData.data);
+          }
+        }
+      } catch (error) {
+        console.error("Failed to fetch about section data", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    
+    fetchAboutData();
+  }, []);
 
   return (
     <section id="about" className="py-12 md:py-16 bg-[#050505] relative overflow-hidden">
@@ -48,43 +79,44 @@ export function About() {
             whileInView="visible"
             viewport={{ once: false, margin: "-100px" }}
           >
-            <motion.div variants={itemVariants} className="text-primary text-[13px] font-black tracking-widest uppercase mb-6">
-              {intro.badge}
-            </motion.div>
+            {data.badge && (
+              <motion.div variants={itemVariants} className="text-[#d4af37] text-[13px] font-black tracking-widest uppercase mb-6">
+                {data.badge}
+              </motion.div>
+            )}
             
-            <motion.h2 variants={itemVariants} className="font-heading text-5xl md:text-6xl lg:text-[72px] font-black text-white leading-[0.95] tracking-tight uppercase mb-8">
-              {intro.headingLine1} <br />
-              <span className="text-primary">{intro.headingLine2}</span>
+            <motion.h2 variants={itemVariants} className="font-heading text-5xl md:text-6xl lg:text-[72px] font-black text-white leading-[0.95] tracking-tight uppercase mb-8 whitespace-pre-line">
+              {data.headingLine1}
+              {data.headingLine2 && (
+                <>
+                  <br />
+                  <span className="text-[#d4af37]">{data.headingLine2}</span>
+                </>
+              )}
             </motion.h2>
             
-            <motion.p variants={itemVariants} className="text-zinc-400 text-lg md:text-xl leading-relaxed mb-10 max-w-xl font-medium">
-              {intro.description}
-            </motion.p>
+            {data.description && (
+              <motion.p variants={itemVariants} className="text-zinc-400 text-lg md:text-xl leading-relaxed mb-10 max-w-xl font-medium whitespace-pre-line">
+                {data.description}
+              </motion.p>
+            )}
 
             {/* Checklist */}
-            <motion.ul variants={containerVariants} className="space-y-4 mb-12">
-              {intro.checklist.map((item, i) => (
-                <motion.li variants={itemVariants} key={i} className="flex items-center gap-4 text-white text-lg font-bold">
-                  <div className="flex items-center justify-center w-6 h-6 rounded-full bg-primary text-black">
-                    <Check className="w-4 h-4 stroke-[4]" />
-                  </div>
-                  {item}
-                </motion.li>
-              ))}
-            </motion.ul>
-
-            <motion.div variants={itemVariants}>
-              <Link
-                href="/#about"
-                className="group inline-flex items-center justify-center h-14 px-10 bg-primary text-black text-sm font-black tracking-wide uppercase transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_10px_30px_rgba(var(--primary-rgb),0.25)] hover:bg-white rounded-[4px]"
-              >
-                {intro.cta}
-                <ArrowRight className="ml-3 h-5 w-5 transition-transform group-hover:translate-x-2" />
-              </Link>
-            </motion.div>
+            {data.checklist && data.checklist.length > 0 && (
+              <motion.ul variants={containerVariants} className="space-y-4 mb-12">
+                {data.checklist.map((item, i) => (
+                  <motion.li variants={itemVariants} key={i} className="flex items-center gap-4 text-white text-lg font-bold">
+                    <div className="flex items-center justify-center shrink-0 w-6 h-6 rounded-full bg-[#d4af37] text-black">
+                      <Check className="w-4 h-4 stroke-[4]" />
+                    </div>
+                    {item}
+                  </motion.li>
+                ))}
+              </motion.ul>
+            )}
           </motion.div>
 
-          {/* Right Images (3 image bento grid) */}
+          {/* Right Images (Dynamic Grid) */}
           <motion.div 
             className="relative"
             initial="hidden"
@@ -97,37 +129,52 @@ export function About() {
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 0.5 }}
               transition={{ duration: 1.5 }}
-              className="absolute -top-10 -right-10 w-40 h-40 text-primary pointer-events-none" 
+              className="absolute -top-10 -right-10 w-40 h-40 text-[#d4af37] pointer-events-none" 
               style={{ backgroundImage: 'radial-gradient(currentColor 2px, transparent 2px)', backgroundSize: '20px 20px' }} 
             />
             
-            <div className="relative grid grid-cols-2 gap-4 h-[600px] z-10">
-              {/* Main Tall Image */}
-              <motion.div variants={imageVariants} className="col-span-1 h-full rounded-sm overflow-hidden relative group shadow-2xl shadow-black/20">
-                <img 
-                  src={intro.images[0]} 
-                  alt="Gym Facility" 
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                />
-              </motion.div>
-              {/* Right column stacked images */}
-              <div className="col-span-1 flex flex-col gap-4 h-full">
-                <motion.div variants={imageVariants} className="flex-1 rounded-sm overflow-hidden relative group shadow-xl shadow-black/15">
+            {data.images && data.images.length > 0 ? (
+              <div className={`relative grid gap-4 h-[600px] z-10 ${data.images.length >= 2 ? 'grid-cols-2' : 'grid-cols-1'}`}>
+                {/* Main Image */}
+                <motion.div variants={imageVariants} className="col-span-1 h-full rounded-2xl overflow-hidden relative group shadow-[0_20px_40px_rgba(0,0,0,0.5)] border border-white/5">
+                  <div className="absolute inset-0 bg-[#d4af37]/10 opacity-0 group-hover:opacity-100 transition-opacity z-10"></div>
                   <img 
-                    src={intro.images[1]} 
-                    alt="Training" 
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                    src={data.images[0]} 
+                    alt="About visual 1" 
+                    className="w-full h-full object-cover transition-transform duration-[10s] group-hover:scale-110"
                   />
                 </motion.div>
-                <motion.div variants={imageVariants} className="flex-1 rounded-sm overflow-hidden relative group shadow-xl shadow-black/15">
-                  <img 
-                    src={intro.images[2]} 
-                    alt="Pushing Sled" 
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                  />
-                </motion.div>
+                
+                {/* Right column stacked images (only if 2 or more images) */}
+                {data.images.length >= 2 && (
+                  <div className="col-span-1 flex flex-col gap-4 h-full">
+                    <motion.div variants={imageVariants} className={`rounded-2xl overflow-hidden relative group shadow-[0_20px_40px_rgba(0,0,0,0.5)] border border-white/5 ${data.images.length === 2 ? 'h-full' : 'flex-1'}`}>
+                      <div className="absolute inset-0 bg-[#d4af37]/10 opacity-0 group-hover:opacity-100 transition-opacity z-10"></div>
+                      <img 
+                        src={data.images[1]} 
+                        alt="About visual 2" 
+                        className="w-full h-full object-cover transition-transform duration-[10s] group-hover:scale-110"
+                      />
+                    </motion.div>
+                    
+                    {data.images.length >= 3 && (
+                      <motion.div variants={imageVariants} className="flex-1 rounded-2xl overflow-hidden relative group shadow-[0_20px_40px_rgba(0,0,0,0.5)] border border-white/5">
+                        <div className="absolute inset-0 bg-[#d4af37]/10 opacity-0 group-hover:opacity-100 transition-opacity z-10"></div>
+                        <img 
+                          src={data.images[2]} 
+                          alt="About visual 3" 
+                          className="w-full h-full object-cover transition-transform duration-[10s] group-hover:scale-110"
+                        />
+                      </motion.div>
+                    )}
+                  </div>
+                )}
               </div>
-            </div>
+            ) : (
+              <div className="h-[600px] bg-zinc-900 rounded-2xl flex items-center justify-center border border-white/5 shadow-2xl relative z-10">
+                <span className="text-zinc-600 font-bold uppercase tracking-widest text-sm">Visuals coming soon</span>
+              </div>
+            )}
           </motion.div>
           
         </div>

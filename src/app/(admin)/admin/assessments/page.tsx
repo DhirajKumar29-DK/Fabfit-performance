@@ -275,7 +275,7 @@ export default function AssessmentsPage() {
   const DetailItem = ({ icon, label, value }: { icon: React.ReactNode, label: string, value: string }) => (
     <div>
       <div className="text-xs text-gray-500 mb-1 flex items-center gap-1.5">{icon} {label}</div>
-      <div className="text-sm text-gray-900 bg-gray-50 p-2 rounded-lg border border-gray-100">{value || '-'}</div>
+      <div className="text-sm text-gray-900 bg-gray-50 p-2 rounded-lg border border-zinc-200">{value || '-'}</div>
     </div>
   );
 
@@ -299,14 +299,14 @@ export default function AssessmentsPage() {
               )}
               <button 
                 onClick={handleExport}
-                className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 rounded-lg text-gray-700 hover:bg-gray-50 font-medium text-sm shadow-sm transition-colors"
+                className="flex items-center gap-2 px-4 py-2 bg-white border border-zinc-300 rounded-lg text-gray-700 hover:bg-gray-50 font-medium text-sm shadow-sm transition-colors"
               >
                 <Download size={16} />
                 Export
               </button>
               <button 
                 onClick={fetchAssessments}
-                className="flex items-center gap-2 px-4 py-2 bg-violet-600 text-white rounded-lg hover:bg-violet-700 font-medium text-sm shadow-sm transition-colors"
+                className="flex items-center gap-2 px-4 py-2 bg-primary text-black rounded-lg hover:bg-primary-hover font-medium text-sm shadow-sm transition-colors"
               >
                 <RefreshCw size={16} className={isLoading ? "animate-spin" : ""} />
                 Refresh
@@ -324,14 +324,14 @@ export default function AssessmentsPage() {
                   onClick={() => setActiveTab(tab.label)}
                   className={`flex items-center px-4 py-2 text-sm font-medium rounded-lg border transition-colors ${
                     activeTab === tab.label 
-                      ? 'bg-violet-600 text-white border-violet-600' 
-                      : 'bg-white text-gray-600 border-gray-200 hover:bg-gray-50'
+                      ? 'bg-primary text-black border-primary' 
+                      : 'bg-white text-gray-600 border-zinc-300 hover:bg-gray-50'
                   }`}
                 >
                   <span className="capitalize">{tab.label.toLowerCase()}</span>
                   {count !== null && count > 0 && (
                     <span className={`ml-2 px-1.5 py-0.5 rounded text-xs font-bold ${
-                      activeTab === tab.label ? 'bg-violet-500 text-white' : 'bg-gray-100 text-gray-600'
+                      activeTab === tab.label ? 'bg-primary/100 text-white' : 'bg-gray-100 text-gray-600'
                     }`}>
                       {count}
                     </span>
@@ -350,14 +350,14 @@ export default function AssessmentsPage() {
                 placeholder="Search by name, email, phone..." 
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-10 pr-4 py-2.5 bg-white border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-500 transition-all text-sm"
+                className="w-full pl-10 pr-4 py-2.5 bg-white border border-zinc-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20/20 focus:border-primary transition-all text-sm"
               />
             </div>
             <div className="flex gap-2">
               <div className="relative">
                 <button 
                   onClick={() => { setShowFiltersDropdown(!showFiltersDropdown); setShowDateDropdown(false); }}
-                  className={`flex items-center gap-2 px-4 py-2.5 bg-white border rounded-lg text-sm font-medium transition-colors ${genderFilter !== 'All' ? 'border-violet-500 text-violet-700 bg-violet-50' : 'border-gray-200 text-gray-700 hover:bg-gray-50'}`}
+                  className={`flex items-center gap-2 px-4 py-2.5 bg-white border rounded-lg text-sm font-medium transition-colors ${genderFilter !== 'All' ? 'border-violet-500 text-primary bg-primary/10' : 'border-zinc-300 text-gray-700 hover:bg-gray-50'}`}
                 >
                   <Filter size={16} />
                   Filters {genderFilter !== 'All' && '(1)'}
@@ -365,14 +365,14 @@ export default function AssessmentsPage() {
                 {showFiltersDropdown && (
                   <>
                     <div className="fixed inset-0 z-10" onClick={() => setShowFiltersDropdown(false)}></div>
-                    <div className="absolute right-0 top-full mt-2 w-48 bg-white border border-gray-100 rounded-xl shadow-lg z-20 p-3">
+                    <div className="absolute right-0 top-full mt-2 w-48 bg-white border border-zinc-200 rounded-xl shadow-lg z-20 p-3">
                       <div className="text-xs font-bold text-gray-500 uppercase mb-2">Gender</div>
                       <div className="space-y-1">
                         {['All', 'Male', 'Female', 'Other'].map(g => (
                           <button
                             key={g}
                             onClick={() => { setGenderFilter(g); setShowFiltersDropdown(false); }}
-                            className={`w-full text-left px-3 py-2 rounded-lg text-sm transition-colors ${genderFilter === g ? 'bg-violet-50 text-violet-700 font-medium' : 'text-gray-700 hover:bg-gray-50'}`}
+                            className={`w-full text-left px-3 py-2 rounded-lg text-sm transition-colors ${genderFilter === g ? 'bg-primary/10 text-primary font-medium' : 'text-gray-700 hover:bg-gray-50'}`}
                           >
                             {g}
                           </button>
@@ -386,7 +386,7 @@ export default function AssessmentsPage() {
               <div className="relative">
                 <button 
                   onClick={() => { setShowDateDropdown(!showDateDropdown); setShowFiltersDropdown(false); }}
-                  className={`flex items-center gap-2 px-4 py-2.5 bg-white border rounded-lg text-sm font-medium transition-colors ${dateFilter !== 'All Time' ? 'border-violet-500 text-violet-700 bg-violet-50' : 'border-gray-200 text-gray-700 hover:bg-gray-50'}`}
+                  className={`flex items-center gap-2 px-4 py-2.5 bg-white border rounded-lg text-sm font-medium transition-colors ${dateFilter !== 'All Time' ? 'border-violet-500 text-primary bg-primary/10' : 'border-zinc-300 text-gray-700 hover:bg-gray-50'}`}
                 >
                   <Calendar size={18} />
                   {dateFilter !== 'All Time' ? dateFilter : ''}
@@ -394,13 +394,13 @@ export default function AssessmentsPage() {
                 {showDateDropdown && (
                   <>
                     <div className="fixed inset-0 z-10" onClick={() => setShowDateDropdown(false)}></div>
-                    <div className="absolute right-0 top-full mt-2 w-48 bg-white border border-gray-100 rounded-xl shadow-lg z-20 p-2">
+                    <div className="absolute right-0 top-full mt-2 w-48 bg-white border border-zinc-200 rounded-xl shadow-lg z-20 p-2">
                       <div className="space-y-1">
                         {['All Time', 'Today', 'Last 7 Days', 'This Month'].map(range => (
                           <button
                             key={range}
                             onClick={() => { setDateFilter(range); setShowDateDropdown(false); }}
-                            className={`w-full text-left px-3 py-2 rounded-lg text-sm transition-colors ${dateFilter === range ? 'bg-violet-50 text-violet-700 font-medium' : 'text-gray-700 hover:bg-gray-50'}`}
+                            className={`w-full text-left px-3 py-2 rounded-lg text-sm transition-colors ${dateFilter === range ? 'bg-primary/10 text-primary font-medium' : 'text-gray-700 hover:bg-gray-50'}`}
                           >
                             {range}
                           </button>
@@ -414,15 +414,15 @@ export default function AssessmentsPage() {
           </div>
 
           {/* Table */}
-          <div className="bg-white rounded-xl shadow-sm border border-gray-100 flex flex-col min-h-0 flex-1">
+          <div className="bg-white rounded-xl shadow-sm border border-zinc-200 flex flex-col min-h-0 flex-1">
             <div className="overflow-y-auto flex-1 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
               <table className="w-full text-left border-collapse">
               <thead className="sticky top-0 z-10 shadow-sm">
-                <tr className="border-b border-gray-100 bg-gray-50">
+                <tr className="border-b border-zinc-200 bg-gray-50">
                   <th className="py-4 pl-6 pr-2 w-10">
                     <input 
                       type="checkbox" 
-                      className="w-4 h-4 rounded border-gray-300 text-violet-600 focus:ring-violet-500 cursor-pointer"
+                      className="w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary/20 cursor-pointer"
                       checked={filteredAssessments.length > 0 && selectedIds.length === filteredAssessments.length}
                       onChange={toggleSelectAll}
                     />
@@ -444,19 +444,19 @@ export default function AssessmentsPage() {
                   <tr><td colSpan={8} className="py-12 text-center text-gray-500">No assessments found.</td></tr>
                 ) : (
                   currentAssessments.map((item, index) => (
-                    <tr key={item.id} className={`border-b border-gray-100 hover:bg-gray-50/50 transition-colors ${selectedIds.includes(item.id) ? 'bg-violet-50/40' : ''}`}>
+                    <tr key={item.id} className={`border-b border-zinc-200 hover:bg-zinc-50 transition-colors ${selectedIds.includes(item.id) ? 'bg-primary/10/40' : ''}`}>
                       <td className="py-4 pl-6 pr-2">
                         <input 
                           type="checkbox" 
-                          className="w-4 h-4 rounded border-gray-300 text-violet-600 focus:ring-violet-500 cursor-pointer"
+                          className="w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary/20 cursor-pointer"
                           checked={selectedIds.includes(item.id)}
                           onChange={() => toggleSelectOne(item.id)}
                         />
                       </td>
                       <td className="py-4 px-6 text-sm text-gray-500">{startIndex + index + 1}</td>
                       <td className="py-4 px-6 text-sm text-gray-900 font-medium">{item.firstName} {item.lastName}</td>
-                      <td className="py-4 px-6 text-sm text-gray-500">{item.email}</td>
-                      <td className="py-4 px-6 text-sm text-gray-500">{item.phone}</td>
+                      <td className="py-4 px-6 text-sm text-gray-500"><a href={`mailto:${item.email}`} className="hover:text-primary hover:underline transition-colors">{item.email}</a></td>
+                      <td className="py-4 px-6 text-sm text-gray-500"><a href={`tel:${item.phone}`} className="hover:text-primary hover:underline transition-colors">{item.phone}</a></td>
                       <td className="py-4 px-6 text-sm text-gray-500 capitalize">{item.primaryGoal}</td>
                       <td className="py-4 px-6">
                         <span className={`px-2 py-1 rounded text-[10px] font-bold tracking-wider border ${getStatusStyle(item.status)}`}>
@@ -468,7 +468,7 @@ export default function AssessmentsPage() {
                         <div className="flex items-center gap-2">
                           <button 
                             onClick={() => setSelectedAssessment(item)}
-                            className="p-1.5 text-gray-400 hover:text-violet-600 border border-gray-200 rounded hover:border-violet-200 hover:bg-violet-50 transition-all"
+                            className="p-1.5 text-gray-400 hover:text-primary border border-zinc-300 rounded hover:border-violet-200 hover:bg-primary/10 transition-all"
                             title="View Details"
                           >
                             <Eye size={16} />
@@ -477,7 +477,7 @@ export default function AssessmentsPage() {
                           <div className="relative">
                             <button 
                               onClick={() => setOpenDropdownId(openDropdownId === item.id ? null : item.id)}
-                              className="p-1.5 text-gray-400 hover:text-gray-700 border border-gray-200 rounded hover:bg-gray-50 transition-all"
+                              className="p-1.5 text-gray-400 hover:text-gray-700 border border-zinc-300 rounded hover:bg-gray-50 transition-all"
                             >
                               <MoreVertical size={16} />
                             </button>
@@ -488,7 +488,7 @@ export default function AssessmentsPage() {
                                   className="fixed inset-0 z-10" 
                                   onClick={() => setOpenDropdownId(null)}
                                 ></div>
-                                <div className="absolute right-0 top-full mt-1 w-32 bg-white rounded-lg shadow-lg border border-gray-100 z-20 py-1">
+                                <div className="absolute right-0 top-full mt-1 w-32 bg-white rounded-lg shadow-lg border border-zinc-200 z-20 py-1">
                                   <button 
                                     onClick={() => triggerSingleDelete(item.id)}
                                     className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 flex items-center gap-2 transition-colors"
@@ -510,7 +510,7 @@ export default function AssessmentsPage() {
             
             {/* Pagination */}
             {!isLoading && filteredAssessments.length > 0 && (
-              <div className="px-6 py-4 flex items-center justify-between border-t border-gray-100 bg-white sticky bottom-0">
+              <div className="px-6 py-4 flex items-center justify-between border-t border-zinc-200 bg-white sticky bottom-0">
                 <div className="text-sm font-medium text-slate-700 bg-slate-50 px-3 py-1.5 rounded-lg border border-slate-200">
                   Page {currentPage} of {totalPages}
                 </div>
@@ -518,7 +518,7 @@ export default function AssessmentsPage() {
                   <button 
                     onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
                     disabled={currentPage === 1}
-                    className="w-8 h-8 flex items-center justify-center border border-gray-200 rounded text-gray-500 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="w-8 h-8 flex items-center justify-center border border-zinc-300 rounded text-gray-500 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
                   >&lt;</button>
                   
                   {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
@@ -527,8 +527,8 @@ export default function AssessmentsPage() {
                       onClick={() => setCurrentPage(page)}
                       className={`w-8 h-8 flex items-center justify-center border rounded font-medium ${
                         currentPage === page 
-                          ? 'border-violet-600 bg-violet-600 text-white' 
-                          : 'border-gray-200 text-gray-500 hover:bg-gray-50'
+                          ? 'border-primary bg-primary text-black' 
+                          : 'border-zinc-300 text-gray-500 hover:bg-gray-50'
                       }`}
                     >
                       {page}
@@ -538,7 +538,7 @@ export default function AssessmentsPage() {
                   <button 
                     onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
                     disabled={currentPage === totalPages}
-                    className="w-8 h-8 flex items-center justify-center border border-gray-200 rounded text-gray-500 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="w-8 h-8 flex items-center justify-center border border-zinc-300 rounded text-gray-500 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
                   >&gt;</button>
                 </div>
               </div>
@@ -569,7 +569,7 @@ export default function AssessmentsPage() {
 
             <div className="flex-1 overflow-y-auto flex flex-col">
               {/* Profile Section */}
-              <div className="px-8 pb-6 border-b border-gray-100">
+              <div className="px-8 pb-6 border-b border-zinc-200">
                 <div className="flex justify-between items-start">
                   <div className="flex gap-4 items-center">
                     <div className="w-16 h-16 bg-gray-200 rounded-full flex items-center justify-center text-gray-500">
@@ -583,15 +583,15 @@ export default function AssessmentsPage() {
                         </span>
                       </div>
                       <div className="text-sm text-gray-600 space-y-1">
-                        <div className="flex items-center gap-2"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg> {selectedAssessment.email}</div>
-                        <div className="flex items-center gap-2"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg> {selectedAssessment.phone}</div>
+                        <div className="flex items-center gap-2"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg> <a href={`mailto:${selectedAssessment.email}`} className="hover:text-primary hover:underline transition-colors">{selectedAssessment.email}</a></div>
+                        <div className="flex items-center gap-2"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg> <a href={`tel:${selectedAssessment.phone}`} className="hover:text-primary hover:underline transition-colors">{selectedAssessment.phone}</a></div>
                         <div className="flex items-center gap-2"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg> Submitted At: {formatDate(selectedAssessment.createdAt)}</div>
                       </div>
                     </div>
                   </div>
                   <div className="relative pt-2">
                     <select 
-                      className="appearance-none bg-white border border-gray-200 rounded-lg pl-4 pr-10 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:border-violet-500 cursor-pointer shadow-sm capitalize"
+                      className="appearance-none bg-white border border-zinc-300 rounded-lg pl-4 pr-10 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:border-primary cursor-pointer shadow-sm capitalize"
                       value={selectedAssessment.status}
                       onChange={(e) => updateStatus(e.target.value)}
                     >
@@ -607,7 +607,7 @@ export default function AssessmentsPage() {
               </div>
 
               {/* Detail Tabs */}
-              <div className="px-8 flex gap-6 overflow-x-auto border-b border-gray-100">
+              <div className="px-8 flex gap-6 overflow-x-auto border-b border-zinc-200">
                 {['Personal Details', 'Goals', 'Lifestyle', 'Health', 'Attachments'].map(tab => {
                   const mappedTab = tab === 'Health' ? 'Medical & Notes' : tab; // Internal mapping if needed
                   return (
@@ -616,7 +616,7 @@ export default function AssessmentsPage() {
                       onClick={() => setActiveDetailTab(mappedTab)}
                       className={`py-4 text-sm font-bold border-b-[3px] whitespace-nowrap transition-colors ${
                         (activeDetailTab === mappedTab)
-                          ? 'border-violet-600 text-violet-600' 
+                          ? 'border-primary text-primary' 
                           : 'border-transparent text-gray-500 hover:text-gray-700'
                       }`}
                     >
@@ -629,7 +629,7 @@ export default function AssessmentsPage() {
               {/* Detail Content */}
               <div className="p-8 flex-1 overflow-y-auto">
                 {activeDetailTab === 'Personal Details' && (
-                  <div className="border border-gray-200 rounded-2xl p-6">
+                  <div className="border border-zinc-300 rounded-2xl p-6">
                     <h4 className="text-sm font-bold text-gray-900 mb-5">Personal Information</h4>
                     <div className="grid grid-cols-2 gap-y-6 gap-x-8 mb-8">
                       <div>
@@ -642,7 +642,7 @@ export default function AssessmentsPage() {
                       </div>
                       <div>
                         <div className="text-xs text-gray-500 mb-1">Email</div>
-                        <div className="text-sm text-gray-900">{selectedAssessment.email}</div>
+                        <div className="text-sm text-gray-900"><a href={`mailto:${selectedAssessment.email}`} className="hover:text-primary hover:underline transition-colors">{selectedAssessment.email}</a></div>
                       </div>
                       <div>
                         <div className="text-xs text-gray-500 mb-1">Location</div>
@@ -650,7 +650,7 @@ export default function AssessmentsPage() {
                       </div>
                       <div>
                         <div className="text-xs text-gray-500 mb-1">Phone</div>
-                        <div className="text-sm text-gray-900">{selectedAssessment.phone}</div>
+                        <div className="text-sm text-gray-900"><a href={`tel:${selectedAssessment.phone}`} className="hover:text-primary hover:underline transition-colors">{selectedAssessment.phone}</a></div>
                       </div>
                       <div>
                         <div className="text-xs text-gray-500 mb-1">Occupation</div>
@@ -666,7 +666,7 @@ export default function AssessmentsPage() {
                       </div>
                     </div>
 
-                    <div className="border-t border-gray-100 pt-6">
+                    <div className="border-t border-zinc-200 pt-6">
                       <h4 className="text-sm font-bold text-gray-900 mb-5">Health Snapshot</h4>
                       <div className="grid grid-cols-4 gap-6">
                         <div>
@@ -691,7 +691,7 @@ export default function AssessmentsPage() {
                 )}
 
                 {activeDetailTab === 'Goals' && (
-                  <div className="border border-gray-200 rounded-2xl p-6">
+                  <div className="border border-zinc-300 rounded-2xl p-6">
                     <h4 className="text-sm font-bold text-gray-900 mb-5">Fitness Goals</h4>
                     <div className="grid grid-cols-2 gap-y-6 gap-x-8">
                       <div>
@@ -723,7 +723,7 @@ export default function AssessmentsPage() {
                 )}
 
                 {activeDetailTab === 'Lifestyle' && (
-                  <div className="border border-gray-200 rounded-2xl p-6">
+                  <div className="border border-zinc-300 rounded-2xl p-6">
                     <h4 className="text-sm font-bold text-gray-900 mb-5">Lifestyle & Habits</h4>
                     <div className="grid grid-cols-2 gap-y-6 gap-x-8 mb-8">
                       <div>
@@ -744,7 +744,7 @@ export default function AssessmentsPage() {
                       </div>
                     </div>
                     
-                    <div className="border-t border-gray-100 pt-6">
+                    <div className="border-t border-zinc-200 pt-6">
                       <h4 className="text-sm font-bold text-gray-900 mb-5">Nutrition</h4>
                       <div className="grid grid-cols-2 gap-y-6 gap-x-8">
                         <div>
@@ -776,7 +776,7 @@ export default function AssessmentsPage() {
 
                 {activeDetailTab === 'Medical & Notes' && (
                   <div className="flex flex-col gap-6">
-                    <div className="border border-gray-200 rounded-2xl p-6">
+                    <div className="border border-zinc-300 rounded-2xl p-6">
                       <h4 className="text-sm font-bold text-gray-900 mb-5">Medical History</h4>
                       <div className="grid grid-cols-2 gap-y-6 gap-x-8">
                         <div>
@@ -810,12 +810,12 @@ export default function AssessmentsPage() {
                 {activeDetailTab === 'Attachments' && (
                   <div className="flex flex-col gap-6">
                     <div className="grid grid-cols-2 gap-6">
-                      <div className="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm">
+                      <div className="bg-white p-6 rounded-2xl border border-zinc-300 shadow-sm">
                         <h4 className="text-sm font-bold text-gray-900 mb-4 flex items-center gap-2">
                           Physique Image
                         </h4>
                         {selectedAssessment.physiqueImageUrl ? (
-                          <div className="relative aspect-square w-full rounded-xl overflow-hidden border border-gray-100">
+                          <div className="relative aspect-square w-full rounded-xl overflow-hidden border border-zinc-200">
                             <img src={selectedAssessment.physiqueImageUrl} alt="Physique" className="object-cover w-full h-full" />
                           </div>
                         ) : (
@@ -825,14 +825,14 @@ export default function AssessmentsPage() {
                         )}
                       </div>
 
-                      <div className="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm">
+                      <div className="bg-white p-6 rounded-2xl border border-zinc-300 shadow-sm">
                         <h4 className="text-sm font-bold text-gray-900 mb-4 flex items-center gap-2">
                           Blood Report
                         </h4>
                         {selectedAssessment.bloodReportUrl ? (
-                          <div className="flex flex-col items-center justify-center h-48 bg-violet-50 rounded-xl border border-violet-100 p-6 text-center">
+                          <div className="flex flex-col items-center justify-center h-48 bg-primary/10 rounded-xl border border-violet-100 p-6 text-center">
                             <span className="text-sm font-medium text-violet-900 mb-1">Report Uploaded</span>
-                            <a href={selectedAssessment.bloodReportUrl} target="_blank" rel="noopener noreferrer" className="mt-4 px-5 py-2.5 bg-violet-600 text-white text-sm font-medium rounded-lg hover:bg-violet-700 transition-colors shadow-sm">
+                            <a href={selectedAssessment.bloodReportUrl} target="_blank" rel="noopener noreferrer" className="mt-4 px-5 py-2.5 bg-primary text-black text-sm font-medium rounded-lg hover:bg-primary-hover transition-colors shadow-sm">
                               View / Download PDF
                             </a>
                           </div>

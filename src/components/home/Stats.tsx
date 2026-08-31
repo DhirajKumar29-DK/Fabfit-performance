@@ -117,7 +117,7 @@ export function Stats() {
               >
                 <Icon className="w-10 h-10 text-primary stroke-[1.5]" />
                 <div className="flex flex-col">
-                  <span className="font-heading text-3xl md:text-4xl font-black text-white leading-none mb-1">
+                  <span className="font-heading text-3xl md:text-4xl lg:text-5xl font-black text-white leading-none mb-1">
                     <AnimatedNumber value={stat.value} />
                   </span>
                   <span className="text-xs font-bold text-zinc-500 tracking-widest uppercase mt-1">

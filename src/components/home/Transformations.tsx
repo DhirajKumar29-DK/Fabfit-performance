@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { homeData } from "@/data/dummy";
 import { motion, useInView, Variants } from "framer-motion";
 
@@ -32,6 +32,40 @@ export function Transformations() {
   const { testimonials } = homeData;
   const sectionRef = useRef<HTMLElement>(null);
   const isInView = useInView(sectionRef, { once: false, margin: "-10%" });
+  const [sectionData, setSectionData] = useState<any>(null);
+  const [cardsData, setCardsData] = useState<any[]>([]);
+
+  useEffect(() => {
+    const fetchSection = async () => {
+      try {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/transformation-section?public=true`);
+        const json = await res.json();
+        if (json.success && json.data) {
+          setSectionData(json.data);
+        }
+      } catch (error) {
+        console.error("Failed to fetch transformation section:", error);
+      }
+    };
+    
+    const fetchCards = async () => {
+      try {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/transformations?public=true`);
+        const json = await res.json();
+        if (json.success && json.data) {
+          setCardsData(json.data);
+        }
+      } catch (error) {
+        console.error("Failed to fetch transformation cards:", error);
+      }
+    };
+
+    fetchSection();
+    fetchCards();
+  }, []);
+
+  const featuredTransformations = cardsData.filter(card => card.showInMain);
+  const progressGrid = cardsData.filter(card => !card.showInMain);
 
   const easePremium = [0.16, 1, 0.3, 1] as const;
 
@@ -58,7 +92,11 @@ export function Transformations() {
         <div className="absolute top-0 left-0 w-full lg:w-1/2 h-full z-0 opacity-40 lg:opacity-80">
           <div className="absolute inset-0 bg-gradient-to-r from-[#050505] via-transparent to-[#050505] lg:to-[#050505] z-10"></div>
           <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-transparent to-[#050505] z-10"></div>
-          <img src="https://images.unsplash.com/photo-1594381898411-846e7d193883?q=80&w=1000&auto=format&fit=crop" alt="Background Coach" className="w-full h-full object-cover object-left mask-image-linear-left" />
+          <img 
+            src={sectionData?.backgroundImage || "https://images.unsplash.com/photo-1594381898411-846e7d193883?q=80&w=1000&auto=format&fit=crop"} 
+            alt="Background Coach" 
+            className="w-full h-full object-cover object-left mask-image-linear-left" 
+          />
         </div>
 
         <div className="container mx-auto px-4 md:px-8 relative z-10 max-w-[1500px]">
@@ -66,49 +104,46 @@ export function Transformations() {
             
             {/* Left Column: Headers and CTA */}
             <div className="w-full lg:w-[40%] flex gap-8 lg:pl-10 lg:pt-10">
-              {/* Step Indicator */}
-              <div className="hidden md:flex flex-col items-center mt-2">
-                <span className="text-primary font-black text-4xl leading-none">05</span>
-                <span className="text-white font-bold text-[10px] tracking-widest uppercase mt-2 mb-4">OPTION</span>
-                <div className="w-6 h-[1px] bg-white/30"></div>
-              </div>
-
               <motion.div 
                 variants={fadeUp}
                 initial="hidden"
                 animate={isInView ? "visible" : "hidden"}
                 className="flex-1"
               >
-                <div className="inline-block px-3 py-1 border border-primary/50 text-primary font-bold text-[10px] tracking-widest uppercase mb-6">
-                  {testimonials.badge}
-                </div>
+                {sectionData?.badge && (
+                  <div className="inline-block px-3 py-1 border border-primary/50 text-primary font-bold text-[10px] tracking-widest uppercase mb-6">
+                    {sectionData.badge}
+                  </div>
+                )}
                 
-                <h2 className="font-heading text-5xl md:text-6xl lg:text-[70px] font-black leading-[0.9] uppercase tracking-tighter mb-8">
-                  <span className="block text-white mb-2">{testimonials.headingLine1}</span>
-                  <span className="block text-primary">{testimonials.headingLine2}</span>
-                </h2>
+                {sectionData?.title && (
+                  <h2 className="font-heading text-3xl md:text-4xl lg:text-5xl font-black leading-[0.9] uppercase tracking-tighter mb-8">
+                    {sectionData.title.split(/\.\s+/).map((sentence: string, idx: number, arr: string[]) => (
+                      <span key={idx} className={`block ${idx % 2 === 0 ? 'text-white' : 'text-primary'}`}>
+                        {sentence}{idx < arr.length - 1 ? '.' : ''}
+                      </span>
+                    ))}
+                  </h2>
+                )}
                 
-                <p className="text-zinc-400 text-sm md:text-base font-medium max-w-sm mb-12 leading-relaxed">
-                  {testimonials.description}
-                </p>
-
-                <button className="px-6 py-3 border border-primary text-primary font-bold text-[10px] tracking-widest uppercase hover:bg-primary hover:text-black transition-colors duration-300 rounded-sm flex items-center gap-2 group">
-                  {testimonials.cta}
-                  <span className="transform group-hover:translate-x-1 transition-transform duration-300">→</span>
-                </button>
+                {sectionData?.description && (
+                  <p className="text-zinc-400 text-sm md:text-base font-medium max-w-sm mb-12 leading-relaxed">
+                    {sectionData.description}
+                  </p>
+                )}
               </motion.div>
             </div>
 
             {/* Right Column: Stacked Transformation Cards */}
             <div className="w-full lg:w-[60%] flex flex-col gap-6 lg:pr-10">
-              {testimonials.featuredTransformations.map((item: any, index: number) => (
+              {featuredTransformations.map((item: any, index: number) => (
                 <motion.div
                   key={item.id}
                   custom={index}
                   variants={staggerCards}
                   initial="hidden"
                   animate={isInView ? "visible" : "hidden"}
-                  className="flex flex-col md:flex-row w-full bg-[#0a0a0a] rounded-2xl border border-zinc-800/60 overflow-hidden shadow-2xl"
+                  className="group flex flex-col md:flex-row w-full bg-[#0a0a0a] rounded-2xl border border-zinc-800/60 overflow-hidden shadow-2xl hover:border-primary/50 transition-colors duration-500"
                 >
                   {/* Card Left: Content Panel */}
                   <div className="w-full md:w-[35%] p-6 md:p-8 flex flex-col justify-center relative">
@@ -134,20 +169,14 @@ export function Transformations() {
                     <div className="w-8 h-[2px] bg-primary mb-6 relative z-10"></div>
 
                     {/* Bullets */}
-                    <ul className="flex flex-col gap-3 mb-8 flex-grow relative z-10">
-                      {item.bullets.map((bullet: string, i: number) => (
+                    <ul className="flex flex-col gap-5 md:gap-6 mb-4 flex-grow relative z-10">
+                      {(item.highlights || []).map((highlight: string, i: number) => (
                         <li key={i} className="text-zinc-400 font-bold text-[10px] md:text-xs tracking-wider uppercase flex items-center gap-3">
                           <CheckIcon />
-                          {bullet}
+                          {highlight}
                         </li>
                       ))}
                     </ul>
-
-                    {/* View Stories Link */}
-                    <a href="#" className="text-primary font-bold text-[9px] md:text-[10px] tracking-[0.2em] uppercase flex items-center gap-2 group mt-auto w-fit relative z-10">
-                      VIEW STORIES
-                      <span className="transform group-hover:translate-x-1 transition-transform duration-300">→</span>
-                    </a>
                   </div>
 
                   {/* Card Right: Split Image */}
@@ -160,7 +189,7 @@ export function Transformations() {
                       <div className="absolute top-4 left-1/2 -translate-x-1/2 z-30 bg-zinc-800/90 border border-zinc-600 text-zinc-300 text-[9px] font-bold px-3 py-1 tracking-widest uppercase rounded">
                         BEFORE
                       </div>
-                      <img src={item.imageBefore} alt="Before" className="absolute inset-0 w-[200%] max-w-none h-full object-cover object-center grayscale-[50%]" />
+                      <img src={item.beforeImage} alt="Before" className="absolute inset-0 w-full h-full object-cover object-center grayscale-[50%] transition-transform duration-700 group-hover:scale-110" />
                     </div>
 
                     {/* After */}
@@ -168,7 +197,7 @@ export function Transformations() {
                       <div className="absolute top-4 left-1/2 -translate-x-1/2 z-30 bg-primary border border-primary text-black text-[9px] font-black px-3 py-1 tracking-widest uppercase rounded shadow-[0_0_10px_rgba(var(--primary-rgb),0.5)]">
                         AFTER
                       </div>
-                      <img src={item.imageAfter} alt="After" className="absolute inset-0 w-[200%] max-w-none h-full object-cover object-center -translate-x-1/2" />
+                      <img src={item.afterImage} alt="After" className="absolute inset-0 w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-110" />
                     </div>
                   </div>
                 </motion.div>
@@ -194,15 +223,11 @@ export function Transformations() {
                 {testimonials.bottomSubHeader}
               </p>
             </div>
-            <button className="px-5 py-2.5 border border-zinc-700 text-zinc-300 font-bold text-[10px] tracking-widest uppercase hover:border-primary hover:text-primary transition-colors duration-300 rounded flex items-center gap-2 group">
-              {testimonials.bottomCta}
-              <span className="transform group-hover:translate-x-1 transition-transform duration-300">→</span>
-            </button>
           </div>
 
           {/* 5-Column Vertical Cards Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 lg:gap-6">
-            {testimonials.progressGrid.map((item: any, index: number) => (
+            {progressGrid.map((item: any, index: number) => (
               <motion.div
                 key={item.id}
                 custom={index}
@@ -230,12 +255,12 @@ export function Transformations() {
                   
                   {/* Before */}
                   <div className="w-1/2 h-full relative overflow-hidden">
-                    <img src={item.imageBefore} className="absolute inset-0 w-[200%] max-w-none h-full object-cover object-center grayscale-[30%]" />
+                    <img src={item.beforeImage} className="absolute inset-0 w-full h-full object-cover object-center grayscale-[30%] transition-transform duration-700 group-hover:scale-110" />
                   </div>
                   
                   {/* After */}
                   <div className="w-1/2 h-full relative overflow-hidden border-l border-zinc-800">
-                    <img src={item.imageAfter} className="absolute inset-0 w-[200%] max-w-none h-full object-cover object-center -translate-x-1/2" />
+                    <img src={item.afterImage} className="absolute inset-0 w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-110" />
                   </div>
 
                   {/* Center Arrow Circle */}
@@ -248,22 +273,24 @@ export function Transformations() {
                 <div className="p-4 border-t border-zinc-800/50 flex justify-between bg-[#0a0a0a]">
                   
                   {/* Stat 1 */}
-                  <div className="flex flex-col items-center justify-center w-1/2 border-r border-zinc-800/50">
-                    <div className="flex items-center gap-2 mb-1.5">
-                      <div className="scale-110">{getIcon(item.stat1.icon)}</div>
-                      <span className="text-white font-black text-sm">{item.stat1.value}</span>
+                  {item.stat1Value && (
+                    <div className="flex flex-col items-center justify-center w-1/2 border-r border-zinc-800/50">
+                      <div className="flex items-center gap-2 mb-1.5">
+                        <span className="text-white font-black text-sm">{item.stat1Value}</span>
+                      </div>
+                      <span className="text-zinc-500 text-[9px] font-bold tracking-widest uppercase">{item.stat1Label}</span>
                     </div>
-                    <span className="text-zinc-500 text-[9px] font-bold tracking-widest uppercase">{item.stat1.label}</span>
-                  </div>
+                  )}
 
                   {/* Stat 2 */}
-                  <div className="flex flex-col items-center justify-center w-1/2">
-                    <div className="flex items-center gap-2 mb-1.5">
-                      <div className="scale-110">{getIcon(item.stat2.icon)}</div>
-                      <span className="text-white font-black text-sm">{item.stat2.value}</span>
+                  {item.stat2Value && (
+                    <div className="flex flex-col items-center justify-center w-1/2">
+                      <div className="flex items-center gap-2 mb-1.5">
+                        <span className="text-white font-black text-sm">{item.stat2Value}</span>
+                      </div>
+                      <span className="text-zinc-500 text-[9px] font-bold tracking-widest uppercase">{item.stat2Label}</span>
                     </div>
-                    <span className="text-zinc-500 text-[9px] font-bold tracking-widest uppercase">{item.stat2.label}</span>
-                  </div>
+                  )}
 
                 </div>
               </motion.div>

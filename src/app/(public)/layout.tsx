@@ -20,6 +20,7 @@ export const metadata = {
 };
 
 import { LayoutWrapper } from "@/components/layout/LayoutWrapper";
+import { SmoothScroll } from "@/components/SmoothScroll";
 
 export default function RootLayout({
   children,
@@ -27,12 +28,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className="dark scroll-smooth">
+    <html lang="en" className="dark">
       <body className={`ui-theme ${inter.variable} ${archivo.variable} antialiased flex flex-col min-h-screen`}>
         <VisitorTracker />
-        <LayoutWrapper>
-          {children}
-        </LayoutWrapper>
+        <SmoothScroll>
+          <LayoutWrapper>
+            {children}
+          </LayoutWrapper>
+        </SmoothScroll>
       </body>
     </html>
   );

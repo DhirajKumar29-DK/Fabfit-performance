@@ -4,9 +4,9 @@ import { useEffect } from 'react';
 
 export function VisitorTracker() {
   useEffect(() => {
-    if (!sessionStorage.getItem('hasVisited')) {
-      fetch('http://localhost:5000/api/visitors/visit', { method: 'POST' })
-        .then(() => sessionStorage.setItem('hasVisited', 'true'))
+    if (!localStorage.getItem('hasVisited')) {
+      fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/visitors/visit`, { method: 'POST' })
+        .then(() => localStorage.setItem('hasVisited', 'true'))
         .catch(err => console.error(err));
     }
   }, []);

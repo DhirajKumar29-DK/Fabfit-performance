@@ -20,7 +20,8 @@ router.post('/', upload.single('image'), (req, res) => {
   if (!req.file) {
     return res.status(400).json({ success: false, message: 'No file uploaded' });
   }
-  const url = 'http://localhost:5000/uploads/' + req.file.filename;
+  const baseUrl = process.env.BASE_URL || 'http://localhost:5000';
+  const url = `${baseUrl}/uploads/${req.file.filename}`;
   return res.status(200).json({ success: true, url });
 });
 

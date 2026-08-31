@@ -110,7 +110,7 @@ export default function CountersPage() {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h1 className="text-2xl font-bold text-slate-900 tracking-tight flex items-center gap-2">
-            <TrendingUp className="text-violet-600" />
+            <TrendingUp className="text-primary" />
             Counters
           </h1>
           <p className="text-sm text-slate-500 mt-1">Manage homepage statistics and metrics</p>
@@ -128,7 +128,7 @@ export default function CountersPage() {
           )}
           <button 
             onClick={handleAdd}
-            className="inline-flex items-center gap-2 bg-violet-600 hover:bg-violet-700 text-white px-5 py-2.5 rounded-lg font-medium text-sm transition-colors shadow-sm"
+            className="inline-flex items-center gap-2 bg-primary hover:bg-primary-hover text-black px-5 py-2.5 rounded-lg font-medium text-sm transition-colors shadow-sm"
           >
             <Plus size={18} />
             Add Counter
@@ -145,7 +145,7 @@ export default function CountersPage() {
                   <div className="flex items-center justify-center">
                     <input 
                       type="checkbox" 
-                      className="w-4 h-4 rounded border-slate-300 text-violet-600 focus:ring-violet-600"
+                      className="w-4 h-4 rounded border-slate-300 text-primary focus:ring-violet-600"
                       checked={counters.length > 0 && selectedIds.length === counters.length}
                       onChange={toggleSelectAll}
                       disabled={counters.length === 0}
@@ -164,7 +164,7 @@ export default function CountersPage() {
                 <tr>
                   <td colSpan={6} className="px-6 py-12 text-center text-slate-500">
                     <div className="flex justify-center mb-2">
-                      <div className="w-6 h-6 border-2 border-violet-600 border-t-transparent rounded-full animate-spin"></div>
+                      <div className="w-6 h-6 border-2 border-primary border-t-transparent rounded-full animate-spin"></div>
                     </div>
                     Loading counters...
                   </td>
@@ -180,23 +180,23 @@ export default function CountersPage() {
                 counters.map((counter, index) => {
                   const isSelected = selectedIds.includes(counter.id);
                   return (
-                    <tr key={counter.id} className={`hover:bg-slate-50/50 transition-colors ${isSelected ? 'bg-violet-50/30' : ''}`}>
+                    <tr key={counter.id} className={`hover:bg-slate-50/50 transition-colors ${isSelected ? 'bg-primary/10/30' : ''}`}>
                       <td className="px-6 py-4">
                         <div className="flex items-center justify-center">
                           <input 
                             type="checkbox" 
-                            className="w-4 h-4 rounded border-slate-300 text-violet-600 focus:ring-violet-600"
+                            className="w-4 h-4 rounded border-slate-300 text-primary focus:ring-violet-600"
                             checked={isSelected}
                             onChange={() => toggleSelectOne(counter.id)}
                           />
                         </div>
                       </td>
                       <td className="px-6 py-4 font-medium text-slate-900">{counter.label}</td>
-                      <td className="px-6 py-4 font-semibold text-violet-700">{counter.value}</td>
+                      <td className="px-6 py-4 font-semibold text-primary">{counter.value}</td>
                       <td className="px-6 py-4 text-slate-500">{counter.suffix || '-'}</td>
                       <td className="px-6 py-4">
                         <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium border
-                          ${counter.status === 'ACTIVE' ? 'bg-emerald-50 text-emerald-700 border-emerald-200' : 
+                          ${counter.status === 'ACTIVE' ? 'bg-primarymerald-50 text-emerald-700 border-emerald-200' : 
                             counter.status === 'DRAFT' ? 'bg-amber-50 text-amber-700 border-amber-200' : 
                             'bg-slate-100 text-slate-700 border-slate-200'}`}
                         >
@@ -207,7 +207,7 @@ export default function CountersPage() {
                         <div className="flex items-center justify-end gap-2">
                           <button 
                             onClick={() => handleEdit(counter)}
-                            className="p-1.5 text-slate-400 hover:text-violet-600 hover:bg-violet-50 rounded transition-colors"
+                            className="p-1.5 text-slate-400 hover:text-primary hover:bg-primary/10 rounded transition-colors"
                             title="Edit"
                           >
                             <Edit2 size={16} />

@@ -11,11 +11,12 @@ export class AssessmentController {
       
       const files = req.files as { [fieldname: string]: Express.Multer.File[] };
       if (files) {
+        const baseUrl = process.env.BASE_URL || 'http://localhost:5000';
         if (files['bloodReport'] && files['bloodReport'].length > 0) {
-          data.bloodReportUrl = 'http://localhost:5000/uploads/' + files['bloodReport'][0].filename;
+          data.bloodReportUrl = `${baseUrl}/uploads/${files['bloodReport'][0].filename}`;
         }
         if (files['physiqueImage'] && files['physiqueImage'].length > 0) {
-          data.physiqueImageUrl = 'http://localhost:5000/uploads/' + files['physiqueImage'][0].filename;
+          data.physiqueImageUrl = `${baseUrl}/uploads/${files['physiqueImage'][0].filename}`;
         }
       }
 
