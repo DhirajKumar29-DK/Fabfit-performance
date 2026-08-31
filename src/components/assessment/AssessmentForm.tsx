@@ -262,7 +262,7 @@ export function AssessmentForm() {
 
       </div>
 
-      <div id="form-scroll-container" className="flex-1 overflow-y-auto scrollbar-hide p-8 lg:p-12 scroll-smooth">
+      <div id="form-scroll-container" data-lenis-prevent="true" className="flex-1 overflow-y-auto scrollbar-hide p-8 lg:p-12 scroll-smooth">
         <div className="max-w-4xl mx-auto bg-[#121212] border border-white/5 rounded-2xl p-8 shadow-2xl relative">
 
           {/* STEP 1 CONTENT */}
