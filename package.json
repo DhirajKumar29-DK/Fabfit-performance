@@ -4,7 +4,9 @@
     "private": true,
     "scripts": {
         "dev": "concurrently \"npm run dev:ui\" \"npm run dev:api\"",
-        "build": "next build",
+        "build": "npm run build:frontend && npm run build:backend",
+        "build:frontend": "next build",
+        "build:backend": "cd server && npm run build",
         "start": "next start",
         "lint": "eslint",
         "dev:ui": "next dev",

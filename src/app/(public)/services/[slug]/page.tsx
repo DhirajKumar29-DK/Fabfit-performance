@@ -28,6 +28,18 @@ async function getServiceBySlug(slug: string) {
   }
 }
 
+export async function generateStaticParams() {
+  const params = homeData.services.items.map((item: any) => ({
+    slug: item.id.toString(),
+  }));
+  
+  if (params.length === 0) {
+    return [{ slug: 'default-service' }];
+  }
+  
+  return params;
+}
+
 export default async function ServiceDetailPage({ params }: { params: Promise<{ slug: string }> }) {
   const resolvedParams = await params;
   const serviceSlug = resolvedParams.slug;
