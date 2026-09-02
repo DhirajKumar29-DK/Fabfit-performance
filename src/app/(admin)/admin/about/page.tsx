@@ -236,7 +236,7 @@ export default function AboutPage() {
   };
 
   return (
-    <div className="flex h-full bg-[#f8f9fa] overflow-hidden">
+    <div className="flex flex-col h-full bg-[#f8f9fa] min-w-0 w-full overflow-hidden">
       <div className="flex-1 flex flex-col transition-all duration-300 min-w-0">
         <div className="p-0 sm:p-2 md:p-8 flex-1 overflow-y-auto overflow-x-hidden w-full">
           {/* Header */}

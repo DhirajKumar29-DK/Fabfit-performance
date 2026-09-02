@@ -282,7 +282,7 @@ export default function AssessmentsPage() {
   return (
     <div className="flex flex-col h-full gap-4">
       {/* Header */}
-          <div className="flex justify-between items-start mb-8">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
             <div>
               <h1 className="text-2xl font-bold text-gray-900">Assessments</h1>
               <p className="text-gray-500 text-sm mt-1">Manage all form submissions from website</p>
@@ -416,7 +416,7 @@ export default function AssessmentsPage() {
           {/* Table */}
           <div className="bg-white rounded-xl shadow-sm border border-zinc-200 flex flex-col min-h-0 flex-1">
             <div className="overflow-y-auto flex-1 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
-              <table className="w-full text-left border-collapse">
+              <table className="w-full text-left border-collapse min-w-[800px]">
               <thead className="sticky top-0 z-10 shadow-sm">
                 <tr className="border-b border-zinc-200 bg-gray-50">
                   <th className="py-4 pl-6 pr-2 w-10">

@@ -97,7 +97,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   };
 
   return (
-    <div className="h-screen overflow-hidden bg-[#f8f9fa] flex flex-col md:flex-row">
+    <div className="h-[100dvh] overflow-hidden bg-[#f8f9fa] flex flex-col md:flex-row">
       {/* Mobile sidebar backdrop */}
       {!sidebarOpen && (
         <div 
@@ -211,9 +211,9 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       </aside>
 
       {/* Main Content */}
-      <div className="flex-1 flex flex-col min-w-0">
+      <div className="flex-1 flex flex-col min-w-0 min-h-0">
         {/* Topbar */}
-        <header className="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-4 sm:px-6 z-10">
+        <header className="h-16 shrink-0 bg-white border-b border-gray-200 flex items-center justify-between px-4 sm:px-6 z-10">
           <div className="flex items-center gap-4">
             <button 
               onClick={() => setSidebarOpen(!sidebarOpen)}
@@ -248,7 +248,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         </header>
 
         {/* Page Content */}
-        <main className="flex-1 flex flex-col overflow-x-hidden overflow-y-auto bg-[#f8f9fa] p-4 sm:p-6 lg:p-8 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+        <main className="flex-1 flex flex-col min-h-0 overflow-x-hidden overflow-y-auto bg-[#f8f9fa] p-4 sm:p-6 lg:p-8 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
           {children}
         </main>
       </div>

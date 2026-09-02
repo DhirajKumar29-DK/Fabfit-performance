@@ -212,11 +212,11 @@ export default function TeamMembersPage() {
   };
 
   return (
-    <div className="flex h-full bg-[#f8f9fa] overflow-hidden">
+    <div className="flex flex-col h-full bg-[#f8f9fa] min-w-0 w-full overflow-hidden">
       <div className="flex-1 flex flex-col transition-all duration-300">
         <div className="p-8 flex-1 overflow-y-auto">
           {/* Header */}
-          <div className="flex justify-between items-start mb-8">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
             <div>
               <h1 className="text-2xl font-bold text-gray-900">Team Members</h1>
               <p className="text-gray-500 text-sm mt-1">Manage individual trainers and guides</p>
@@ -252,8 +252,8 @@ export default function TeamMembersPage() {
                 <p className="text-lg font-medium">No Team Members found.</p>
               </div>
             ) : (
-              <div className="overflow-x-auto">
-                <table className="w-full text-left text-sm text-gray-500">
+              <div className="overflow-x-auto w-full">
+                <table className="w-full min-w-[800px] text-left text-sm text-gray-500">
                   <thead className="bg-zinc-50 text-xs font-bold text-gray-400 uppercase tracking-wider border-b border-zinc-200">
                     <tr>
                       <th className="px-6 py-4 w-12">

@@ -210,7 +210,7 @@ export default function HeadCoachPage() {
   };
 
   return (
-    <div className="flex h-full bg-[#f8f9fa] overflow-hidden">
+    <div className="flex flex-col h-full bg-[#f8f9fa] min-w-0 w-full overflow-hidden">
       <div className="flex-1 flex flex-col transition-all duration-300">
         <div className="p-8 flex-1 overflow-y-auto">
           <AdminPageHeader 
@@ -249,8 +249,8 @@ export default function HeadCoachPage() {
                 <p className="text-lg font-medium">No Head Coaches found.</p>
               </div>
             ) : (
-              <div className="overflow-x-auto">
-                <table className="w-full text-left text-sm text-gray-500">
+              <div className="overflow-x-auto w-full">
+                <table className="w-full min-w-[800px] text-left text-sm text-gray-500">
                   <thead className="bg-zinc-50 text-xs font-bold text-gray-400 uppercase tracking-wider border-b border-zinc-200">
                     <tr>
                       <th className="px-6 py-4 w-12">

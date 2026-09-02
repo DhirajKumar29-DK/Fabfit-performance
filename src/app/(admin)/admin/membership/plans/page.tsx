@@ -192,11 +192,11 @@ export default function MembershipPlansPage() {
   };
 
   return (
-    <div className="flex h-full bg-[#f8f9fa] overflow-hidden">
+    <div className="flex flex-col h-full bg-[#f8f9fa] min-w-0 w-full overflow-hidden">
       <div className="flex-1 flex flex-col transition-all duration-300">
         <div className="p-8 flex-1 overflow-y-auto scrollbar-hide w-full">
           {/* Header */}
-          <div className="flex justify-between items-start mb-8">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
             <div>
               <h1 className="text-2xl font-bold text-gray-900">Membership Plans</h1>
               <p className="text-sm text-gray-500 mt-1">Manage pricing plans and their dynamic features.</p>

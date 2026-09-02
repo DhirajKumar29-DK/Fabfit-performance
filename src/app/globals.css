@@ -130,6 +130,11 @@ body.admin-theme {
   .scrollbar-hide::-webkit-scrollbar {
     display: none;
   }
+
+  /* Fix flexbox overflow issues for admin tables */
+  .flex-1 {
+    min-width: 0;
+  }
 }
 
 html {

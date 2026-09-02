@@ -223,11 +223,11 @@ export default function ServicesPage() {
   };
 
   return (
-    <div className="flex h-full bg-[#f8f9fa] overflow-hidden">
+    <div className="flex flex-col h-full bg-[#f8f9fa] min-w-0 w-full overflow-hidden">
       <div className="flex-1 flex flex-col transition-all duration-300">
         <div className="p-4 md:p-8 flex-1 overflow-y-auto">
           {/* Header */}
-          <div className="flex justify-between items-start mb-8">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
             <div>
               <h1 className="text-2xl font-bold text-gray-900">Services / Training</h1>
               <p className="text-gray-500 text-sm mt-1">Manage all public training services</p>
@@ -270,7 +270,7 @@ export default function ServicesPage() {
           ) : (
             <div className="bg-white rounded-xl border border-zinc-300 shadow-sm overflow-hidden">
               <div className="overflow-x-auto">
-                <table className="w-full text-left border-collapse">
+                <table className="w-full text-left border-collapse min-w-[800px]">
                   <thead>
                     <tr className="bg-gray-50 border-b border-zinc-200">
                       <th className="py-4 px-6 w-12">
