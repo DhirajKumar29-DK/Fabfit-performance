@@ -1,3 +1,4 @@
+import { Metadata } from "next";
 import { Inter, Archivo } from "next/font/google";
 import "./globals.css";
 import { VisitorTracker } from "@/components/VisitorTracker";
@@ -14,9 +15,9 @@ const archivo = Archivo({
   display: "swap",
 });
 
-export const metadata = {
-  title: "Premium Performance",
-  description: "Elite Fitness and Performance Coaching",
+export const metadata: Metadata = {
+  title: "FabFit Performance",
+  description: "FabFit Performance",
 };
 
 import { LayoutWrapper } from "@/components/layout/LayoutWrapper";

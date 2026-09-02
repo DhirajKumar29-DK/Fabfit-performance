@@ -4,10 +4,11 @@
     "private": true,
     "scripts": {
         "dev": "concurrently \"npm run dev:ui\" \"npm run dev:api\"",
-        "build": "npm run build:frontend && npm run build:backend",
+        "build": "npm run build:frontend && npm run build:backend && npm run build:copy-out",
         "build:frontend": "next build",
         "build:backend": "cd server && npm run build",
-        "start": "next start",
+        "build:copy-out": "node -e \"require('fs').cpSync('out', 'server/out', {recursive: true, force: true})\"",
+        "start": "cd server && npm start",
         "lint": "eslint",
         "dev:ui": "next dev",
         "dev:api": "cd server && npm run dev"

@@ -88,6 +88,14 @@ const swaggerOptions = {
 const swaggerSpec = swaggerJsDoc(swaggerOptions);
 app.use('/swagger-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
+// Serve Frontend Static Files
+app.use(express.static(path.join(__dirname, '../out')));
+
+// Handle all other routes (SPA fallback to Next.js Frontend)
+app.use((req: Request, res: Response) => {
+  res.sendFile(path.join(__dirname, '../out/index.html'));
+});
+
 // Global Error Handler should always be the last middleware
 app.use(errorHandler);
 
