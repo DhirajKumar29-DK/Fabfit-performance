@@ -108,17 +108,31 @@ export function AssessmentForm() {
   };
 
   const handleNext = () => {
-    if (step === 1 && validateStep1()) setStep(2);
-    else if (step === 2 && validateStep2()) setStep(3);
-    else {
+    if (step === 1 && validateStep1()) {
+      setStep(2);
+      const formContainer = document.getElementById("form-scroll-container");
+      if (formContainer) formContainer.scrollTo({ top: 0, behavior: 'smooth' });
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else if (step === 2 && validateStep2()) {
+      setStep(3);
+      const formContainer = document.getElementById("form-scroll-container");
+      if (formContainer) formContainer.scrollTo({ top: 0, behavior: 'smooth' });
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else {
       // Scroll to top to show errors if any
       const formContainer = document.getElementById("form-scroll-container");
       if (formContainer) formContainer.scrollTo({ top: 0, behavior: 'smooth' });
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   };
 
   const handleBack = () => {
-    if (step > 1) setStep(step - 1);
+    if (step > 1) {
+      setStep(step - 1);
+      const formContainer = document.getElementById("form-scroll-container");
+      if (formContainer) formContainer.scrollTo({ top: 0, behavior: 'smooth' });
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -906,16 +920,21 @@ export function AssessmentForm() {
                         Do you have any diagnosed medical conditions? <span className="text-red-500">*</span>
                       </label>
                       <div className="relative mt-2">
-                        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none z-10">
                           <Activity className={`h-5 w-5 ${errors.conditions ? 'text-red-500' : 'text-zinc-500'}`} />
                         </div>
-                        <input
-                          type="text"
+                        <select
                           value={conditions}
                           onChange={(e) => { setConditions(e.target.value); clearError('conditions'); }}
-                          className={`${inputClasses('conditions')} pl-12 py-4`}
-                          placeholder="Type 'None' if not applicable"
-                        />
+                          className={`${selectClasses('conditions')} pl-12 py-4 h-[54px]`}
+                        >
+                          <option value="" disabled className="text-zinc-600">Select Yes or No</option>
+                          <option value="Yes">Yes</option>
+                          <option value="No">No</option>
+                        </select>
+                        <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none text-zinc-500">
+                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path></svg>
+                        </div>
                       </div>
                       <ErrorMsg field="conditions" />
                     </div>
@@ -925,16 +944,21 @@ export function AssessmentForm() {
                         Are you currently taking any medications? <span className="text-red-500">*</span>
                       </label>
                       <div className="relative mt-2">
-                        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none z-10">
                           <Pill className={`h-5 w-5 ${errors.medications ? 'text-red-500' : 'text-zinc-500'}`} />
                         </div>
-                        <input
-                          type="text"
+                        <select
                           value={medications}
                           onChange={(e) => { setMedications(e.target.value); clearError('medications'); }}
-                          className={`${inputClasses('medications')} pl-12 py-4`}
-                          placeholder="Type 'None' if not applicable"
-                        />
+                          className={`${selectClasses('medications')} pl-12 py-4 h-[54px]`}
+                        >
+                          <option value="" disabled className="text-zinc-600">Select Yes or No</option>
+                          <option value="Yes">Yes</option>
+                          <option value="No">No</option>
+                        </select>
+                        <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none text-zinc-500">
+                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path></svg>
+                        </div>
                       </div>
                       <ErrorMsg field="medications" />
                     </div>
@@ -944,16 +968,21 @@ export function AssessmentForm() {
                         Any injuries, surgeries, or chronic pain? <span className="text-red-500">*</span>
                       </label>
                       <div className="relative mt-2">
-                        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none z-10">
                           <Bandage className={`h-5 w-5 ${errors.injuries ? 'text-red-500' : 'text-zinc-500'}`} />
                         </div>
-                        <input
-                          type="text"
+                        <select
                           value={injuries}
                           onChange={(e) => { setInjuries(e.target.value); clearError('injuries'); }}
-                          className={`${inputClasses('injuries')} pl-12 py-4`}
-                          placeholder="Type 'None' if not applicable"
-                        />
+                          className={`${selectClasses('injuries')} pl-12 py-4 h-[54px]`}
+                        >
+                          <option value="" disabled className="text-zinc-600">Select Yes or No</option>
+                          <option value="Yes">Yes</option>
+                          <option value="No">No</option>
+                        </select>
+                        <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none text-zinc-500">
+                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path></svg>
+                        </div>
                       </div>
                       <ErrorMsg field="injuries" />
                     </div>
@@ -963,16 +992,21 @@ export function AssessmentForm() {
                         Do you have any dietary allergies/intolerances? <span className="text-red-500">*</span>
                       </label>
                       <div className="relative mt-2">
-                        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none z-10">
                           <Leaf className={`h-5 w-5 ${errors.allergies ? 'text-red-500' : 'text-zinc-500'}`} />
                         </div>
-                        <input
-                          type="text"
+                        <select
                           value={allergies}
                           onChange={(e) => { setAllergies(e.target.value); clearError('allergies'); }}
-                          className={`${inputClasses('allergies')} pl-12 py-4`}
-                          placeholder="Type 'None' if not applicable"
-                        />
+                          className={`${selectClasses('allergies')} pl-12 py-4 h-[54px]`}
+                        >
+                          <option value="" disabled className="text-zinc-600">Select Yes or No</option>
+                          <option value="Yes">Yes</option>
+                          <option value="No">No</option>
+                        </select>
+                        <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none text-zinc-500">
+                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path></svg>
+                        </div>
                       </div>
                       <ErrorMsg field="allergies" />
                     </div>
@@ -1130,8 +1164,10 @@ export function AssessmentForm() {
                           Your transformation starts with the right plan. Let&apos;s build a stronger, healthier you.
                         </p>
                       </div>
-                      <div className="text-primary text-2xl mt-3" style={{ fontFamily: "'Dancing Script', cursive" }}>
-                        - Anil
+                      <div className="mt-4 flex flex-col lg:items-end">
+                        <span className="text-primary text-lg font-black uppercase tracking-wider font-heading">- Ankit Baliyan</span>
+                        <span className="text-sm font-bold text-white mt-1">15+ Years Experience</span>
+                        <span className="text-xs text-zinc-400 mt-1 max-w-[250px]">ASCA Level 2, ACE, NASM CES, ISSA NUTRITIONIST</span>
                       </div>
                     </div>
 

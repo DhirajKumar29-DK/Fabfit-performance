@@ -29,8 +29,24 @@ async function getServiceBySlug(slug: string) {
 }
 
 export async function generateStaticParams() {
+  try {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/services?public=true`);
+    if (res.ok) {
+      const json = await res.json();
+      const services = json.success ? json.data : json;
+      if (Array.isArray(services) && services.length > 0) {
+        return services.map((item: any) => ({
+          slug: item.slug || item.id.toString(),
+        }));
+      }
+    }
+  } catch (error) {
+    console.error("Error fetching services for static params:", error);
+  }
+
+  // Fallback to dummy data
   const params = homeData.services.items.map((item: any) => ({
-    slug: item.id.toString(),
+    slug: item.slug || item.id.toString(),
   }));
   
   if (params.length === 0) {
