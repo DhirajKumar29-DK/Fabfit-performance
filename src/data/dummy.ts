@@ -45,22 +45,13 @@ export const homeData = {
     */
   ] as any[],
   intro: {
-    badge: "ABOUT US",
-    headingLine1: "BUILT ON PASSION.",
-    headingLine2: "DRIVEN BY RESULTS.",
-    description: "We're more than just a training facility. We are a team of passionate coaches and performance specialists dedicated to helping you become the strongest, healthiest version of yourself.",
-    checklist: [
-      "Personalized Training",
-      "Evidence Based Approach",
-      "Holistic Performance",
-      "Sustainable Results"
-    ],
-    cta: "KNOW MORE",
-    images: [
-      "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=1000&auto=format&fit=crop", 
-      "https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?q=80&w=1000&auto=format&fit=crop", 
-      "https://images.unsplash.com/photo-1541534741688-6078c6bfb5c5?q=80&w=1000&auto=format&fit=crop"  
-    ]
+    badge: "",
+    headingLine1: "",
+    headingLine2: "",
+    description: "",
+    checklist: [],
+    cta: "",
+    images: []
   },
   services: {
     badge: "WHAT WE OFFER",

@@ -71,13 +71,13 @@ export default function HeadCoachPage() {
   const openAddModal = () => {
     setFormData({
       coachName: '',
-      label: 'HEAD COACH',
+      label: '',
       subtitle: '',
       heading: '',
       description: '',
       image: '',
       badgeText: '',
-      ctaText: 'BOOK YOUR ASSESSMENT CALL',
+      ctaText: '',
       ctaLink: '',
       status: 'ACTIVE'
     });

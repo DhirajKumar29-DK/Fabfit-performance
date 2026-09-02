@@ -150,6 +150,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                             <Link
                               key={subItem.name}
                               href={subItem.href}
+                              onClick={() => setSidebarOpen(true)}
                               className={`block px-3 py-2 rounded-md text-sm font-medium transition-colors ${
                                 isSubActive
                                   ? 'bg-zinc-800 text-primary'
@@ -170,7 +171,10 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 <Link
                   key={item.name}
                   href={item.href}
-                  onClick={() => setExpandedMenus({})}
+                  onClick={() => {
+                    setExpandedMenus({});
+                    setSidebarOpen(true);
+                  }}
                   className={`flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium text-sm transition-colors ${
                     isActive 
                       ? 'bg-primary text-black' 

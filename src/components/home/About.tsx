@@ -44,7 +44,14 @@ interface AboutData {
 }
 
 export function About() {
-  const [data, setData] = useState<AboutData>(homeData.intro);
+  const [data, setData] = useState<AboutData>({
+    badge: "",
+    headingLine1: "",
+    headingLine2: "",
+    description: "",
+    checklist: [],
+    images: []
+  });
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {

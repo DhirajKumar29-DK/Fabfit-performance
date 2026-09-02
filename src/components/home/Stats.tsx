@@ -3,30 +3,9 @@
 import { useEffect, useState, useRef } from "react";
 import { homeData } from "@/data/dummy";
 import { api } from "@/services/api";
-import { 
-  User, Users, UserCheck, Trophy, Activity, Star, TrendingUp, BarChart, 
-  Target, Dumbbell, BicepsFlexed, Weight, Scale, HeartPulse, Flame, Timer 
-} from "lucide-react";
+import { FITNESS_ICONS } from "@/components/ui/IconSelect";
+import { Activity } from "lucide-react";
 import { useInView, useMotionValue, useSpring, motion } from "framer-motion";
-
-const IconMap: Record<string, React.ElementType> = {
-  User,
-  Users,
-  UserCheck,
-  Trophy,
-  Activity,
-  Star,
-  TrendingUp,
-  BarChart,
-  Target,
-  Dumbbell,
-  BicepsFlexed,
-  Weight,
-  Scale,
-  HeartPulse,
-  Flame,
-  Timer
-};
 
 // Custom animated counter component
 function AnimatedNumber({ value }: { value: string }) {
@@ -94,18 +73,17 @@ export function Stats() {
   return (
     <section className="relative bg-black border-y border-white/5 py-10 md:py-12 z-20 overflow-hidden">
       
-      {/* Premium Parallax Background Image with a Guaranteed Valid URL */}
       <div 
-        className="absolute inset-0 bg-cover bg-center bg-fixed opacity-[0.15] grayscale contrast-125"
+        className="absolute inset-0 bg-cover bg-center opacity-[0.15] grayscale contrast-125"
         style={{ backgroundImage: "url('https://images.unsplash.com/photo-1574680096145-d05b474e2155?q=80&w=2000&auto=format&fit=crop')" }}
       />
 
       <div className="container relative z-10 mx-auto px-4 md:px-8">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-10 md:gap-4 divide-x-0 md:divide-x divide-white/10">
           {stats.map((stat, index) => {
-            // Capitalize icon name to match Lucide export names if user typed lowercase
-            const iconName = stat.icon ? stat.icon.charAt(0).toUpperCase() + stat.icon.slice(1) : 'Activity';
-            const Icon = IconMap[iconName] || Activity;
+            // Match the ID saved in the database with the FITNESS_ICONS list
+            const iconObj = FITNESS_ICONS.find(i => i.id === stat.icon);
+            const Icon = iconObj ? iconObj.icon : Activity;
             return (
               <motion.div 
                 key={index} 

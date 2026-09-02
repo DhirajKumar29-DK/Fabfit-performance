@@ -55,8 +55,8 @@ export default function TeamSectionPage() {
 
   const openAddModal = () => {
     setFormData({
-      badge: 'OUR ELITE TEAM',
-      title: 'MEET YOUR GUIDES',
+      badge: '',
+      title: '',
       description: '',
       status: 'ACTIVE'
     });

@@ -236,15 +236,15 @@ export default function HeroPage() {
 
   return (
     <div className="flex h-full bg-[#f8f9fa] overflow-hidden">
-      <div className="flex-1 flex flex-col transition-all duration-300">
-        <div className="p-8 flex-1 overflow-y-auto">
+      <div className="flex-1 flex flex-col transition-all duration-300 min-w-0">
+        <div className="p-0 sm:p-2 md:p-8 flex-1 overflow-y-auto overflow-x-hidden w-full">
           {/* Header */}
-          <div className="flex justify-between items-start mb-8">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6 sm:mb-8">
             <div>
               <h1 className="text-2xl font-bold text-gray-900">Hero Section</h1>
               <p className="text-gray-500 text-sm mt-1">Manage website hero sections</p>
             </div>
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2 sm:gap-3 w-full sm:w-auto">
               {selectedIds.length > 0 && (
                 <button 
                   onClick={triggerBulkDelete}

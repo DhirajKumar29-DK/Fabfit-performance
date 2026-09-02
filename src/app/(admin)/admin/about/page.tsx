@@ -237,15 +237,15 @@ export default function AboutPage() {
 
   return (
     <div className="flex h-full bg-[#f8f9fa] overflow-hidden">
-      <div className="flex-1 flex flex-col transition-all duration-300">
-        <div className="p-8 flex-1 overflow-y-auto">
+      <div className="flex-1 flex flex-col transition-all duration-300 min-w-0">
+        <div className="p-0 sm:p-2 md:p-8 flex-1 overflow-y-auto overflow-x-hidden w-full">
           {/* Header */}
-          <div className="flex justify-between items-start mb-8">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6 sm:mb-8">
             <div>
               <h1 className="text-2xl font-bold text-gray-900">About Section</h1>
               <p className="text-gray-500 text-sm mt-1">Manage homepage about section content</p>
             </div>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 w-full sm:w-auto">
               {selectedIds.length > 0 && (
                 <button 
                   onClick={triggerBulkDelete}
@@ -267,7 +267,8 @@ export default function AboutPage() {
 
           {/* Table */}
           <div className="bg-white rounded-xl shadow-[0_2px_10px_-3px_rgba(6,81,237,0.1)] border border-zinc-200 overflow-hidden">
-            <table className="w-full text-left border-collapse">
+            <div className="overflow-x-auto w-full">
+              <table className="w-full text-left border-collapse min-w-[800px]">
               <thead>
                 <tr className="border-b border-zinc-200 bg-zinc-50">
                   <th className="py-4 px-6 w-12">
@@ -330,6 +331,7 @@ export default function AboutPage() {
                 )}
               </tbody>
             </table>
+            </div>
           </div>
         </div>
       </div>
@@ -347,7 +349,7 @@ export default function AboutPage() {
             </div>
 
             <div className="p-8 flex-1 overflow-y-auto">
-              <div className="grid grid-cols-2 gap-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 {/* Left Column */}
                 <div className="space-y-5">
                   <div>

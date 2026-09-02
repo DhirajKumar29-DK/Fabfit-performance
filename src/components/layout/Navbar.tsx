@@ -47,7 +47,7 @@ export function Navbar() {
         the backdrop-blur when switching classes. 
       */}
       <div
-        className={`absolute inset-0 bg-[#050505]/60 backdrop-blur-2xl border-b border-white/10 shadow-lg transition-opacity duration-300 pointer-events-none ${isScrolled ? "opacity-100" : "opacity-0"
+        className={`absolute inset-0 bg-[#050505]/60 backdrop-blur-md border-b border-white/10 shadow-lg transition-opacity duration-300 pointer-events-none ${isScrolled ? "opacity-100" : "opacity-0"
           }`}
       />
 
