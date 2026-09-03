@@ -107,7 +107,7 @@ export function Services() {
                 return (
                   <Link
                     key={item.id}
-                    href={`/services/${item.slug || item.id}`}
+                    href={`/services/detail?id=${item.slug || item.id}`}
                     className="flex-[0_0_100%] sm:flex-[0_0_50%] md:flex-[0_0_33.33%] lg:flex-[0_0_25%] min-w-0"
                   >
                     <motion.div

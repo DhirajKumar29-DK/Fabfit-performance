@@ -6,7 +6,7 @@ export const api = {
     return fetch(`${API_BASE_URL}${endpoint}`, {
       credentials: 'include',
     });
-  },
+  }, 
   post: async (endpoint: string, data: any) => {
     return fetch(`${API_BASE_URL}${endpoint}`, {
       method: 'POST',
