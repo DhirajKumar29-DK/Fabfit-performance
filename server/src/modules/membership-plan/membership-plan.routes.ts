@@ -1,20 +1,20 @@
 import { Router } from 'express';
 import { MembershipPlanController } from './membership-plan.controller';
+import { authenticateAdmin } from '../../middlewares/auth.middleware';
 
 const router = Router();
 const controller = new MembershipPlanController();
 
 // --- PLANS ---
-router.post('/', controller.createPlan.bind(controller));
+router.post('/', authenticateAdmin, controller.createPlan.bind(controller));
 router.get('/', controller.getPlans.bind(controller));
 router.get('/:id', controller.getPlanById.bind(controller));
-router.patch('/:id', controller.updatePlan.bind(controller));
-router.delete('/:id', controller.deletePlan.bind(controller));
+router.patch('/:id', authenticateAdmin, controller.updatePlan.bind(controller));
+router.delete('/:id', authenticateAdmin, controller.deletePlan.bind(controller));
 
-// --- FEATURES (Individual Endpoints) ---
 router.get('/:planId/features', controller.getFeatures.bind(controller));
-router.post('/:planId/features', controller.createFeature.bind(controller));
-router.patch('/:planId/features/:featureId', controller.updateFeature.bind(controller));
-router.delete('/:planId/features/:featureId', controller.deleteFeature.bind(controller));
+router.post('/:planId/features', authenticateAdmin, controller.createFeature.bind(controller));
+router.patch('/:planId/features/:featureId', authenticateAdmin, controller.updateFeature.bind(controller));
+router.delete('/:planId/features/:featureId', authenticateAdmin, controller.deleteFeature.bind(controller));
 
 export const membershipPlanRoutes = router;

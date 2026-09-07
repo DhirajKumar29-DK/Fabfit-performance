@@ -184,6 +184,23 @@ export default function GalleryPanel({ type }: GalleryPanelProps) {
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>, field: 'mediaUrl' | 'thumbnailUrl') => {
     const file = e.target.files?.[0];
     if (file) {
+      // Frontend size validation
+      const isVideo = file.type.startsWith('video/');
+      const isImage = file.type.startsWith('image/');
+      const IMAGE_LIMIT = 50 * 1024 * 1024;   // 50 MB
+      const VIDEO_LIMIT = 500 * 1024 * 1024;  // 500 MB
+
+      if (isImage && file.size > IMAGE_LIMIT) {
+        alert('Image size must not exceed 50 MB. Please choose a smaller file.');
+        e.target.value = '';
+        return;
+      }
+      if (isVideo && file.size > VIDEO_LIMIT) {
+        alert('Video size must not exceed 500 MB. Please choose a smaller file.');
+        e.target.value = '';
+        return;
+      }
+
       const formDataUpload = new FormData();
       formDataUpload.append('image', file); // API expects 'image' key, might handle videos too
       
@@ -191,6 +208,7 @@ export default function GalleryPanel({ type }: GalleryPanelProps) {
       try {
         const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/upload`, {
           method: 'POST',
+          credentials: 'include',
           body: formDataUpload,
         });
         
@@ -416,7 +434,7 @@ export default function GalleryPanel({ type }: GalleryPanelProps) {
                           <>
                             <UploadCloud className="text-gray-400 mb-2" size={20} />
                             <div className="text-xs text-gray-600 font-medium">Click to upload video</div>
-                            <div className="text-[10px] text-gray-400 mt-1">MP4, WEBM (Max 50MB)</div>
+                            <div className="text-[10px] text-gray-400 mt-1">MP4, WEBM (Max 500MB)</div>
                           </>
                         )}
                       </div>
@@ -470,7 +488,7 @@ export default function GalleryPanel({ type }: GalleryPanelProps) {
                       <>
                         <UploadCloud className="text-gray-400 mb-2" size={24} />
                         <div className="text-xs text-gray-600 font-medium">Click to upload or drag & drop</div>
-                        <div className="text-[10px] text-gray-400 mt-1">PNG, JPG, WEBP (Max 5MB)</div>
+                        <div className="text-[10px] text-gray-400 mt-1">PNG, JPG, WEBP (Max 50MB)</div>
                       </>
                     )}
                   </div>

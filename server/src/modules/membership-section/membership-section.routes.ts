@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import { MembershipSectionController } from './membership-section.controller';
+import { authenticateAdmin } from '../../middlewares/auth.middleware';
 
 const router = Router();
 
@@ -52,7 +53,7 @@ router.get('/', MembershipSectionController.getActiveSection);
  *       201:
  *         description: Membership section created successfully
  */
-router.post('/', MembershipSectionController.createSection);
+router.post('/', authenticateAdmin, MembershipSectionController.createSection);
 
 /**
  * @swagger
@@ -87,7 +88,7 @@ router.post('/', MembershipSectionController.createSection);
  *       200:
  *         description: Membership section updated successfully
  */
-router.patch('/:id', MembershipSectionController.updateSection);
+router.patch('/:id', authenticateAdmin, MembershipSectionController.updateSection);
 
 /**
  * @swagger
@@ -106,6 +107,6 @@ router.patch('/:id', MembershipSectionController.updateSection);
  *       200:
  *         description: Membership section deleted successfully
  */
-router.delete('/:id', MembershipSectionController.deleteSection);
+router.delete('/:id', authenticateAdmin, MembershipSectionController.deleteSection);
 
 export default router;

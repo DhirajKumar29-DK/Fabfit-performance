@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import { getSections, getSectionById, createSection, updateSection, deleteSection } from './transformation-section.controller';
+import { authenticateAdmin } from '../../middlewares/auth.middleware';
 
 const router = Router();
 
@@ -50,7 +51,7 @@ router.get('/:id', getSectionById);
  *       201:
  *         description: Created
  */
-router.post('/', createSection);
+router.post('/', authenticateAdmin, createSection);
 
 /**
  * @swagger
@@ -68,7 +69,7 @@ router.post('/', createSection);
  *       200:
  *         description: Success
  */
-router.patch('/:id', updateSection);
+router.patch('/:id', authenticateAdmin, updateSection);
 
 /**
  * @swagger
@@ -86,6 +87,6 @@ router.patch('/:id', updateSection);
  *       200:
  *         description: Success
  */
-router.delete('/:id', deleteSection);
+router.delete('/:id', authenticateAdmin, deleteSection);
 
 export default router;

@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import { ProgramHighlightController } from './program-highlight.controller';
+import { authenticateAdmin } from '../../middlewares/auth.middleware';
 
 const router = Router();
 
@@ -32,7 +33,7 @@ const router = Router();
  *       201:
  *         description: Created successfully
  */
-router.post('/', ProgramHighlightController.createHighlight);
+router.post('/', authenticateAdmin, ProgramHighlightController.createHighlight);
 
 /**
  * @swagger
@@ -92,7 +93,7 @@ router.get('/:id', ProgramHighlightController.getHighlightById);
  *       200:
  *         description: Updated successfully
  */
-router.patch('/:id', ProgramHighlightController.updateHighlight);
+router.patch('/:id', authenticateAdmin, ProgramHighlightController.updateHighlight);
 
 /**
  * @swagger
@@ -110,6 +111,6 @@ router.patch('/:id', ProgramHighlightController.updateHighlight);
  *       200:
  *         description: Deleted successfully
  */
-router.delete('/:id', ProgramHighlightController.deleteHighlight);
+router.delete('/:id', authenticateAdmin, ProgramHighlightController.deleteHighlight);
 
 export default router;

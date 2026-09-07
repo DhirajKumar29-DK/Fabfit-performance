@@ -6,6 +6,7 @@ import {
   updateService,
   deleteService
 } from './service.controller';
+import { authenticateAdmin } from '../../middlewares/auth.middleware';
 
 const router = Router();
 
@@ -43,7 +44,7 @@ router.get('/:id', getServiceByIdOrSlug);
  *       201:
  *         description: Created successfully
  */
-router.post('/', createService);
+router.post('/', authenticateAdmin, createService);
 
 /**
  * @swagger
@@ -55,7 +56,7 @@ router.post('/', createService);
  *       200:
  *         description: Updated successfully
  */
-router.patch('/:id', updateService);
+router.patch('/:id', authenticateAdmin, updateService);
 
 /**
  * @swagger
@@ -67,6 +68,6 @@ router.patch('/:id', updateService);
  *       200:
  *         description: Deleted successfully
  */
-router.delete('/:id', deleteService);
+router.delete('/:id', authenticateAdmin, deleteService);
 
 export default router;

@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import { HeroController } from './hero.controller';
+import { authenticateAdmin } from '../../middlewares/auth.middleware';
 
 const router = Router();
 
@@ -39,7 +40,7 @@ const router = Router();
  *       201:
  *         description: Created successfully
  */
-router.post('/', HeroController.createHero);
+router.post('/', authenticateAdmin, HeroController.createHero);
 
 /**
  * @swagger
@@ -74,7 +75,7 @@ router.get('/', HeroController.getAllHeroes);
  *       200:
  *         description: Bulk deleted successfully
  */
-router.post('/bulk-delete', HeroController.bulkDeleteHeroes);
+router.post('/bulk-delete', authenticateAdmin, HeroController.bulkDeleteHeroes);
 
 /**
  * @swagger
@@ -119,7 +120,7 @@ router.get('/:id', HeroController.getHeroById);
  *       200:
  *         description: Updated successfully
  */
-router.patch('/:id', HeroController.updateHero);
+router.patch('/:id', authenticateAdmin, HeroController.updateHero);
 
 /**
  * @swagger
@@ -137,6 +138,6 @@ router.patch('/:id', HeroController.updateHero);
  *       200:
  *         description: Deleted successfully
  */
-router.delete('/:id', HeroController.deleteHero);
+router.delete('/:id', authenticateAdmin, HeroController.deleteHero);
 
 export default router;

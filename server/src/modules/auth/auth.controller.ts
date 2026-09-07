@@ -1,6 +1,17 @@
 import { Request, Response, NextFunction } from 'express';
 import { loginAdmin } from './auth.service';
 import { sendSuccess, sendError } from '../../utils/response';
+import { AuthRequest } from '../../middlewares/auth.middleware';
+
+export const getMe = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    // authenticateAdmin middleware already verifies the token and sets req.admin
+    const authReq = req as AuthRequest;
+    sendSuccess(res, 200, 'Authenticated', { admin: authReq.admin });
+  } catch (error) {
+    next(error);
+  }
+};
 
 export const login = async (req: Request, res: Response, next: NextFunction) => {
   try {

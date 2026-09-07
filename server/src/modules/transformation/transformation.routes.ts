@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import * as transformationController from './transformation.controller';
+import { authenticateAdmin } from '../../middlewares/auth.middleware';
 
 const router = Router();
 
@@ -26,7 +27,7 @@ const router = Router();
  *       201:
  *         description: Created
  */
-router.post('/', transformationController.createTransformation);
+router.post('/', authenticateAdmin, transformationController.createTransformation);
 
 /**
  * @swagger
@@ -104,7 +105,7 @@ router.get('/slug/:slug', transformationController.getTransformationBySlug);
  *       200:
  *         description: Success
  */
-router.patch('/:id', transformationController.updateTransformation);
+router.patch('/:id', authenticateAdmin, transformationController.updateTransformation);
 
 /**
  * @swagger
@@ -122,6 +123,6 @@ router.patch('/:id', transformationController.updateTransformation);
  *       200:
  *         description: Success
  */
-router.delete('/:id', transformationController.deleteTransformation);
+router.delete('/:id', authenticateAdmin, transformationController.deleteTransformation);
 
 export default router;

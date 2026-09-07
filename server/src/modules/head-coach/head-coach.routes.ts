@@ -6,6 +6,7 @@ import {
   updateHeadCoach,
   deleteHeadCoach
 } from './head-coach.controller';
+import { authenticateAdmin } from '../../middlewares/auth.middleware';
 
 const router = Router();
 
@@ -90,7 +91,7 @@ router.get('/:id', getHeadCoachById);
  *       201:
  *         description: Created successfully
  */
-router.post('/', createHeadCoach);
+router.post('/', authenticateAdmin, createHeadCoach);
 
 /**
  * @swagger
@@ -136,7 +137,7 @@ router.post('/', createHeadCoach);
  *       200:
  *         description: Updated successfully
  */
-router.patch('/:id', updateHeadCoach);
+router.patch('/:id', authenticateAdmin, updateHeadCoach);
 
 /**
  * @swagger
@@ -154,6 +155,6 @@ router.patch('/:id', updateHeadCoach);
  *       200:
  *         description: Deleted successfully
  */
-router.delete('/:id', deleteHeadCoach);
+router.delete('/:id', authenticateAdmin, deleteHeadCoach);
 
 export default router;

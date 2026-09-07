@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import { ProgramSectionController } from './program-section.controller';
+import { authenticateAdmin } from '../../middlewares/auth.middleware';
 
 const router = Router();
 
@@ -31,7 +32,7 @@ const router = Router();
  *       201:
  *         description: Created successfully
  */
-router.post('/', ProgramSectionController.createSection);
+router.post('/', authenticateAdmin, ProgramSectionController.createSection);
 
 /**
  * @swagger
@@ -90,7 +91,7 @@ router.get('/:id', ProgramSectionController.getSectionById);
  *       200:
  *         description: Updated successfully
  */
-router.patch('/:id', ProgramSectionController.updateSection);
+router.patch('/:id', authenticateAdmin, ProgramSectionController.updateSection);
 
 /**
  * @swagger
@@ -108,6 +109,6 @@ router.patch('/:id', ProgramSectionController.updateSection);
  *       200:
  *         description: Deleted successfully
  */
-router.delete('/:id', ProgramSectionController.deleteSection);
+router.delete('/:id', authenticateAdmin, ProgramSectionController.deleteSection);
 
 export default router;

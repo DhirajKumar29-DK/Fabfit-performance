@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import { ProgramController } from './program.controller';
+import { authenticateAdmin } from '../../middlewares/auth.middleware';
 
 const router = Router();
 
@@ -34,7 +35,7 @@ const router = Router();
  *       201:
  *         description: Created successfully
  */
-router.post('/', ProgramController.createProgram);
+router.post('/', authenticateAdmin, ProgramController.createProgram);
 
 /**
  * @swagger
@@ -96,7 +97,7 @@ router.get('/:id', ProgramController.getProgramById);
  *       200:
  *         description: Updated successfully
  */
-router.patch('/:id', ProgramController.updateProgram);
+router.patch('/:id', authenticateAdmin, ProgramController.updateProgram);
 
 /**
  * @swagger
@@ -114,6 +115,6 @@ router.patch('/:id', ProgramController.updateProgram);
  *       200:
  *         description: Deleted successfully
  */
-router.delete('/:id', ProgramController.deleteProgram);
+router.delete('/:id', authenticateAdmin, ProgramController.deleteProgram);
 
 export default router;

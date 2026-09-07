@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import * as counterController from './counter.controller';
+import { authenticateAdmin } from '../../middlewares/auth.middleware';
 
 const router = Router();
 
@@ -43,7 +44,7 @@ const router = Router();
  *       201:
  *         description: Counter created successfully
  */
-router.post('/', counterController.createCounter);
+router.post('/', authenticateAdmin, counterController.createCounter);
 
 /**
  * @swagger
@@ -115,7 +116,7 @@ router.get('/:id', counterController.getCounterById);
  *       404:
  *         description: Counter not found
  */
-router.put('/:id', counterController.updateCounter);
+router.put('/:id', authenticateAdmin, counterController.updateCounter);
 
 /**
  * @swagger
@@ -159,7 +160,7 @@ router.put('/:id', counterController.updateCounter);
  *       400:
  *         description: Bad request
  */
-router.post('/bulk-delete', counterController.bulkDelete);
-router.delete('/:id', counterController.deleteCounter);
+router.post('/bulk-delete', authenticateAdmin, counterController.bulkDelete);
+router.delete('/:id', authenticateAdmin, counterController.deleteCounter);
 
 export default router;

@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import { GalleryController } from './gallery.controller';
+import { authenticateAdmin } from '../../middlewares/auth.middleware';
 
 const router = Router();
 
@@ -20,7 +21,7 @@ const router = Router();
  *       201:
  *         description: Created
  */
-router.post('/', GalleryController.createGallery);
+router.post('/', authenticateAdmin, GalleryController.createGallery);
 
 /**
  * @openapi
@@ -56,7 +57,7 @@ router.get('/preview', GalleryController.getPreviewGallery);
  *       200:
  *         description: Success
  */
-router.post('/bulk-delete', GalleryController.bulkDelete);
+router.post('/bulk-delete', authenticateAdmin, GalleryController.bulkDelete);
 
 /**
  * @openapi
@@ -92,7 +93,7 @@ router.get('/:id', GalleryController.getGalleryById);
  *       200:
  *         description: Success
  */
-router.patch('/:id', GalleryController.updateGallery);
+router.patch('/:id', authenticateAdmin, GalleryController.updateGallery);
 
 /**
  * @openapi
@@ -110,7 +111,6 @@ router.patch('/:id', GalleryController.updateGallery);
  *       200:
  *         description: Success
  */
-router.delete('/:id', GalleryController.deleteGallery);
+router.delete('/:id', authenticateAdmin, GalleryController.deleteGallery);
 
 export default router;
-

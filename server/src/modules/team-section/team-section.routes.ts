@@ -6,6 +6,7 @@ import {
   updateTeamSection,
   deleteTeamSection
 } from './team-section.controller';
+import { authenticateAdmin } from '../../middlewares/auth.middleware';
 
 const router = Router();
 
@@ -43,7 +44,7 @@ router.get('/:id', getTeamSectionById);
  *       201:
  *         description: Created successfully
  */
-router.post('/', createTeamSection);
+router.post('/', authenticateAdmin, createTeamSection);
 
 /**
  * @swagger
@@ -55,7 +56,7 @@ router.post('/', createTeamSection);
  *       200:
  *         description: Updated successfully
  */
-router.patch('/:id', updateTeamSection);
+router.patch('/:id', authenticateAdmin, updateTeamSection);
 
 /**
  * @swagger
@@ -67,6 +68,6 @@ router.patch('/:id', updateTeamSection);
  *       200:
  *         description: Deleted successfully
  */
-router.delete('/:id', deleteTeamSection);
+router.delete('/:id', authenticateAdmin, deleteTeamSection);
 
 export default router;

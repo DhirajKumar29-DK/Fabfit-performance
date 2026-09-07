@@ -1,9 +1,9 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { 
   LayoutDashboard, 
   Users, 
@@ -20,12 +20,34 @@ import {
   TrendingUp,
   ChevronDown,
   BadgeCheck,
-  MessageSquare
+  MessageSquare,
+  Loader2
 } from 'lucide-react';
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [isCheckingAuth, setIsCheckingAuth] = useState(true);
   const pathname = usePathname();
+  const router = useRouter();
+
+  useEffect(() => {
+    const checkAuth = async () => {
+      try {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/auth/me`, {
+          method: 'GET',
+          credentials: 'include',
+        });
+        if (response.ok) {
+          setIsCheckingAuth(false);
+        } else {
+          router.push('/login');
+        }
+      } catch (error) {
+        router.push('/login');
+      }
+    };
+    checkAuth();
+  }, [router]);
 
   const navigation = [
     { name: 'Dashboard', href: '/admin/dashboard', icon: LayoutDashboard },
@@ -96,6 +118,15 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const toggleMenu = (name: string) => {
     setExpandedMenus(prev => ({ ...prev, [name]: !prev[name] }));
   };
+
+  if (isCheckingAuth) {
+    return (
+      <div className="min-h-[100dvh] flex flex-col items-center justify-center bg-[#f8f9fa]">
+        <Loader2 className="h-8 w-8 animate-spin text-black mb-4" />
+        <span className="font-medium text-zinc-500">Verifying secure access...</span>
+      </div>
+    );
+  }
 
   return (
     <div className="h-[100dvh] overflow-hidden bg-[#f8f9fa] flex flex-col md:flex-row">
