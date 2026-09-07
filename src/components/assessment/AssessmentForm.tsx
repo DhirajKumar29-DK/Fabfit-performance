@@ -183,7 +183,14 @@ export function AssessmentForm() {
         if (data.success) {
           setIsSubmitted(true);
         } else {
-          alert("Submission failed. Please try again.");
+          console.error("Backend Error Response:", data);
+          
+          let errorDetails = "";
+          if (data.errors && Array.isArray(data.errors)) {
+            errorDetails = "\\nCheck these fields: " + data.errors.map((e: any) => e.path.join('.') + ' (' + e.message + ')').join(', ');
+          }
+          
+          alert(`Submission failed: ${data.message || "Please try again."}${errorDetails}`);
         }
       } catch (error) {
         console.error("Error submitting form", error);
