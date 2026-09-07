@@ -112,36 +112,42 @@ export default function LoginPage() {
               )}
 
               <div>
-                <label htmlFor="email" className="block text-sm font-medium text-zinc-300 mb-1.5">
-                  Email address
-                </label>
-                <div className="relative">
+                <div className="relative group/input">
                   <input
                     id="email"
                     name="email"
                     type="email"
                     autoComplete="email"
                     required
-                    className="block w-full rounded-lg border-0 bg-zinc-900/50 py-2.5 px-4 text-white shadow-sm ring-1 ring-inset ring-zinc-800 placeholder:text-zinc-500 focus:ring-2 focus:ring-inset focus:ring-amber-500 sm:text-sm sm:leading-6 transition-all"
-                    placeholder="admin@fabfit.com"
+                    className="peer block w-full rounded-lg border-0 bg-zinc-900/50 py-2.5 px-4 text-white shadow-sm ring-1 ring-inset ring-zinc-800 focus:ring-2 focus:ring-inset focus:ring-amber-500 sm:text-sm sm:leading-6 transition-all"
+                    placeholder=" "
                   />
+                  <label 
+                    htmlFor="email" 
+                    className="absolute left-3 -top-2 bg-zinc-950 px-1 text-[11px] text-zinc-500 transition-all duration-300 pointer-events-none rounded-md peer-placeholder-shown:text-sm peer-placeholder-shown:top-2.5 peer-placeholder-shown:left-4 peer-placeholder-shown:bg-transparent peer-focus:-top-2 peer-focus:left-3 peer-focus:text-[11px] peer-focus:text-amber-500 peer-focus:bg-zinc-950 font-medium"
+                  >
+                    Email address
+                  </label>
                 </div>
               </div>
 
               <div>
-                <label htmlFor="password" className="block text-sm font-medium text-zinc-300 mb-1.5">
-                  Password
-                </label>
-                <div className="relative">
+                <div className="relative group/input">
                   <input
                     id="password"
                     name="password"
                     type={showPassword ? 'text' : 'password'}
                     autoComplete="current-password"
                     required
-                    className="block w-full rounded-lg border-0 bg-zinc-900/50 py-2.5 px-4 text-white shadow-sm ring-1 ring-inset ring-zinc-800 placeholder:text-zinc-500 focus:ring-2 focus:ring-inset focus:ring-amber-500 sm:text-sm sm:leading-6 transition-all"
-                    placeholder="••••••••"
+                    className="peer block w-full rounded-lg border-0 bg-zinc-900/50 py-2.5 px-4 text-white shadow-sm ring-1 ring-inset ring-zinc-800 focus:ring-2 focus:ring-inset focus:ring-amber-500 sm:text-sm sm:leading-6 transition-all"
+                    placeholder=" "
                   />
+                  <label 
+                    htmlFor="password" 
+                    className="absolute left-3 -top-2 bg-zinc-950 px-1 text-[11px] text-zinc-500 transition-all duration-300 pointer-events-none rounded-md peer-placeholder-shown:text-sm peer-placeholder-shown:top-2.5 peer-placeholder-shown:left-4 peer-placeholder-shown:bg-transparent peer-focus:-top-2 peer-focus:left-3 peer-focus:text-[11px] peer-focus:text-amber-500 peer-focus:bg-zinc-950 font-medium"
+                  >
+                    Password
+                  </label>
                   <button
                     type="button"
                     className="absolute inset-y-0 right-0 pr-3 flex items-center text-zinc-500 hover:text-zinc-300 transition-colors"

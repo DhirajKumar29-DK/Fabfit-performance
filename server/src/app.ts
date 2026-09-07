@@ -25,6 +25,7 @@ import serviceRoutes from './modules/service/service.routes';
 import transformationSectionRoutes from './modules/transformation-section/transformation-section.routes';
 import transformationRoutes from './modules/transformation/transformation.routes';
 import authRoutes from './modules/auth/auth.routes';
+import pageStructureRoutes from './modules/page-structure/page-structure.routes';
 
 const app: Application = express();
 
@@ -65,6 +66,7 @@ app.use('/api/services', serviceRoutes);
 app.use('/api/transformation-section', transformationSectionRoutes);
 app.use('/api/transformations', transformationRoutes);
 app.use('/api/auth', authRoutes);
+app.use('/api/page-structure', pageStructureRoutes);
 
 // Swagger Configuration
 const swaggerOptions = {

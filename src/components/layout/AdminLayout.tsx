@@ -82,6 +82,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       ]
     },
     { name: 'Testimonials', href: '/admin/testimonials', icon: MessageSquare },
+    { name: 'Page Structure', href: '/admin/page-structure', icon: Menu },
   ];
 
   const [expandedMenus, setExpandedMenus] = useState<Record<string, boolean>>({

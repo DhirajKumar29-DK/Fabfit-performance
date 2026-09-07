@@ -19,10 +19,13 @@ const navbarData = {
   cta: "BOOK ASSESSMENT"
 };
 
+const USE_DYNAMIC_CMS = true; // Enabled for testing
+
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
-  const navbar = navbarData;
+  const [dynamicLinks, setDynamicLinks] = useState(navbarData.links);
+  const navbar = { ...navbarData, links: dynamicLinks };
 
   // Track active link (hardcoded for now, can be dynamic later)
   const activeLink = "HOME";
@@ -37,6 +40,28 @@ export function Navbar() {
     
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  useEffect(() => {
+    if (USE_DYNAMIC_CMS) {
+      // Fetch dynamic structure
+      fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/page-structure`)
+        .then(res => res.json())
+        .then(data => {
+          if (data.success && data.data) {
+            // Convert page sections to navbar links
+            // Filter out inactive sections
+            const activeSections = data.data.filter((s: any) => s.isActive);
+            const newLinks = activeSections.map((s: any) => ({
+              name: s.title,
+              // Map sectionId back to href logic (special cases can be handled here)
+              href: `/#${s.sectionId === 'membership' ? 'pricing' : s.sectionId}`
+            }));
+            setDynamicLinks(newLinks);
+          }
+        })
+        .catch(err => console.error("Error fetching dynamic navbar:", err));
+    }
   }, []);
 
   return (
@@ -62,6 +87,7 @@ export function Navbar() {
               if (window.location.pathname === "/") {
                 e.preventDefault();
                 window.scrollTo({ top: 0, behavior: "smooth" });
+                window.history.pushState(null, "", "/#home");
               }
             }}
           >
@@ -79,6 +105,7 @@ export function Navbar() {
                 if ((link.href === "/" || link.href === "/#home") && window.location.pathname === "/") {
                   e.preventDefault();
                   window.scrollTo({ top: 0, behavior: "smooth" });
+                  window.history.pushState(null, "", "/#home");
                 }
               }}
               className="group text-[11px] font-bold tracking-widest uppercase transition-colors duration-300 flex items-center h-full text-zinc-400 hover:text-primary"
@@ -130,6 +157,7 @@ export function Navbar() {
                     if ((link.href === "/" || link.href === "/#home") && window.location.pathname === "/") {
                       e.preventDefault();
                       window.scrollTo({ top: 0, behavior: "smooth" });
+                      window.history.pushState(null, "", "/#home");
                     }
                   }}
                   className={`text-sm font-bold tracking-widest uppercase transition-colors ${activeLink === link.name ? "text-primary" : "text-white"

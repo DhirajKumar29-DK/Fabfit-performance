@@ -207,73 +207,108 @@ export function Contact() {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   {/* Full Name */}
                   <div className="relative group/input">
-                    <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-zinc-500 group-focus-within/input:text-primary transition-colors">
-                      <UserIcon />
-                    </div>
                     <input
                       type="text"
+                      id="name"
                       name="name"
-                      placeholder="Full Name"
-                      className="w-full bg-[#0a0a0a] border border-zinc-800/80 text-white text-sm rounded-xl pl-12 pr-5 py-4 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/50 transition-all duration-300 placeholder-zinc-500"
+                      placeholder=" "
+                      className="peer w-full bg-[#0a0a0a] border border-zinc-800/80 text-white text-sm rounded-xl pl-12 pr-5 py-4 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/50 transition-all duration-300"
                       required
                     />
+                    <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-zinc-500 peer-focus:text-primary transition-colors">
+                      <UserIcon />
+                    </div>
+                    <label 
+                      htmlFor="name" 
+                      className="absolute left-10 -top-2.5 bg-[#050505] px-1.5 text-[11px] text-zinc-500 transition-all duration-300 pointer-events-none rounded-md peer-placeholder-shown:text-sm peer-placeholder-shown:top-4 peer-placeholder-shown:left-12 peer-placeholder-shown:bg-transparent peer-focus:-top-2.5 peer-focus:left-10 peer-focus:text-[11px] peer-focus:text-primary peer-focus:bg-[#050505]"
+                    >
+                      Full Name
+                    </label>
                   </div>
 
                   {/* Email Address */}
                   <div className="relative group/input">
-                    <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-zinc-500 group-focus-within/input:text-primary transition-colors">
-                      <MailIcon />
-                    </div>
                     <input
                       type="email"
+                      id="email"
                       name="email"
-                      placeholder="Email Address"
-                      className="w-full bg-[#0a0a0a] border border-zinc-800/80 text-white text-sm rounded-xl pl-12 pr-5 py-4 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/50 transition-all duration-300 placeholder-zinc-500"
+                      placeholder=" "
+                      className="peer w-full bg-[#0a0a0a] border border-zinc-800/80 text-white text-sm rounded-xl pl-12 pr-5 py-4 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/50 transition-all duration-300"
                       required
                     />
+                    <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-zinc-500 peer-focus:text-primary transition-colors">
+                      <MailIcon />
+                    </div>
+                    <label 
+                      htmlFor="email" 
+                      className="absolute left-10 -top-2.5 bg-[#050505] px-1.5 text-[11px] text-zinc-500 transition-all duration-300 pointer-events-none rounded-md peer-placeholder-shown:text-sm peer-placeholder-shown:top-4 peer-placeholder-shown:left-12 peer-placeholder-shown:bg-transparent peer-focus:-top-2.5 peer-focus:left-10 peer-focus:text-[11px] peer-focus:text-primary peer-focus:bg-[#050505]"
+                    >
+                      Email Address
+                    </label>
                   </div>
                 </div>
 
                 {/* Phone Number */}
                 <div className="relative group/input">
-                  <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-zinc-500 group-focus-within/input:text-primary transition-colors">
-                    <PhoneInputIcon />
-                  </div>
                   <input
                     type="tel"
+                    id="phone"
                     name="phone"
-                    placeholder="Phone Number"
-                    className="w-full bg-[#0a0a0a] border border-zinc-800/80 text-white text-sm rounded-xl pl-12 pr-5 py-4 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/50 transition-all duration-300 placeholder-zinc-500"
+                    placeholder=" "
+                    className="peer w-full bg-[#0a0a0a] border border-zinc-800/80 text-white text-sm rounded-xl pl-12 pr-5 py-4 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/50 transition-all duration-300"
                     required
                   />
+                  <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-zinc-500 peer-focus:text-primary transition-colors">
+                    <PhoneInputIcon />
+                  </div>
+                  <label 
+                    htmlFor="phone" 
+                    className="absolute left-10 -top-2.5 bg-[#050505] px-1.5 text-[11px] text-zinc-500 transition-all duration-300 pointer-events-none rounded-md peer-placeholder-shown:text-sm peer-placeholder-shown:top-4 peer-placeholder-shown:left-12 peer-placeholder-shown:bg-transparent peer-focus:-top-2.5 peer-focus:left-10 peer-focus:text-[11px] peer-focus:text-primary peer-focus:bg-[#050505]"
+                  >
+                    Phone Number
+                  </label>
                 </div>
 
                 {/* Subject */}
                 <div className="relative group/input">
-                  <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-zinc-500 group-focus-within/input:text-primary transition-colors">
-                    <SubjectIcon />
-                  </div>
                   <input
                     type="text"
+                    id="subject"
                     name="subject"
-                    placeholder="Subject"
-                    className="w-full bg-[#0a0a0a] border border-zinc-800/80 text-white text-sm rounded-xl pl-12 pr-5 py-4 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/50 transition-all duration-300 placeholder-zinc-500"
+                    placeholder=" "
+                    className="peer w-full bg-[#0a0a0a] border border-zinc-800/80 text-white text-sm rounded-xl pl-12 pr-5 py-4 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/50 transition-all duration-300"
                     required
                   />
+                  <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-zinc-500 peer-focus:text-primary transition-colors">
+                    <SubjectIcon />
+                  </div>
+                  <label 
+                    htmlFor="subject" 
+                    className="absolute left-10 -top-2.5 bg-[#050505] px-1.5 text-[11px] text-zinc-500 transition-all duration-300 pointer-events-none rounded-md peer-placeholder-shown:text-sm peer-placeholder-shown:top-4 peer-placeholder-shown:left-12 peer-placeholder-shown:bg-transparent peer-focus:-top-2.5 peer-focus:left-10 peer-focus:text-[11px] peer-focus:text-primary peer-focus:bg-[#050505]"
+                  >
+                    Subject
+                  </label>
                 </div>
 
                 {/* Your Message */}
                 <div className="relative group/input">
-                  <div className="absolute top-4 left-4 flex pointer-events-none text-zinc-500 group-focus-within/input:text-primary transition-colors">
-                    <EditIcon />
-                  </div>
                   <textarea
+                    id="message"
                     name="message"
-                    placeholder="Your Message"
+                    placeholder=" "
                     rows={4}
-                    className="w-full bg-[#0a0a0a] border border-zinc-800/80 text-white text-sm rounded-xl pl-12 pr-5 py-4 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/50 transition-all duration-300 placeholder-zinc-500 resize-none"
+                    className="peer w-full bg-[#0a0a0a] border border-zinc-800/80 text-white text-sm rounded-xl pl-12 pr-5 py-4 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/50 transition-all duration-300 resize-none"
                     required
                   ></textarea>
+                  <div className="absolute top-4 left-4 flex pointer-events-none text-zinc-500 peer-focus:text-primary transition-colors">
+                    <EditIcon />
+                  </div>
+                  <label 
+                    htmlFor="message" 
+                    className="absolute left-10 -top-2.5 bg-[#050505] px-1.5 text-[11px] text-zinc-500 transition-all duration-300 pointer-events-none rounded-md peer-placeholder-shown:text-sm peer-placeholder-shown:top-4 peer-placeholder-shown:left-12 peer-placeholder-shown:bg-transparent peer-focus:-top-2.5 peer-focus:left-10 peer-focus:text-[11px] peer-focus:text-primary peer-focus:bg-[#050505]"
+                  >
+                    Your Message
+                  </label>
                 </div>
 
                 {/* Submit Button */}

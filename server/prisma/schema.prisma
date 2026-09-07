@@ -491,3 +491,14 @@ model Admin {
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 }
+
+model PageSection {
+  id        String   @id @default(uuid())
+  sectionId String   @unique // e.g., 'home', 'about', 'membership'
+  title     String   // e.g., 'HOME', 'ABOUT' (can be edited to 'hommiiee')
+  order     Int      @default(0) // order of appearance
+  isActive  Boolean  @default(true) // visible or hidden
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}

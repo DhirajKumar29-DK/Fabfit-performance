@@ -75,6 +75,9 @@ export default function AssessmentsPage() {
   const [showDateDropdown, setShowDateDropdown] = useState(false);
   const [genderFilter, setGenderFilter] = useState('All');
   const [showFiltersDropdown, setShowFiltersDropdown] = useState(false);
+  
+  // Full screen image state
+  const [fullScreenImage, setFullScreenImage] = useState<string | null>(null);
 
   const fetchAssessments = async () => {
     setIsLoading(true);
@@ -557,7 +560,7 @@ export default function AssessmentsPage() {
           {/* Modal Content */}
           <div className="relative bg-white rounded-2xl shadow-2xl w-full max-w-3xl max-h-[85vh] flex flex-col overflow-hidden animate-in fade-in zoom-in-95 duration-200">
             {/* Panel Header */}
-            <div className="px-8 pt-6 pb-4 flex justify-between items-center">
+            <div className="px-8 pt-6 pb-4 flex justify-between items-center shrink-0">
               <h2 className="text-xl font-bold text-gray-900">Assessment Details</h2>
               <button 
                 onClick={() => setSelectedAssessment(null)}
@@ -567,16 +570,16 @@ export default function AssessmentsPage() {
               </button>
             </div>
 
-            <div className="flex-1 overflow-y-auto flex flex-col">
+            <div className="flex-1 overflow-y-auto flex flex-col min-h-0">
               {/* Profile Section */}
-              <div className="px-8 pb-6 border-b border-zinc-200">
-                <div className="flex justify-between items-start">
-                  <div className="flex gap-4 items-center">
-                    <div className="w-16 h-16 bg-gray-200 rounded-full flex items-center justify-center text-gray-500">
+              <div className="px-8 pb-6 border-b border-zinc-200 shrink-0">
+                <div className="flex flex-col sm:flex-row justify-between items-start gap-4">
+                  <div className="flex gap-4 items-start sm:items-center">
+                    <div className="w-16 h-16 bg-gray-200 rounded-full flex items-center justify-center text-gray-500 shrink-0">
                       <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
                     </div>
                     <div>
-                      <div className="flex items-center gap-3 mb-1.5">
+                      <div className="flex flex-wrap items-center gap-2 mb-1.5">
                         <h3 className="text-lg font-bold text-gray-900">{selectedAssessment.firstName} {selectedAssessment.lastName}</h3>
                         <span className={`px-2 py-0.5 rounded text-[10px] font-bold tracking-wider border ${getStatusStyle(selectedAssessment.status)}`}>
                           {selectedAssessment.status}
@@ -589,7 +592,7 @@ export default function AssessmentsPage() {
                       </div>
                     </div>
                   </div>
-                  <div className="relative pt-2">
+                  <div className="relative pt-2 shrink-0">
                     <select 
                       className="appearance-none bg-white border border-zinc-300 rounded-lg pl-4 pr-10 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:border-primary cursor-pointer shadow-sm capitalize"
                       value={selectedAssessment.status}
@@ -607,7 +610,7 @@ export default function AssessmentsPage() {
               </div>
 
               {/* Detail Tabs */}
-              <div className="px-8 flex gap-6 overflow-x-auto border-b border-zinc-200">
+              <div className="px-8 flex gap-6 overflow-x-auto border-b border-zinc-200 shrink-0 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
                 {['Personal Details', 'Goals', 'Lifestyle', 'Health', 'Attachments'].map(tab => {
                   const mappedTab = tab === 'Health' ? 'Medical & Notes' : tab; // Internal mapping if needed
                   return (
@@ -627,7 +630,7 @@ export default function AssessmentsPage() {
               </div>
 
               {/* Detail Content */}
-              <div className="p-8 flex-1 overflow-y-auto">
+              <div className="p-4 sm:p-8 flex-1 overflow-y-auto min-h-0">
                 {activeDetailTab === 'Personal Details' && (
                   <div className="border border-zinc-300 rounded-2xl p-6">
                     <h4 className="text-sm font-bold text-gray-900 mb-5">Personal Information</h4>
@@ -809,15 +812,20 @@ export default function AssessmentsPage() {
 
                 {activeDetailTab === 'Attachments' && (
                   <div className="flex flex-col gap-6">
-                    <div className="grid grid-cols-2 gap-6">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                       <div className="bg-white p-6 rounded-2xl border border-zinc-300 shadow-sm">
                         <h4 className="text-sm font-bold text-gray-900 mb-4 flex items-center gap-2">
                           Physique Image
                         </h4>
                         {selectedAssessment.physiqueImageUrl ? (
-                          <div className="relative aspect-square w-full rounded-xl overflow-hidden border border-zinc-200">
+                          <button 
+                            type="button"
+                            onClick={() => setFullScreenImage(selectedAssessment.physiqueImageUrl || null)}
+                            className="relative block aspect-square w-full rounded-xl overflow-hidden border border-zinc-200 hover:opacity-90 transition-opacity"
+                            title="Click to view full size"
+                          >
                             <img src={selectedAssessment.physiqueImageUrl} alt="Physique" className="object-cover w-full h-full" />
-                          </div>
+                          </button>
                         ) : (
                           <div className="flex flex-col items-center justify-center h-48 bg-gray-50 rounded-xl border border-dashed border-gray-300">
                             <span className="text-sm text-gray-500">No image uploaded</span>
@@ -857,6 +865,24 @@ export default function AssessmentsPage() {
         onConfirm={executeDelete}
         itemCount={Array.isArray(deleteTarget) ? deleteTarget.length : 1}
       />
+
+      {/* Full Screen Image Modal */}
+      {fullScreenImage && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/90 p-4 animate-in fade-in duration-200">
+          <button 
+            onClick={() => setFullScreenImage(null)}
+            className="absolute top-6 right-6 p-2 text-white/70 hover:text-white bg-black/50 hover:bg-black/80 rounded-full transition-all"
+            title="Close image"
+          >
+            <X size={24} />
+          </button>
+          <img 
+            src={fullScreenImage} 
+            alt="Full size physique" 
+            className="max-w-full max-h-[90vh] object-contain rounded-lg"
+          />
+        </div>
+      )}
     </div>
   );
 }

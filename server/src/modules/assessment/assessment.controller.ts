@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import { AssessmentService } from './assessment.service';
 import { sendSuccess } from '../../utils/response';
 import { createAssessmentSchema, updateAssessmentSchema } from './assessment.validation';
+import { sendAssessmentEmail } from '../../utils/mailer';
 
 export class AssessmentController {
   
@@ -22,6 +23,10 @@ export class AssessmentController {
 
       const validatedData = createAssessmentSchema.parse(data);
       const newAssessment = await AssessmentService.createAssessment(validatedData);
+      
+      // Fire and forget email notification
+      sendAssessmentEmail(newAssessment).catch(console.error);
+
       return sendSuccess(res, 201, 'Application submitted successfully!', newAssessment);
     } catch (error: any) {
       if (error.name === 'ZodError') {

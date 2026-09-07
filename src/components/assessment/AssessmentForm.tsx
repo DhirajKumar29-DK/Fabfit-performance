@@ -295,74 +295,95 @@ export function AssessmentForm() {
               <form className="space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   {/* Row 1: First Name & Last Name */}
-                  <div className="space-y-2 flex flex-col">
-                    <label className="text-white text-sm font-semibold flex items-center gap-1">First Name <span className="text-red-500">*</span></label>
-                    <div className="relative">
-                      <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                        <User className={`h-4 w-4 ${errors.firstName ? 'text-red-500' : 'text-primary'}`} />
-                      </div>
+                  <div className="space-y-2 flex flex-col mt-2">
+                    <div className="relative group/input">
                       <input
                         type="text"
+                        id="firstName"
                         value={firstName}
                         onChange={(e) => { setFirstName(e.target.value); clearError('firstName'); }}
-                        className={`${inputClasses('firstName')} pl-10`}
-                        placeholder="Enter first name"
+                        className={`${inputClasses('firstName').replace('placeholder:text-zinc-600', 'placeholder-transparent')} pl-10 peer`}
+                        placeholder=" "
                       />
+                      <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none z-10">
+                        <User className={`h-4 w-4 ${errors.firstName ? 'text-red-500' : 'text-primary'} peer-focus:text-primary transition-colors`} />
+                      </div>
+                      <label 
+                        htmlFor="firstName"
+                        className={`absolute left-9 -top-2.5 bg-[#121212] px-1.5 text-[11px] transition-all duration-300 pointer-events-none rounded-md peer-placeholder-shown:text-sm peer-placeholder-shown:top-3.5 peer-placeholder-shown:left-10 peer-placeholder-shown:bg-transparent peer-focus:-top-2.5 peer-focus:left-9 peer-focus:text-[11px] peer-focus:bg-[#121212] ${errors.firstName ? 'text-red-500 peer-focus:text-red-500' : 'text-zinc-400 peer-focus:text-primary'} z-10`}
+                      >
+                        First Name <span className="text-red-500">*</span>
+                      </label>
                     </div>
                     <ErrorMsg field="firstName" />
                   </div>
 
-                  <div className="space-y-2 flex flex-col">
-                    <label className="text-white text-sm font-semibold flex items-center gap-1">Last Name / Title <span className="text-red-500">*</span></label>
-                    <div className="relative">
-                      <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                        <User className={`h-4 w-4 ${errors.lastName ? 'text-red-500' : 'text-primary'}`} />
-                      </div>
+                  <div className="space-y-2 flex flex-col mt-2">
+                    <div className="relative group/input">
                       <input
                         type="text"
+                        id="lastName"
                         value={lastName}
                         onChange={(e) => { setLastName(e.target.value); clearError('lastName'); }}
-                        className={`${inputClasses('lastName')} pl-10`}
-                        placeholder="Enter last name or title"
+                        className={`${inputClasses('lastName').replace('placeholder:text-zinc-600', 'placeholder-transparent')} pl-10 peer`}
+                        placeholder=" "
                       />
+                      <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none z-10">
+                        <User className={`h-4 w-4 ${errors.lastName ? 'text-red-500' : 'text-primary'} peer-focus:text-primary transition-colors`} />
+                      </div>
+                      <label 
+                        htmlFor="lastName"
+                        className={`absolute left-9 -top-2.5 bg-[#121212] px-1.5 text-[11px] transition-all duration-300 pointer-events-none rounded-md peer-placeholder-shown:text-sm peer-placeholder-shown:top-3.5 peer-placeholder-shown:left-10 peer-placeholder-shown:bg-transparent peer-focus:-top-2.5 peer-focus:left-9 peer-focus:text-[11px] peer-focus:bg-[#121212] ${errors.lastName ? 'text-red-500 peer-focus:text-red-500' : 'text-zinc-400 peer-focus:text-primary'} z-10`}
+                      >
+                        Last Name / Title <span className="text-red-500">*</span>
+                      </label>
                     </div>
                     <ErrorMsg field="lastName" />
                   </div>
 
                   {/* Row 2: Age & Gender */}
-                  <div className="space-y-2 flex flex-col">
-                    <label className="text-white text-sm font-semibold flex items-center gap-1">Age <span className="text-red-500">*</span></label>
-                    <div className="relative">
-                      <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                        <Calendar className={`h-4 w-4 ${errors.age ? 'text-red-500' : 'text-primary'}`} />
-                      </div>
+                  <div className="space-y-2 flex flex-col mt-2">
+                    <div className="relative group/input">
                       <input
                         type="number"
+                        id="age"
                         min="1"
                         max="120"
                         onKeyDown={(e) => { if (e.key === '-' || e.key === 'e') e.preventDefault(); }}
                         value={age}
                         onChange={(e) => { setAge(e.target.value); clearError('age'); }}
-                        className={`${inputClasses('age')} pl-10`}
-                        placeholder="Enter your age"
+                        className={`${inputClasses('age').replace('placeholder:text-zinc-600', 'placeholder-transparent')} pl-10 peer`}
+                        placeholder=" "
                       />
+                      <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none z-10">
+                        <Calendar className={`h-4 w-4 ${errors.age ? 'text-red-500' : 'text-primary'} peer-focus:text-primary transition-colors`} />
+                      </div>
+                      <label 
+                        htmlFor="age"
+                        className={`absolute left-9 -top-2.5 bg-[#121212] px-1.5 text-[11px] transition-all duration-300 pointer-events-none rounded-md peer-placeholder-shown:text-sm peer-placeholder-shown:top-3.5 peer-placeholder-shown:left-10 peer-placeholder-shown:bg-transparent peer-focus:-top-2.5 peer-focus:left-9 peer-focus:text-[11px] peer-focus:bg-[#121212] ${errors.age ? 'text-red-500 peer-focus:text-red-500' : 'text-zinc-400 peer-focus:text-primary'} z-10`}
+                      >
+                        Age <span className="text-red-500">*</span>
+                      </label>
                     </div>
                     <ErrorMsg field="age" />
-                  </div>
-
-                  <div className="space-y-2 flex flex-col">
-                    <label className="text-white text-sm font-semibold flex items-center gap-1">Gender <span className="text-red-500">*</span></label>
-                    <div className="relative">
+                  </div>                  <div className="space-y-2 flex flex-col mt-2">
+                    <div className="relative group/input">
                       <div
                         onClick={() => setGenderOpen(!genderOpen)}
-                        className={`w-full bg-[#1a1a1a] border rounded-lg py-3 pl-10 pr-4 text-sm focus:outline-none transition-all cursor-pointer flex items-center justify-between ${errors.gender ? 'border-red-500/50 ring-1 ring-red-500/50' : 'border-white/10 hover:border-white/30'}`}
+                        className={`w-full bg-[#1a1a1a] border rounded-lg py-3 pl-10 pr-4 text-sm focus:outline-none transition-all cursor-pointer flex items-center justify-between ${errors.gender ? 'border-red-500/5 ring-1 ring-red-500/50' : genderOpen ? 'border-primary/50 ring-1 ring-primary/50' : 'border-white/10 hover:border-white/30'}`}
                       >
-                        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                          <User className={`h-4 w-4 ${errors.gender ? 'text-red-500' : 'text-primary'}`} />
+                        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none z-10">
+                          <User className={`h-4 w-4 ${errors.gender ? 'text-red-500' : genderOpen ? 'text-primary' : 'text-primary'} transition-colors`} />
                         </div>
-                        <span className={gender ? "text-white" : "text-zinc-600"}>{gender || "Select gender"}</span>
+                        <span className={gender ? "text-white" : "text-transparent"}>{gender || " "}</span>
                         <svg className={`w-4 h-4 text-zinc-500 transition-transform ${genderOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path></svg>
                       </div>
+
+                      <label 
+                        className={`absolute left-9 px-1.5 transition-all duration-300 pointer-events-none rounded-md z-10 ${(!gender && !genderOpen) ? 'top-3.5 text-sm bg-transparent' : '-top-2.5 text-[11px] bg-[#121212]'} ${errors.gender ? 'text-red-500' : genderOpen ? 'text-primary' : 'text-zinc-400'}`}
+                      >
+                        Gender <span className="text-red-500">*</span>
+                      </label>
 
                       {genderOpen && (
                         <>
@@ -389,75 +410,98 @@ export function AssessmentForm() {
                   </div>
 
                   {/* Row 3: Height & Weight */}
-                  <div className="space-y-2 flex flex-col">
-                    <label className="text-white text-sm font-semibold flex items-center gap-1">Height <span className="text-red-500">*</span></label>
-                    <div className="relative">
-                      <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                        <Ruler className={`h-4 w-4 ${errors.height ? 'text-red-500' : 'text-primary'}`} />
-                      </div>
+                  <div className="space-y-2 flex flex-col mt-2">
+                    <div className="relative group/input">
                       <input
                         type="text"
+                        id="height"
                         value={height}
                         onChange={(e) => { setHeight(e.target.value); clearError('height'); }}
-                        className={`${inputClasses('height')} pl-10`}
-                        placeholder="Enter height (cm)"
+                        className={`${inputClasses('height').replace('placeholder:text-zinc-600', 'placeholder-transparent')} pl-10 peer`}
+                        placeholder=" "
                       />
+                      <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none z-10">
+                        <Ruler className={`h-4 w-4 ${errors.height ? 'text-red-500' : 'text-primary'} peer-focus:text-primary transition-colors`} />
+                      </div>
+                      <label 
+                        htmlFor="height"
+                        className={`absolute left-9 -top-2.5 bg-[#121212] px-1.5 text-[11px] transition-all duration-300 pointer-events-none rounded-md peer-placeholder-shown:text-sm peer-placeholder-shown:top-3.5 peer-placeholder-shown:left-10 peer-placeholder-shown:bg-transparent peer-focus:-top-2.5 peer-focus:left-9 peer-focus:text-[11px] peer-focus:bg-[#121212] ${errors.height ? 'text-red-500 peer-focus:text-red-500' : 'text-zinc-400 peer-focus:text-primary'} z-10`}
+                      >
+                        Height <span className="text-red-500">*</span>
+                      </label>
                     </div>
                     <ErrorMsg field="height" />
                   </div>
 
-                  <div className="space-y-2 flex flex-col">
-                    <label className="text-white text-sm font-semibold flex items-center gap-1">Current Weight <span className="text-red-500">*</span></label>
-                    <div className="relative">
-                      <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                        <Scale className={`h-4 w-4 ${errors.weight ? 'text-red-500' : 'text-primary'}`} />
-                      </div>
+                  <div className="space-y-2 flex flex-col mt-2">
+                    <div className="relative group/input">
                       <input
                         type="text"
+                        id="weight"
                         value={weight}
                         onChange={(e) => { setWeight(e.target.value); clearError('weight'); }}
-                        className={`${inputClasses('weight')} pl-10`}
-                        placeholder="Enter weight (kg)"
+                        className={`${inputClasses('weight').replace('placeholder:text-zinc-600', 'placeholder-transparent')} pl-10 peer`}
+                        placeholder=" "
                       />
+                      <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none z-10">
+                        <Scale className={`h-4 w-4 ${errors.weight ? 'text-red-500' : 'text-primary'} peer-focus:text-primary transition-colors`} />
+                      </div>
+                      <label 
+                        htmlFor="weight"
+                        className={`absolute left-9 -top-2.5 bg-[#121212] px-1.5 text-[11px] transition-all duration-300 pointer-events-none rounded-md peer-placeholder-shown:text-sm peer-placeholder-shown:top-3.5 peer-placeholder-shown:left-10 peer-placeholder-shown:bg-transparent peer-focus:-top-2.5 peer-focus:left-9 peer-focus:text-[11px] peer-focus:bg-[#121212] ${errors.weight ? 'text-red-500 peer-focus:text-red-500' : 'text-zinc-400 peer-focus:text-primary'} z-10`}
+                      >
+                        Current Weight <span className="text-red-500">*</span>
+                      </label>
                     </div>
                     <ErrorMsg field="weight" />
                   </div>
 
                   {/* Row 4: Email & Phone */}
-                  <div className="space-y-2 flex flex-col">
-                    <label className="text-white text-sm font-semibold flex items-center gap-1">Email Address <span className="text-red-500">*</span></label>
-                    <div className="relative">
-                      <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                        <Mail className={`h-4 w-4 ${errors.email ? 'text-red-500' : 'text-primary'}`} />
-                      </div>
+                  <div className="space-y-2 flex flex-col mt-2">
+                    <div className="relative group/input">
                       <input
                         type="email"
+                        id="email"
                         value={email}
                         onChange={(e) => { setEmail(e.target.value); clearError('email'); }}
-                        className={`${inputClasses('email')} pl-10`}
-                        placeholder="Enter your email"
+                        className={`${inputClasses('email').replace('placeholder:text-zinc-600', 'placeholder-transparent')} pl-10 peer`}
+                        placeholder=" "
                       />
+                      <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none z-10">
+                        <Mail className={`h-4 w-4 ${errors.email ? 'text-red-500' : 'text-primary'} peer-focus:text-primary transition-colors`} />
+                      </div>
+                      <label 
+                        htmlFor="email"
+                        className={`absolute left-9 -top-2.5 bg-[#121212] px-1.5 text-[11px] transition-all duration-300 pointer-events-none rounded-md peer-placeholder-shown:text-sm peer-placeholder-shown:top-3.5 peer-placeholder-shown:left-10 peer-placeholder-shown:bg-transparent peer-focus:-top-2.5 peer-focus:left-9 peer-focus:text-[11px] peer-focus:bg-[#121212] ${errors.email ? 'text-red-500 peer-focus:text-red-500' : 'text-zinc-400 peer-focus:text-primary'} z-10`}
+                      >
+                        Email Address <span className="text-red-500">*</span>
+                      </label>
                     </div>
                     <ErrorMsg field="email" />
                   </div>
 
-                  <div className="space-y-2 flex flex-col">
-                    <label className="text-white text-sm font-semibold flex items-center gap-1">Phone Number <span className="text-red-500">*</span></label>
-                    <div className={`flex h-[46px] border rounded-lg bg-[#1a1a1a] transition-all overflow-hidden ${errors.phone ? 'border-red-500/50 focus-within:border-red-500 focus-within:ring-1 focus-within:ring-red-500/50' : 'border-white/10 focus-within:border-primary/50 focus-within:ring-1 focus-within:ring-primary/50'}`}>
-
-                      {/* Fixed +91 Prefix */}
-                      <div className="flex items-center pl-3 pr-3 border-r border-white/10 bg-[#1a1a1a]">
-                        <span className="text-xl leading-none">🇮🇳</span>
-                        <span className="text-white text-sm ml-2 font-medium">+91</span>
+                  <div className="space-y-2 flex flex-col mt-2">
+                    <div className="relative group/input">
+                      <div className={`flex h-[46px] border rounded-lg bg-[#1a1a1a] transition-all relative ${errors.phone ? 'border-red-500/50 focus-within:border-red-500 focus-within:ring-1 focus-within:ring-red-500/50' : 'border-white/10 focus-within:border-primary/50 focus-within:ring-1 focus-within:ring-primary/50'}`}>
+                        <div className="flex items-center pl-3 pr-3 border-r border-white/10 bg-[#1a1a1a] z-10 rounded-l-lg">
+                          <span className="text-xl leading-none">🇮🇳</span>
+                          <span className="text-white text-sm ml-2 font-medium">+91</span>
+                        </div>
+                        <input
+                          type="tel"
+                          id="phone"
+                          value={phone}
+                          onChange={(e) => { setPhone(e.target.value); clearError('phone'); }}
+                          className="peer flex-1 bg-transparent px-4 text-white text-sm focus:outline-none placeholder-transparent h-full"
+                          placeholder=" "
+                        />
+                        <label 
+                          htmlFor="phone"
+                          className={`absolute left-[5.5rem] -top-2.5 bg-[#121212] px-1.5 text-[11px] transition-all duration-300 pointer-events-none rounded-md peer-placeholder-shown:text-sm peer-placeholder-shown:top-3.5 peer-placeholder-shown:left-[5.5rem] peer-placeholder-shown:bg-transparent peer-focus:-top-2.5 peer-focus:left-[5.5rem] peer-focus:text-[11px] peer-focus:bg-[#121212] ${errors.phone ? 'text-red-500 peer-focus:text-red-500' : 'text-zinc-400 peer-focus:text-primary'} z-10`}
+                        >
+                          Phone Number <span className="text-red-500">*</span>
+                        </label>
                       </div>
-
-                      <input
-                        type="tel"
-                        value={phone}
-                        onChange={(e) => { setPhone(e.target.value); clearError('phone'); }}
-                        className="flex-1 bg-transparent px-4 text-white text-sm focus:outline-none placeholder:text-zinc-600 h-full"
-                        placeholder="Enter phone number"
-                      />
                     </div>
                     <ErrorMsg field="phone" />
                   </div>
@@ -696,73 +740,97 @@ export function AssessmentForm() {
                   </h3>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                    <div className="space-y-2 flex flex-col">
-                      <label className="text-white text-sm font-semibold flex items-center gap-1">Occupation <span className="text-red-500">*</span></label>
-                      <div className="relative">
-                        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                          <Briefcase className={`h-4 w-4 ${errors.occupation ? 'text-red-500' : 'text-zinc-500'}`} />
-                        </div>
+                    <div className="space-y-2 flex flex-col mt-2">
+                      <div className="relative group/input">
                         <input
                           type="text"
+                          id="occupation"
                           value={occupation}
                           onChange={(e) => { setOccupation(e.target.value); clearError('occupation'); }}
-                          className={`${inputClasses('occupation')} pl-10`}
-                          placeholder="Enter occupation"
+                          className={`${inputClasses('occupation').replace('placeholder:text-zinc-600', 'placeholder-transparent')} pl-10 peer`}
+                          placeholder=" "
                         />
+                        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none z-10">
+                          <Briefcase className={`h-4 w-4 ${errors.occupation ? 'text-red-500' : 'text-zinc-500'} peer-focus:text-primary transition-colors`} />
+                        </div>
+                        <label 
+                          htmlFor="occupation"
+                          className={`absolute left-9 -top-2.5 bg-[#121212] px-1.5 text-[11px] transition-all duration-300 pointer-events-none rounded-md peer-placeholder-shown:text-sm peer-placeholder-shown:top-3.5 peer-placeholder-shown:left-10 peer-placeholder-shown:bg-transparent peer-focus:-top-2.5 peer-focus:left-9 peer-focus:text-[11px] peer-focus:bg-[#121212] ${errors.occupation ? 'text-red-500 peer-focus:text-red-500' : 'text-zinc-400 peer-focus:text-primary'} z-10`}
+                        >
+                          Occupation <span className="text-red-500">*</span>
+                        </label>
                       </div>
                       <ErrorMsg field="occupation" />
                     </div>
 
-                    <div className="space-y-2 flex flex-col">
-                      <label className="text-white text-sm font-semibold flex items-center gap-1">Average daily steps <span className="text-red-500">*</span></label>
-                      <div className="relative">
-                        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                          <Footprints className={`h-4 w-4 ${errors.steps ? 'text-red-500' : 'text-zinc-500'}`} />
-                        </div>
+                    <div className="space-y-2 flex flex-col mt-2">
+                      <div className="relative group/input">
                         <input
                           type="text"
+                          id="steps"
                           value={steps}
                           onChange={(e) => { setSteps(e.target.value); clearError('steps'); }}
-                          className={`${inputClasses('steps')} pl-10`}
-                          placeholder="e.g. 8000"
+                          className={`${inputClasses('steps').replace('placeholder:text-zinc-600', 'placeholder-transparent')} pl-10 peer`}
+                          placeholder=" "
                         />
+                        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none z-10">
+                          <Footprints className={`h-4 w-4 ${errors.steps ? 'text-red-500' : 'text-zinc-500'} peer-focus:text-primary transition-colors`} />
+                        </div>
+                        <label 
+                          htmlFor="steps"
+                          className={`absolute left-9 -top-2.5 bg-[#121212] px-1.5 text-[11px] transition-all duration-300 pointer-events-none rounded-md peer-placeholder-shown:text-sm peer-placeholder-shown:top-3.5 peer-placeholder-shown:left-10 peer-placeholder-shown:bg-transparent peer-focus:-top-2.5 peer-focus:left-9 peer-focus:text-[11px] peer-focus:bg-[#121212] ${errors.steps ? 'text-red-500 peer-focus:text-red-500' : 'text-zinc-400 peer-focus:text-primary'} z-10`}
+                        >
+                          Average daily steps <span className="text-red-500">*</span>
+                        </label>
                       </div>
                       <ErrorMsg field="steps" />
                     </div>
 
-                    <div className="space-y-2 flex flex-col">
-                      <label className="text-white text-sm font-semibold flex items-center gap-1">Sleep (hours) <span className="text-red-500">*</span></label>
-                      <div className="relative">
-                        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                          <Moon className={`h-4 w-4 ${errors.sleep ? 'text-red-500' : 'text-zinc-500'}`} />
-                        </div>
+                    <div className="space-y-2 flex flex-col mt-2">
+                      <div className="relative group/input">
                         <input
                           type="text"
+                          id="sleep"
                           value={sleep}
                           onChange={(e) => { setSleep(e.target.value); clearError('sleep'); }}
-                          className={`${inputClasses('sleep')} pl-10`}
-                          placeholder="e.g. 7-8"
+                          className={`${inputClasses('sleep').replace('placeholder:text-zinc-600', 'placeholder-transparent')} pl-10 peer`}
+                          placeholder=" "
                         />
+                        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none z-10">
+                          <Moon className={`h-4 w-4 ${errors.sleep ? 'text-red-500' : 'text-zinc-500'} peer-focus:text-primary transition-colors`} />
+                        </div>
+                        <label 
+                          htmlFor="sleep"
+                          className={`absolute left-9 -top-2.5 bg-[#121212] px-1.5 text-[11px] transition-all duration-300 pointer-events-none rounded-md peer-placeholder-shown:text-sm peer-placeholder-shown:top-3.5 peer-placeholder-shown:left-10 peer-placeholder-shown:bg-transparent peer-focus:-top-2.5 peer-focus:left-9 peer-focus:text-[11px] peer-focus:bg-[#121212] ${errors.sleep ? 'text-red-500 peer-focus:text-red-500' : 'text-zinc-400 peer-focus:text-primary'} z-10`}
+                        >
+                          Sleep (hours) <span className="text-red-500">*</span>
+                        </label>
                       </div>
                       <ErrorMsg field="sleep" />
                     </div>
 
-                    <div className="space-y-2 flex flex-col">
-                      <label className="text-white text-sm font-semibold flex items-center gap-1">Stress level <span className="text-red-500">*</span></label>
-                      <div className="relative">
-                        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none z-10">
-                          <Smile className={`h-4 w-4 ${errors.stress ? 'text-red-500' : 'text-zinc-500'}`} />
-                        </div>
+                    <div className="space-y-2 flex flex-col mt-2">
+                      <div className="relative group/input">
                         <select
+                          id="stress"
                           value={stress}
                           onChange={(e) => { setStress(e.target.value); clearError('stress'); }}
-                          className={`${selectClasses('stress')} pl-10 relative z-0`}
+                          className={`${selectClasses('stress')} pl-10 relative z-0 peer appearance-none ${!stress ? 'text-transparent' : 'text-white'}`}
                         >
-                          <option value="" disabled className="text-zinc-600">Select stress level</option>
-                          <option value="low">Low</option>
-                          <option value="moderate">Moderate</option>
-                          <option value="high">High</option>
+                          <option value="" disabled className="hidden"> </option>
+                          <option value="low" className="text-white">Low</option>
+                          <option value="moderate" className="text-white">Moderate</option>
+                          <option value="high" className="text-white">High</option>
                         </select>
+                        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none z-10">
+                          <Smile className={`h-4 w-4 ${errors.stress ? 'text-red-500' : 'text-zinc-500'} peer-focus:text-primary transition-colors`} />
+                        </div>
+                        <label 
+                          htmlFor="stress"
+                          className={`absolute left-9 px-1.5 transition-all duration-300 pointer-events-none rounded-md z-10 ${!stress ? 'top-3.5 text-sm bg-transparent peer-focus:-top-2.5 peer-focus:text-[11px] peer-focus:bg-[#121212]' : '-top-2.5 text-[11px] bg-[#121212]'} ${errors.stress ? 'text-red-500 peer-focus:text-red-500' : 'text-zinc-400 peer-focus:text-primary'}`}
+                        >
+                          Stress level <span className="text-red-500">*</span>
+                        </label>
                         <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none text-zinc-500 z-10">
                           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path></svg>
                         </div>
@@ -805,11 +873,11 @@ export function AssessmentForm() {
                     </div>
 
                     <div className="col-span-1 md:col-span-6 grid grid-cols-1 sm:grid-cols-3 gap-4 xl:gap-6">
-                      <div className="flex flex-col justify-between">
+                      <div className="flex flex-col justify-end">
                         <label className="text-white text-xs xl:text-sm font-semibold mb-2 leading-tight">
                           Number of meals/day <span className="text-red-500">*</span>
                         </label>
-                        <div className="relative mt-auto">
+                        <div className="relative">
                           <select
                             value={meals}
                             onChange={(e) => { setMeals(e.target.value); clearError('meals'); }}
@@ -827,22 +895,22 @@ export function AssessmentForm() {
                         <ErrorMsg field="meals" />
                       </div>
 
-                      <div className="flex flex-col justify-between">
+                      <div className="flex flex-col justify-end">
                         <label className="text-white text-xs xl:text-sm font-semibold mb-2 leading-tight">
                           Do you consume alcohol? <span className="text-red-500">*</span>
                         </label>
-                        <div className="grid grid-cols-2 gap-2 mt-auto">
+                        <div className="grid grid-cols-2 gap-2">
                           <button type="button" onClick={() => { setAlcohol('Yes'); clearError('alcohol'); }} className={`h-11 xl:h-12 rounded-lg border text-sm font-bold transition-all ${alcohol === 'Yes' ? 'bg-primary/10 border-primary text-primary' : errors.alcohol ? 'border-red-500/50 text-red-500' : 'bg-[#1a1a1a] border-white/10 text-zinc-400 hover:border-white/20'}`}>Yes</button>
                           <button type="button" onClick={() => { setAlcohol('No'); clearError('alcohol'); }} className={`h-11 xl:h-12 rounded-lg border text-sm font-bold transition-all ${alcohol === 'No' ? 'bg-primary/10 border-primary text-primary' : errors.alcohol ? 'border-red-500/50 text-red-500' : 'bg-[#1a1a1a] border-white/10 text-zinc-400 hover:border-white/20'}`}>No</button>
                         </div>
                         <ErrorMsg field="alcohol" />
                       </div>
 
-                      <div className="flex flex-col justify-between">
+                      <div className="flex flex-col justify-end">
                         <label className="text-white text-xs xl:text-sm font-semibold mb-2 leading-tight">
                           Smoke/use tobacco? <span className="text-red-500">*</span>
                         </label>
-                        <div className="grid grid-cols-2 gap-2 mt-auto">
+                        <div className="grid grid-cols-2 gap-2">
                           <button type="button" onClick={() => { setTobacco('Yes'); clearError('tobacco'); }} className={`h-11 xl:h-12 rounded-lg border text-sm font-bold transition-all ${tobacco === 'Yes' ? 'bg-primary/10 border-primary text-primary' : errors.tobacco ? 'border-red-500/50 text-red-500' : 'bg-[#1a1a1a] border-white/10 text-zinc-400 hover:border-white/20'}`}>Yes</button>
                           <button type="button" onClick={() => { setTobacco('No'); clearError('tobacco'); }} className={`h-11 xl:h-12 rounded-lg border text-sm font-bold transition-all ${tobacco === 'No' ? 'bg-primary/10 border-primary text-primary' : errors.tobacco ? 'border-red-500/50 text-red-500' : 'bg-[#1a1a1a] border-white/10 text-zinc-400 hover:border-white/20'}`}>No</button>
                         </div>
@@ -1020,21 +1088,25 @@ export function AssessmentForm() {
                   </h3>
 
                   <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
-                    <div className="col-span-1 md:col-span-4 space-y-2 flex flex-col">
-                      <label className="text-white text-sm font-semibold flex items-center gap-1">
-                        Waist circumference (cm) <span className="text-red-500">*</span>
-                      </label>
-                      <div className="relative mt-2">
-                        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                          <Ruler className={`h-5 w-5 ${errors.waist ? 'text-red-500' : 'text-zinc-500'}`} />
-                        </div>
+                    <div className="col-span-1 md:col-span-4 space-y-2 flex flex-col mt-2">
+                      <div className="relative group/input">
                         <input
                           type="text"
+                          id="waist"
                           value={waist}
                           onChange={(e) => { setWaist(e.target.value); clearError('waist'); }}
-                          className={`${inputClasses('waist')} pl-12 py-4`}
-                          placeholder="Enter measurement"
+                          className={`${inputClasses('waist').replace('placeholder:text-zinc-600', 'placeholder-transparent')} pl-10 peer`}
+                          placeholder=" "
                         />
+                        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none z-10">
+                          <Ruler className={`h-4 w-4 ${errors.waist ? 'text-red-500' : 'text-zinc-500'} peer-focus:text-primary transition-colors`} />
+                        </div>
+                        <label 
+                          htmlFor="waist"
+                          className={`absolute left-9 -top-2.5 bg-[#121212] px-1.5 text-[11px] transition-all duration-300 pointer-events-none rounded-md peer-placeholder-shown:text-sm peer-placeholder-shown:top-3.5 peer-placeholder-shown:left-10 peer-placeholder-shown:bg-transparent peer-focus:-top-2.5 peer-focus:left-9 peer-focus:text-[11px] peer-focus:bg-[#121212] ${errors.waist ? 'text-red-500 peer-focus:text-red-500' : 'text-zinc-400 peer-focus:text-primary'} z-10`}
+                        >
+                          Waist circumference (cm) <span className="text-red-500">*</span>
+                        </label>
                       </div>
                       <ErrorMsg field="waist" />
                     </div>
@@ -1045,20 +1117,18 @@ export function AssessmentForm() {
                         <label className="text-white text-sm font-semibold flex items-center gap-1">
                           Progress Photos
                         </label>
-                        <label className="border-2 border-dashed border-white/20 rounded-xl bg-[#1a1a1a]/50 p-8 flex flex-col items-center justify-center text-center cursor-pointer hover:bg-[#1a1a1a] hover:border-primary/50 transition-all mt-2 h-40 group block">
+                        <label className="border-2 border-dashed border-white/20 rounded-xl bg-[#1a1a1a]/50 p-2 flex flex-col items-center justify-center text-center cursor-pointer hover:bg-[#1a1a1a] hover:border-primary/50 transition-all h-16 group block">
                           <input
                             type="file"
                             className="hidden"
                             accept="image/jpeg, image/png"
                             onChange={(e) => setPhysiqueImage(e.target.files?.[0] || null)}
                           />
-                          <div className="w-12 h-12 rounded-full border border-primary/20 bg-primary/5 flex items-center justify-center text-primary mb-3 group-hover:scale-110 transition-transform mx-auto">
-                            <Camera className="w-6 h-6" />
-                          </div>
+
                           <p className="text-sm text-zinc-300 font-medium truncate w-full px-4">
                             {physiqueImage ? physiqueImage.name : "Click to choose files or drag here"}
                           </p>
-                          <p className="text-xs text-zinc-500 mt-2">JPG, PNG (Max. 10MB)</p>
+                          <p className="text-xs text-zinc-500 mt-1">JPG, PNG (Max. 10MB)</p>
                         </label>
                       </div>
 
@@ -1067,20 +1137,18 @@ export function AssessmentForm() {
                         <label className="text-white text-sm font-semibold flex items-center gap-1">
                           Recent blood work
                         </label>
-                        <label className="border-2 border-dashed border-white/20 rounded-xl bg-[#1a1a1a]/50 p-8 flex flex-col items-center justify-center text-center cursor-pointer hover:bg-[#1a1a1a] hover:border-primary/50 transition-all mt-2 h-40 group block">
+                        <label className="border-2 border-dashed border-white/20 rounded-xl bg-[#1a1a1a]/50 p-2 flex flex-col items-center justify-center text-center cursor-pointer hover:bg-[#1a1a1a] hover:border-primary/50 transition-all h-16 group block">
                           <input
                             type="file"
                             className="hidden"
                             accept=".pdf, image/jpeg, image/png"
                             onChange={(e) => setBloodReport(e.target.files?.[0] || null)}
                           />
-                          <div className="w-12 h-12 rounded-full border border-primary/20 bg-primary/5 flex items-center justify-center text-primary mb-3 group-hover:scale-110 transition-transform mx-auto">
-                            <FileText className="w-6 h-6" />
-                          </div>
+
                           <p className="text-sm text-zinc-300 font-medium truncate w-full px-4">
                             {bloodReport ? bloodReport.name : "Click to choose files or drag here"}
                           </p>
-                          <p className="text-xs text-zinc-500 mt-2">PDF, JPG (Max. 10MB)</p>
+                          <p className="text-xs text-zinc-500 mt-1">PDF, JPG (Max. 10MB)</p>
                         </label>
                       </div>
                     </div>
