@@ -1,4 +1,8 @@
 import nodemailer from 'nodemailer';
+import dns from 'dns';
+
+// Force DNS to use IPv4 first to prevent ENETUNREACH on IPv6 addresses in Render
+dns.setDefaultResultOrder('ipv4first');
 
 // Create a transporter using Gmail SMTP with explicit host and port
 const transporter = nodemailer.createTransport({
