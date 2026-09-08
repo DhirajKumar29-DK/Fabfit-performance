@@ -74,6 +74,7 @@ export default function TestimonialsAdminPage() {
       const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/upload`, {
         method: 'POST',
         body: fd,
+        credentials: 'include',
       });
       const data = await res.json();
       if (res.ok && data.url) {
@@ -81,11 +82,12 @@ export default function TestimonialsAdminPage() {
       } else {
         alert('Upload failed: ' + (data.message || 'Unknown error'));
       }
-    } catch (err) {
+    } catch (err: any) {
       console.error('Upload error:', err);
-      alert('Error uploading image');
+      alert('Error uploading image: ' + err.message);
     } finally {
       setIsUploading(false);
+      if (e.target) e.target.value = '';
     }
   };
 

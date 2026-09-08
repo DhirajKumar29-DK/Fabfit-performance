@@ -186,7 +186,8 @@ export default function TeamMembersPage() {
         const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/upload`, {
           method: 'POST',
           body: uploadData,
-        });
+        credentials: 'include',
+      });
         const data = await response.json();
         if (data.success) {
           setFormData(prev => ({ ...prev, image: data.url }));
@@ -440,7 +441,7 @@ export default function TeamMembersPage() {
                     <div className="w-full h-48 rounded-lg border-2 border-dashed border-gray-300 relative overflow-hidden bg-gray-50 hover:bg-gray-100 transition-colors flex flex-col items-center justify-center cursor-pointer">
                       {formData.image ? (
                         <>
-                          <img src={formData.image} alt="Preview" className="absolute inset-0 w-full h-full object-cover" />
+                          <img src={formData.image} alt="Preview" className="absolute inset-0 w-full h-full object-contain object-bottom" />
                           <div className="absolute inset-0 bg-black/40 flex flex-col items-center justify-center opacity-0 hover:opacity-100 transition-opacity">
                             <UploadCloud className="text-white mb-2" size={24} />
                             <span className="text-white text-xs font-bold">Change Image</span>
@@ -501,13 +502,20 @@ export default function TeamMembersPage() {
                 
                 {/* Visual Card mimicking Frontend */}
                 <div className="relative h-[400px] w-full overflow-hidden">
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0c] via-[#0a0a0c]/40 to-transparent z-10" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0c] via-[#0a0a0c]/20 to-transparent z-10" />
                   <img
                     src={viewingMember.image}
                     alt={viewingMember.name}
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-cover object-top"
                   />
                   
+                  {/* Category Badge over the image */}
+                  <div className="absolute bottom-5 left-6 z-20">
+                    <span className="inline-block px-3 py-1.5 bg-black/40 backdrop-blur-md text-[#FFD700] border border-[#FFD700]/30 text-xs font-bold tracking-wider rounded-md shadow-lg">
+                      {viewingMember.category}
+                    </span>
+                  </div>
+
                   {/* Social Links Preview */}
                   <div className="absolute top-6 right-6 z-20 flex flex-col gap-3">
                     {viewingMember.instagramUrl && (
@@ -523,15 +531,12 @@ export default function TeamMembersPage() {
                   </div>
                 </div>
 
-                <div className="relative z-20 p-8 -mt-20">
+                <div className="relative z-20 px-6 pb-6 pt-5">
                   <div className="mb-2">
-                    <span className="inline-block px-3 py-1 bg-[#FFD700]/20 text-[#FFD700] text-xs font-bold tracking-wider uppercase rounded-full mb-3 backdrop-blur-sm border border-[#FFD700]/20">
-                      {viewingMember.category}
-                    </span>
-                    <h3 className="font-heading text-2xl lg:text-3xl font-black text-white uppercase tracking-tight">
+                    <h3 className="font-heading text-2xl lg:text-3xl font-black tracking-tight drop-shadow-md bg-gradient-to-r from-white via-white to-[#FFD700] bg-clip-text text-transparent">
                       {viewingMember.name}
                     </h3>
-                    <p className="text-zinc-300 font-semibold text-sm uppercase tracking-widest mt-1">
+                    <p className="text-white/80 font-semibold text-sm tracking-widest mt-1">
                       {viewingMember.specialization}
                     </p>
                   </div>

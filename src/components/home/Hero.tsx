@@ -16,12 +16,16 @@ export function Hero() {
       try {
         const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/heroes`);
         const result = await response.json();
-        
+
         if (result.success && result.data && result.data.length > 0) {
           // Filter for active ones and sort by displayOrder
           const activeHeroes = result.data
             .filter((h: any) => h.status === 'ACTIVE')
-            .sort((a: any, b: any) => a.displayOrder - b.displayOrder);
+            .sort((a: any, b: any) => {
+              const orderA = typeof a.displayOrder === 'number' ? a.displayOrder : Number(a.displayOrder || 0);
+              const orderB = typeof b.displayOrder === 'number' ? b.displayOrder : Number(b.displayOrder || 0);
+              return orderA - orderB;
+            });
 
           if (activeHeroes.length > 0) {
             // Map backend schema to frontend format
@@ -36,7 +40,7 @@ export function Hero() {
               src: h.backgroundImage,
               type: "image" // Backend currently only supports images
             }));
-            
+
             setHeroSlides(dynamicSlides);
           }
         }
@@ -53,7 +57,7 @@ export function Hero() {
     const timer = setInterval(() => {
       setCurrentSlide((prev) => (prev === heroSlides.length - 1 ? 0 : prev + 1));
     }, 4000); // 4 seconds for a relaxed pace
-    
+
     return () => clearInterval(timer);
   }, [heroSlides.length]);
 
@@ -73,41 +77,46 @@ export function Hero() {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 1.5, ease: "easeInOut" }}
-          className="absolute inset-0 z-0 flex justify-end"
+          className="absolute inset-0 z-0"
         >
-          <div
-            className="w-full lg:w-[70%] h-full relative"
-            style={{
-              WebkitMaskImage: 'linear-gradient(to right, transparent 0%, black 40%)',
-              maskImage: 'linear-gradient(to right, transparent 0%, black 40%)'
-            }}
-          >
+          <div className="w-full h-full relative">
             {slide.type === "video" ? (
-              <video
-                src={slide.src}
-                autoPlay
-                muted
-                loop
-                playsInline
-                className="w-full h-full object-contain object-center grayscale contrast-[1.2] brightness-[0.7]"
-              />
+              <>
+                <video
+                  src={slide.src || undefined}
+                  autoPlay muted loop playsInline
+                  className="absolute inset-0 w-full h-full object-cover scale-110 blur-xl opacity-40 brightness-[0.4]"
+                />
+                <video
+                  src={slide.src || undefined}
+                  autoPlay muted loop playsInline
+                  className="relative w-full h-full object-contain object-center z-10 brightness-[0.8]"
+                />
+              </>
             ) : (
-              <img
-                src={slide.src}
-                alt="Hero Slide"
-                className="w-full h-full object-contain object-center grayscale contrast-[1.2] brightness-[0.7]"
-              />
+              <>
+                <img
+                  src={slide.src || undefined}
+                  alt="Hero Slide Background"
+                  className="absolute inset-0 w-full h-full object-cover scale-110 blur-2xl opacity-30 brightness-[0.3]"
+                />
+                <img
+                  src={slide.src || undefined}
+                  alt="Hero Slide"
+                  className="relative w-full h-full object-contain object-center z-10 brightness-[0.85] drop-shadow-2xl"
+                />
+              </>
             )}
 
-            {/* Extra gradient overlays for vertical blending */}
-            <div className="absolute inset-0 bg-gradient-to-b from-[#050505]/60 via-transparent to-transparent h-40" />
-            <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-[#050505]/40 to-transparent h-40 bottom-0 top-auto" />
+            {/* Extra gradient overlays for vertical blending and text readability */}
+            <div className="absolute inset-0 bg-gradient-to-r from-[#050505]/90 via-[#050505]/50 to-transparent z-10" />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-transparent to-[#050505]/30 z-10" />
           </div>
         </motion.div>
       </AnimatePresence>
 
       {/* Content Overlay */}
-      <div className="container relative z-10 mx-auto px-4 md:px-8">
+      <div className="container relative z-20 mx-auto px-4 md:px-8">
         <div className="max-w-2xl relative h-[400px] flex items-center">
           <AnimatePresence mode="wait">
             <motion.div
@@ -119,12 +128,12 @@ export function Hero() {
               className="absolute left-0 w-full"
             >
               {/* Eyebrow */}
-              <div className="text-primary text-sm font-bold tracking-widest uppercase mb-4">
+              <div className="text-primary text-sm font-bold tracking-widest mb-4">
                 {slide.badge}
               </div>
 
               {/* Headings */}
-              <h1 className="font-heading text-5xl md:text-7xl lg:text-[80px] font-black text-white leading-[1.05] uppercase mb-6">
+              <h1 className="font-heading text-5xl md:text-7xl lg:text-[80px] font-black text-white leading-[1.05] mb-6">
                 {slide.headingLine1} <br />
                 <span className="text-primary">{slide.headingLine2}</span>
               </h1>
@@ -139,14 +148,14 @@ export function Hero() {
                 <Link
                   href="/assessment"
                   target="_blank"
-                  className="group inline-flex items-center justify-center h-12 px-8 bg-primary text-black font-bold tracking-wide uppercase transition-all hover:bg-white hover:shadow-[0_0_20px_rgba(var(--primary-rgb),0.4)] rounded-[4px]"
+                  className="group inline-flex items-center justify-center h-12 px-8 bg-primary text-black font-bold tracking-wide transition-all hover:bg-white hover:shadow-[0_0_20px_rgba(var(--primary-rgb),0.4)] rounded-[4px]"
                 >
                   {slide.primaryCTA}
                   <ArrowRight className="ml-2 h-4 w-4 stroke-[3] transition-transform group-hover:translate-x-1" />
                 </Link>
                 <Link
                   href="/#programs"
-                  className="inline-flex items-center justify-center h-12 px-8 border border-zinc-600 text-white font-bold tracking-wide uppercase transition-all hover:bg-white/10 hover:border-white rounded-[4px]"
+                  className="inline-flex items-center justify-center h-12 px-8 border border-zinc-600 text-white font-bold tracking-wide transition-all hover:bg-white/10 hover:border-white rounded-[4px]"
                 >
                   {slide.secondaryCTA}
                 </Link>

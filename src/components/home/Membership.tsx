@@ -69,7 +69,8 @@ export function Membership() {
         if (plansRes.ok) {
           const plansData = await plansRes.json();
           if (plansData.success && plansData.data && plansData.data.length > 0) {
-            setPlans(plansData.data);
+            const sortedPlans = [...plansData.data].sort((a: any, b: any) => (Number(a.displayOrder) || 0) - (Number(b.displayOrder) || 0));
+            setPlans(sortedPlans);
           }
         }
       } catch (error) {

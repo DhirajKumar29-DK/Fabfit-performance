@@ -86,15 +86,21 @@ export default function TransformationCardsPage() {
       const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/upload`, {
         method: 'POST',
         body: data,
+        credentials: 'include',
       });
       const json = await response.json();
       if (json.success) {
         setFormData(prev => ({ ...prev, beforeImage: json.url }));
+      } else {
+        alert("Upload failed: " + (json.message || "Unknown error"));
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error("Upload error:", error);
+      alert("Upload error: " + error.message);
     } finally {
       setIsUploading(false);
+      // Reset input value to allow selecting same file again
+      if (e.target) e.target.value = '';
     }
   };
 
@@ -110,15 +116,21 @@ export default function TransformationCardsPage() {
       const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/upload`, {
         method: 'POST',
         body: data,
+        credentials: 'include',
       });
       const json = await response.json();
       if (json.success) {
         setFormData(prev => ({ ...prev, afterImage: json.url }));
+      } else {
+        alert("Upload failed: " + (json.message || "Unknown error"));
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error("Upload error:", error);
+      alert("Upload error: " + error.message);
     } finally {
       setIsUploadingAfter(false);
+      // Reset input value to allow selecting same file again
+      if (e.target) e.target.value = '';
     }
   };
 

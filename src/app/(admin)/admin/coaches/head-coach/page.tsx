@@ -184,7 +184,8 @@ export default function HeadCoachPage() {
         const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/upload`, {
           method: 'POST',
           body: uploadData,
-        });
+        credentials: 'include',
+      });
         const data = await response.json();
         if (data.success) {
           setFormData(prev => ({ ...prev, image: data.url }));

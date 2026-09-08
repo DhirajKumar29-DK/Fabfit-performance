@@ -37,7 +37,8 @@ export function Services() {
           const data = await response.json();
           const fetchedItems = data.success ? data.data : data;
           if (Array.isArray(fetchedItems) && fetchedItems.length > 0) {
-            setApiServices(fetchedItems);
+            const sortedItems = [...fetchedItems].sort((a: any, b: any) => (Number(a.displayOrder) || 0) - (Number(b.displayOrder) || 0));
+            setApiServices(sortedItems);
           }
         }
       } catch (error) {

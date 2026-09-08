@@ -168,6 +168,7 @@ export default function AboutPage() {
     if (file) {
       if (file.size > 50 * 1024 * 1024) {
         alert("File size must be less than 50MB");
+        if (e.target) e.target.value = '';
         return;
       }
       
@@ -179,7 +180,8 @@ export default function AboutPage() {
         const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/upload`, {
           method: 'POST',
           body: uploadData,
-        });
+        credentials: 'include',
+      });
         
         const data = await response.json();
         if (data.success) {
@@ -192,6 +194,47 @@ export default function AboutPage() {
         alert('Error uploading image');
       } finally {
         setIsUploading(false);
+        if (e.target) e.target.value = '';
+      }
+    }
+  };
+
+  const handleImageReplace = async (e: React.ChangeEvent<HTMLInputElement>, index: number) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      if (file.size > 50 * 1024 * 1024) {
+        alert("File size must be less than 50MB");
+        if (e.target) e.target.value = '';
+        return;
+      }
+      
+      const uploadData = new FormData();
+      uploadData.append('image', file);
+      
+      setIsUploading(true);
+      try {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/upload`, {
+          method: 'POST',
+          body: uploadData,
+          credentials: 'include',
+        });
+        
+        const data = await response.json();
+        if (data.success) {
+          setFormData(prev => {
+            const newImages = [...prev.images];
+            newImages[index] = data.url;
+            return { ...prev, images: newImages };
+          });
+        } else {
+          alert('Upload failed: ' + data.message);
+        }
+      } catch (error) {
+        console.error('Error uploading image:', error);
+        alert('Error uploading image');
+      } finally {
+        setIsUploading(false);
+        if (e.target) e.target.value = '';
       }
     }
   };
@@ -453,8 +496,14 @@ export default function AboutPage() {
                       {formData.images.map((img, idx) => (
                         <div key={idx} className="relative group rounded-lg overflow-hidden border border-zinc-300 aspect-square">
                           <img src={img} alt={`Preview ${idx}`} className="w-full h-full object-cover" />
-                          <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
-                            <button onClick={() => removeImage(idx)} className="p-1.5 bg-red-500/80 hover:bg-red-600 rounded text-white"><Trash2 size={16} /></button>
+                          <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center gap-2">
+                            <label className="cursor-pointer bg-white/20 hover:bg-white/30 text-white px-3 py-1.5 rounded text-xs font-medium backdrop-blur-sm transition-colors mb-1">
+                              <input type="file" accept="image/*" className="hidden" onChange={(e) => handleImageReplace(e, idx)} disabled={isUploading} />
+                              Replace
+                            </label>
+                            <button onClick={() => removeImage(idx)} className="px-2 py-1 bg-red-500/80 hover:bg-red-600 rounded text-white text-[10px] font-bold tracking-wider flex items-center gap-1 transition-colors">
+                              <Trash2 size={12} /> Remove
+                            </button>
                           </div>
                         </div>
                       ))}

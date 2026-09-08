@@ -79,7 +79,8 @@ export function ClientTestimonials() {
         if (res.ok) {
           const data = await res.json();
           if (data.success && data.data && data.data.length > 0) {
-            setReviews(data.data.map(toReviewCard));
+            const sortedData = [...data.data].sort((a: any, b: any) => (Number(a.displayOrder) || 0) - (Number(b.displayOrder) || 0));
+            setReviews(sortedData.map(toReviewCard));
           }
         }
       } catch (err) {

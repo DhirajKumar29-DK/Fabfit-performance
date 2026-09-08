@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname, useRouter } from 'next/navigation';
+import Logo from '@/assets/logo.png';
 import { 
   LayoutDashboard, 
   Users, 
@@ -142,7 +143,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       <aside className={`fixed md:static inset-y-0 left-0 z-30 w-64 bg-[#050505] border-r border-zinc-800 transform transition-transform duration-300 ease-in-out flex flex-col ${sidebarOpen ? '-translate-x-full md:translate-x-0' : 'translate-x-0'}`}>
         <div className="h-16 flex items-center justify-between px-6 border-b border-zinc-800">
           <div className="flex items-center">
-            <img src="/logo.png" alt="FabFit Logo" className="h-8 md:h-10 w-auto object-contain" />
+            <img src={Logo.src} alt="FabFit Logo" className="h-8 md:h-10 w-auto object-contain" />
           </div>
           <button onClick={() => setSidebarOpen(true)} className="md:hidden text-zinc-400 hover:text-white">
             <X size={20} />

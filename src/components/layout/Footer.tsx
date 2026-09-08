@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
+import Logo from "@/assets/logo.png";
 import { motion } from "framer-motion";
 import {
   MapPin,
@@ -63,6 +64,12 @@ export function Footer() {
       {/* Top golden border */}
       <div className="h-px w-full bg-gradient-to-r from-transparent via-primary/60 to-transparent" />
 
+      {/* BG gym machine image - subtle, light enough to see */}
+      <div
+        className="absolute inset-0 bg-cover bg-center bg-fixed opacity-[0.12]"
+        style={{ backgroundImage: "url('https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=2000&auto=format&fit=crop')" }}
+      />
+
       {/* Ambient glow */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[700px] h-[300px] bg-primary/5 rounded-full blur-[120px] pointer-events-none" />
 
@@ -97,7 +104,7 @@ export function Footer() {
           <div className="lg:col-span-1 flex flex-col gap-6">
             <Link href="/" className="inline-block">
               <Image
-                src="/logo.png"
+                src={Logo}
                 alt="FabFit Performance"
                 width={160}
                 height={160}

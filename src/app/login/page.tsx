@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
+import Logo from '@/assets/logo.png';
 import { Eye, EyeOff, Loader2, Dumbbell } from 'lucide-react';
 import { motion } from 'framer-motion';
 
@@ -79,7 +80,7 @@ export default function LoginPage() {
       <div className="hidden lg:flex lg:w-1/2 relative bg-zinc-900 overflow-hidden">
         <div className="absolute inset-0 z-10 bg-gradient-to-t from-zinc-950 via-zinc-950/40 to-transparent" />
         <Image 
-          src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=1470&auto=format&fit=crop"
+          src="/fabfit.jpeg"
           alt="Fitness Training"
           fill
           className="object-cover opacity-80"
@@ -111,7 +112,7 @@ export default function LoginPage() {
         >
           {/* Logo Name */}
           <div className="flex items-center gap-3 mb-10">
-            <Image src="/logo.png" alt="FabFit Logo" width={48} height={48} className="object-contain" />
+            <Image src={Logo} alt="FabFit Logo" width={48} height={48} className="object-contain" />
             <h1 className="text-2xl font-black tracking-tight text-white">
               Fab<span className="text-amber-500">Fit</span> <span className="font-light text-zinc-400">Performance</span>
             </h1>

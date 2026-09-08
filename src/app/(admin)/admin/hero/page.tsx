@@ -202,6 +202,7 @@ export default function HeroPage() {
         const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/upload`, {
           method: 'POST',
           body: formData,
+          credentials: 'include',
         });
         
         const data = await response.json();
@@ -235,41 +236,40 @@ export default function HeroPage() {
   };
 
   return (
-    <div className="flex flex-col h-full bg-[#f8f9fa] min-w-0 w-full overflow-hidden">
-      <div className="flex-1 flex flex-col transition-all duration-300 min-w-0">
-        <div className="p-0 sm:p-2 md:p-8 flex-1 overflow-y-auto overflow-x-hidden w-full">
-          {/* Header */}
-          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6 sm:mb-8">
-            <div>
-              <h1 className="text-2xl font-bold text-gray-900">Hero Section</h1>
-              <p className="text-gray-500 text-sm mt-1">Manage website hero sections</p>
-            </div>
-            <div className="flex items-center gap-2 sm:gap-3 w-full sm:w-auto">
-              {selectedIds.length > 0 && (
-                <button 
-                  onClick={triggerBulkDelete}
-                  className="flex items-center gap-2 px-4 py-2.5 bg-red-50 text-red-600 rounded-lg hover:bg-red-100 font-medium text-sm shadow-sm transition-colors border border-red-200"
-                >
-                  <Trash2 size={16} />
-                  Delete Selected ({selectedIds.length})
-                </button>
-              )}
-              <button 
-                onClick={openAddModal}
-                className="flex items-center gap-2 px-5 py-2.5 bg-primary text-black rounded-lg hover:bg-primary-hover font-medium text-sm shadow-sm transition-colors"
-              >
-                <Plus size={16} />
-                Add Hero
-              </button>
-            </div>
+    <div className="flex flex-col h-full gap-4">
+        
+        {/* Header */}
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
+          <div>
+            <h1 className="text-2xl font-bold text-gray-900">Hero Section</h1>
+            <p className="text-gray-500 text-sm mt-1">Manage website hero sections</p>
           </div>
+          <div className="flex items-center gap-3">
+            {selectedIds.length > 0 && (
+              <button 
+                onClick={triggerBulkDelete}
+                className="flex items-center gap-2 px-4 py-2.5 bg-red-50 text-red-600 rounded-lg hover:bg-red-100 font-medium text-sm shadow-sm transition-colors border border-red-200"
+              >
+                <Trash2 size={16} />
+                Delete Selected ({selectedIds.length})
+              </button>
+            )}
+            <button 
+              onClick={openAddModal}
+              className="flex items-center gap-2 px-4 py-2 bg-primary text-black rounded-lg hover:bg-primary-hover font-medium text-sm shadow-sm transition-colors"
+            >
+              <Plus size={16} />
+              Add Hero
+            </button>
+          </div>
+        </div>
 
-          {/* Table */}
-          <div className="bg-white rounded-xl shadow-[0_2px_10px_-3px_rgba(6,81,237,0.1)] border border-zinc-200 overflow-hidden">
-            <div className="overflow-x-auto w-full">
+        {/* Table */}
+        <div className="bg-white rounded-xl shadow-sm border border-zinc-200 flex flex-col min-h-0 flex-1">
+          <div className="overflow-y-auto flex-1 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
             <table className="w-full text-left border-collapse min-w-[800px]">
-              <thead>
-                <tr className="border-b border-zinc-200 bg-zinc-50">
+              <thead className="sticky top-0 z-10 shadow-sm">
+                <tr className="border-b border-zinc-200 bg-gray-50">
                   <th className="py-4 pl-6 pr-2 w-10">
                     <input 
                       type="checkbox" 
@@ -357,8 +357,6 @@ export default function HeroPage() {
               </div>
             )}
           </div>
-        </div>
-      </div>
 
       {/* Modal */}
       {isModalOpen && (

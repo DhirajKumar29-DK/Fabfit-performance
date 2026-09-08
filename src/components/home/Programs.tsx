@@ -143,9 +143,9 @@ export function Programs() {
     visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" as const } }
   };
 
-  const regularPrograms = programsList.filter(p => !p.isFeatured && p.status === 'ACTIVE').sort((a,b) => a.displayOrder - b.displayOrder);
   const featuredProgram = programsList.find(p => p.isFeatured && p.status === 'ACTIVE');
-  const activeHighlights = highlights.filter(h => h.status === 'ACTIVE').sort((a,b) => a.displayOrder - b.displayOrder);
+  const regularPrograms = programsList.filter(p => !p.isFeatured && p.status === 'ACTIVE').sort((a, b) => (Number(a.displayOrder) || 0) - (Number(b.displayOrder) || 0));
+  const activeHighlights = highlights.filter(h => h.status === 'ACTIVE').sort((a, b) => (Number(a.displayOrder) || 0) - (Number(b.displayOrder) || 0));
 
   return (
     <section ref={sectionRef} id="programs" className="bg-[#050505] relative overflow-hidden py-12 md:py-16 min-h-[600px]">

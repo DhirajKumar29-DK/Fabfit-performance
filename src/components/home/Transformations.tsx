@@ -53,7 +53,8 @@ export function Transformations() {
         const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/transformations?public=true`);
         const json = await res.json();
         if (json.success && json.data) {
-          setCardsData(json.data);
+          const sortedCards = [...json.data].sort((a: any, b: any) => (Number(a.displayOrder) || 0) - (Number(b.displayOrder) || 0));
+          setCardsData(sortedCards);
         }
       } catch (error) {
         console.error("Failed to fetch transformation cards:", error);
@@ -189,7 +190,7 @@ export function Transformations() {
                       <div className="absolute top-4 left-1/2 -translate-x-1/2 z-30 bg-zinc-800/90 border border-zinc-600 text-zinc-300 text-[9px] font-bold px-3 py-1 tracking-widest uppercase rounded">
                         BEFORE
                       </div>
-                      <img src={item.beforeImage} alt="Before" className="absolute inset-0 w-full h-full object-cover object-center grayscale-[50%] transition-transform duration-700 group-hover:scale-110" />
+                      <img src={item.beforeImage || undefined} alt="Before" className="absolute inset-0 w-full h-full object-cover object-center grayscale-[50%] transition-transform duration-700 group-hover:scale-110" />
                     </div>
 
                     {/* After */}
@@ -197,7 +198,7 @@ export function Transformations() {
                       <div className="absolute top-4 left-1/2 -translate-x-1/2 z-30 bg-primary border border-primary text-black text-[9px] font-black px-3 py-1 tracking-widest uppercase rounded shadow-[0_0_10px_rgba(var(--primary-rgb),0.5)]">
                         AFTER
                       </div>
-                      <img src={item.afterImage} alt="After" className="absolute inset-0 w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-110" />
+                      <img src={item.afterImage || undefined} alt="After" className="absolute inset-0 w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-110" />
                     </div>
                   </div>
                 </motion.div>
@@ -255,12 +256,12 @@ export function Transformations() {
                   
                   {/* Before */}
                   <div className="w-1/2 h-full relative overflow-hidden">
-                    <img src={item.beforeImage} className="absolute inset-0 w-full h-full object-cover object-center grayscale-[30%] transition-transform duration-700 group-hover:scale-110" />
+                    <img src={item.beforeImage || undefined} className="absolute inset-0 w-full h-full object-cover object-center grayscale-[30%] transition-transform duration-700 group-hover:scale-110" />
                   </div>
                   
                   {/* After */}
                   <div className="w-1/2 h-full relative overflow-hidden border-l border-zinc-800">
-                    <img src={item.afterImage} className="absolute inset-0 w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-110" />
+                    <img src={item.afterImage || undefined} className="absolute inset-0 w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-110" />
                   </div>
 
                   {/* Center Arrow Circle */}

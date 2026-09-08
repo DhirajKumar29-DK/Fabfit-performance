@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Logo from "@/assets/logo.png";
 import { Check, Trophy, Users, Shield, TrendingUp, Lock, Mountain } from "lucide-react";
 import Link from "next/link";
 
@@ -8,7 +9,7 @@ export function AssessmentSidebar() {
       {/* Top Logo */}
       <div className="p-6 pb-2 relative z-10">
         <Link href="/" className="flex items-center gap-3 group w-fit">
-          <img src="/logo.png" alt="Fab Fit Performance Logo" className="h-10 md:h-12 w-auto object-contain transition-transform duration-300 group-hover:scale-105" />
+          <img src={Logo.src} alt="Fab Fit Performance Logo" className="h-10 md:h-12 w-auto object-contain transition-transform duration-300 group-hover:scale-105" />
         </Link>
       </div>
 

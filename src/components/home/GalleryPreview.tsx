@@ -42,7 +42,8 @@ export function GalleryPreview() {
         if (res.ok) {
           const data = await res.json();
           if (data.success) {
-            setItems(data.data);
+            const sortedItems = [...data.data].sort((a: any, b: any) => (Number(a.displayOrder) || 0) - (Number(b.displayOrder) || 0));
+            setItems(sortedItems);
           }
         }
       } catch (e) {

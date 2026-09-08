@@ -67,21 +67,14 @@ export function Contact() {
     <section ref={sectionRef} id="contact" className="bg-[#020202] relative overflow-hidden py-12 md:py-16 border-t border-zinc-900">
       
       {/* Left Column Background Image */}
-      <div className="absolute top-0 left-0 w-full lg:w-1/2 h-full opacity-30 pointer-events-none z-0">
+      <div className="absolute top-0 left-0 w-full lg:w-1/2 h-full opacity-60 pointer-events-none z-0">
         <img 
-          src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=1200&auto=format&fit=crop" 
-          alt="Gym Background" 
-          className="w-full h-full object-cover grayscale brightness-50"
+          src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=1470&auto=format&fit=crop" 
+          alt="Gym Consultation Background" 
+          className="w-full h-full object-cover grayscale brightness-75"
         />
         <div className="absolute inset-0 bg-gradient-to-r from-[#020202]/80 via-[#020202]/50 to-[#020202] lg:to-transparent"></div>
         <div className="absolute inset-0 bg-gradient-to-t from-[#020202] via-transparent to-[#020202]"></div>
-        
-        {/* Wall Text */}
-        <div className="absolute top-[40%] right-[10%] flex flex-col items-start transform -rotate-2 opacity-60">
-          <span className="font-heading text-3xl md:text-4xl lg:text-5xl text-zinc-500 uppercase tracking-tighter">DISCIPLINE</span>
-          <span className="font-heading text-3xl md:text-4xl lg:text-5xl text-primary uppercase tracking-tighter">DEDICATION</span>
-          <span className="font-heading text-3xl md:text-4xl lg:text-5xl text-primary uppercase tracking-tighter">TRANSFORMATION</span>
-        </div>
       </div>
 
       <div className="container mx-auto px-4 md:px-8 relative z-10 max-w-[1400px]">
@@ -118,33 +111,20 @@ export function Contact() {
               {contact.info.map((item) => {
                 const isEmail = item.type === 'email';
                 const isPhone = item.type === 'phone';
-                const isClickable = isEmail || isPhone;
+                const isAddress = item.type === 'address';
                 
-                // For phone use tel:, for email use Gmail compose URL to bypass mailto: issues
+                // For phone use tel:, for email use Gmail compose URL, for address use Google Maps
                 const href = isPhone 
-                  ? `tel:${item.details.replace(/[^\d+]/g, '')}` 
+                  ? `tel:${item.details.replace(/[^\\d+]/g, '')}` 
                   : isEmail 
                   ? `https://mail.google.com/mail/?view=cm&fs=1&to=${item.details}` 
+                  : isAddress
+                  ? `https://maps.google.com/?q=${encodeURIComponent(item.details)}`
                   : undefined;
-                
-                const DetailsText = href ? (
-                  <a 
-                    href={href}
-                    target={isEmail ? "_blank" : undefined}
-                    rel={isEmail ? "noopener noreferrer" : undefined}
-                    className="text-zinc-400 text-sm font-medium leading-relaxed whitespace-pre-line transition-colors hover:text-primary hover:underline inline-block group-hover:text-zinc-300 w-max"
-                  >
-                    {item.details}
-                  </a>
-                ) : (
-                  <span className="text-zinc-400 text-sm font-medium leading-relaxed whitespace-pre-line transition-colors group-hover:text-zinc-300">
-                    {item.details}
-                  </span>
-                );
 
                 const InnerContent = (
-                  <div className="flex flex-col gap-4 group h-full">
-                    <div className="w-12 h-12 rounded-2xl bg-zinc-900 border border-white/5 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-black transition-all duration-500 shadow-lg shrink-0 group-hover:scale-110 group-hover:-rotate-3">
+                  <div className="flex flex-col gap-4 h-full">
+                    <div className="w-12 h-12 rounded-2xl bg-zinc-900 border border-white/5 flex items-center justify-center text-primary hover:bg-primary hover:text-black transition-all duration-500 shadow-lg shrink-0 hover:scale-110 hover:-rotate-3">
                       {item.type === 'phone' && <PhoneIcon />}
                       {item.type === 'email' && <EmailIcon />}
                       {item.type === 'address' && <MapPinIcon />}
@@ -152,14 +132,27 @@ export function Contact() {
                     </div>
                     <div className="flex flex-col">
                       <span className="text-white font-black text-xs tracking-widest uppercase mb-1.5">{item.title}</span>
-                      {DetailsText}
+                      <span className={`text-zinc-400 text-sm font-medium leading-relaxed whitespace-pre-line transition-colors ${href ? 'hover:text-primary hover:underline' : ''}`}>
+                        {item.details}
+                      </span>
                     </div>
                   </div>
                 );
 
                 return (
                   <motion.div key={item.id} variants={itemVariants} className="h-full">
-                    {InnerContent}
+                    {href ? (
+                      <a 
+                        href={href}
+                        target={isEmail || isAddress ? "_blank" : undefined}
+                        rel={isEmail || isAddress ? "noopener noreferrer" : undefined}
+                        className="block h-full cursor-pointer"
+                      >
+                        {InnerContent}
+                      </a>
+                    ) : (
+                      InnerContent
+                    )}
                   </motion.div>
                 );
               })}

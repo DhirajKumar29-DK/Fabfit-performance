@@ -2,7 +2,8 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { Menu, X, ArrowRight, Mountain } from "lucide-react";
+import Logo from "@/assets/logo.png";
+import { Menu, X, ArrowRight } from "lucide-react";
 
 const navbarData = {
   links: [
@@ -19,7 +20,7 @@ const navbarData = {
   cta: "BOOK ASSESSMENT"
 };
 
-const USE_DYNAMIC_CMS = true; // Enabled for testing
+const USE_DYNAMIC_CMS = true;
 
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -27,34 +28,24 @@ export function Navbar() {
   const [dynamicLinks, setDynamicLinks] = useState(navbarData.links);
   const navbar = { ...navbarData, links: dynamicLinks };
 
-  // Track active link (hardcoded for now, can be dynamic later)
-  const activeLink = "HOME";
-
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50);
     };
-    
-    // Initialize immediately on mount
     handleScroll();
-    
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   useEffect(() => {
     if (USE_DYNAMIC_CMS) {
-      // Fetch dynamic structure
       fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/page-structure`)
         .then(res => res.json())
         .then(data => {
           if (data.success && data.data) {
-            // Convert page sections to navbar links
-            // Filter out inactive sections
             const activeSections = data.data.filter((s: any) => s.isActive);
             const newLinks = activeSections.map((s: any) => ({
               name: s.title,
-              // Map sectionId back to href logic (special cases can be handled here)
               href: `/#${s.sectionId === 'membership' ? 'pricing' : s.sectionId}`
             }));
             setDynamicLinks(newLinks);
@@ -64,34 +55,44 @@ export function Navbar() {
     }
   }, []);
 
+  // ✅ Core fix: always scroll to target element, even if URL hash is already the same
+  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    // Only handle hash links on the home page
+    if (!href.startsWith("/#")) return;
+
+    e.preventDefault();
+    const sectionId = href.replace("/#", "");
+
+    if (sectionId === "home") {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      window.history.pushState(null, "", "/#home");
+      return;
+    }
+
+    const el = document.getElementById(sectionId);
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth", block: "start" });
+      // Update URL without triggering a navigation
+      window.history.pushState(null, "", href);
+    }
+  };
+
   return (
     <div className="fixed w-full z-50 top-0 left-0">
-      {/* 
-        We use a separate absolute div for the background that only toggles opacity. 
-        This prevents the browser's compositing engine from "breaking" or glitching 
-        the backdrop-blur when switching classes. 
-      */}
       <div
-        className={`absolute inset-0 bg-[#050505]/60 backdrop-blur-md border-b border-white/10 shadow-lg transition-opacity duration-300 pointer-events-none ${isScrolled ? "opacity-100" : "opacity-0"
-          }`}
+        className={`absolute inset-0 bg-[#050505]/60 backdrop-blur-md border-b border-white/10 shadow-lg transition-opacity duration-300 pointer-events-none ${isScrolled ? "opacity-100" : "opacity-0"}`}
       />
 
       <nav className="w-full h-[72px] flex items-center px-4 md:px-8 lg:px-12 relative z-10">
 
         {/* Left: Brand / Logo */}
         <div className="flex-1 flex justify-start">
-          <Link 
-            href="/#home" 
+          <Link
+            href="/#home"
             className="flex items-center gap-3 group"
-            onClick={(e) => {
-              if (window.location.pathname === "/") {
-                e.preventDefault();
-                window.scrollTo({ top: 0, behavior: "smooth" });
-                window.history.pushState(null, "", "/#home");
-              }
-            }}
+            onClick={(e) => handleNavClick(e, "/#home")}
           >
-            <img src="/logo.png" alt="FabFit Logo" className="h-10 md:h-12 w-auto object-contain" />
+            <img src={Logo.src} alt="FabFit Logo" className="h-10 md:h-12 w-auto object-contain" />
           </Link>
         </div>
 
@@ -101,13 +102,7 @@ export function Navbar() {
             <Link
               key={link.name}
               href={link.href}
-              onClick={(e) => {
-                if ((link.href === "/" || link.href === "/#home") && window.location.pathname === "/") {
-                  e.preventDefault();
-                  window.scrollTo({ top: 0, behavior: "smooth" });
-                  window.history.pushState(null, "", "/#home");
-                }
-              }}
+              onClick={(e) => handleNavClick(e, link.href)}
               className="group text-[11px] font-bold tracking-widest uppercase transition-colors duration-300 flex items-center h-full text-zinc-400 hover:text-primary"
             >
               <span className="relative">
@@ -149,20 +144,15 @@ export function Navbar() {
         <div className="lg:hidden absolute top-[72px] left-0 w-full bg-[#050505]/95 backdrop-blur-xl border-b border-white/10 shadow-2xl overflow-hidden">
           <div className="px-6 py-8 flex flex-col gap-6">
             {navbar.links.map((link) => (
-                <Link
-                  key={link.name}
-                  href={link.href}
-                  onClick={(e) => {
-                    setIsOpen(false);
-                    if ((link.href === "/" || link.href === "/#home") && window.location.pathname === "/") {
-                      e.preventDefault();
-                      window.scrollTo({ top: 0, behavior: "smooth" });
-                      window.history.pushState(null, "", "/#home");
-                    }
-                  }}
-                  className={`text-sm font-bold tracking-widest uppercase transition-colors ${activeLink === link.name ? "text-primary" : "text-white"
-                    }`}
-                >
+              <Link
+                key={link.name}
+                href={link.href}
+                onClick={(e) => {
+                  setIsOpen(false);
+                  handleNavClick(e, link.href);
+                }}
+                className="text-sm font-bold tracking-widest uppercase transition-colors text-white hover:text-primary"
+              >
                 {link.name}
               </Link>
             ))}
@@ -181,3 +171,5 @@ export function Navbar() {
     </div>
   );
 }
+
+

@@ -40,7 +40,8 @@ export function Trainers() {
           const membersData = await membersRes.json();
           const items = membersData.success ? membersData.data : membersData;
           if (Array.isArray(items)) {
-            setTeamMembers(items);
+            const sortedItems = [...items].sort((a: any, b: any) => (Number(a.displayOrder) || 0) - (Number(b.displayOrder) || 0));
+            setTeamMembers(sortedItems);
           }
         }
       } catch (error) {
@@ -153,12 +154,19 @@ export function Trainers() {
               >
                 {/* Card Image */}
                 <div className="relative h-[320px] w-full overflow-hidden">
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0c] via-[#0a0a0c]/40 to-transparent z-10" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0c] via-[#0a0a0c]/20 to-transparent z-10" />
                   <motion.img
                     src={trainerImage}
                     alt={trainerName}
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 ease-[0.16,1,0.3,1]"
+                    className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-110 ease-[0.16,1,0.3,1]"
                   />
+                  
+                  {/* Category Badge over the image */}
+                  <div className="absolute bottom-5 left-6 z-20">
+                    <span className="inline-block px-3 py-1.5 bg-black/40 backdrop-blur-md text-primary border border-primary/30 text-xs font-bold tracking-wider rounded-md shadow-lg">
+                      {trainerCategory}
+                    </span>
+                  </div>
                   
                   {/* Social Links on Hover */}
                   <div className="absolute top-6 right-6 z-20 flex flex-col gap-3 opacity-0 translate-x-4 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-500 ease-[0.16,1,0.3,1]">
@@ -186,15 +194,12 @@ export function Trainers() {
                 </div>
 
                 {/* Card Content */}
-                <div className="relative z-20 p-8 -mt-20">
+                <div className="relative z-20 px-6 pb-6 pt-5">
                   <div className="mb-2">
-                    <span className="inline-block px-3 py-1 bg-primary/20 text-primary text-xs font-bold tracking-wider uppercase rounded-full mb-3 backdrop-blur-sm border border-primary/20">
-                      {trainerCategory}
-                    </span>
-                    <h3 className="font-heading text-2xl md:text-3xl lg:text-4xl font-black text-white uppercase tracking-tight">
+                    <h3 className="font-heading text-2xl md:text-3xl lg:text-4xl font-black tracking-tight drop-shadow-md bg-gradient-to-r from-white via-white to-primary bg-clip-text text-transparent">
                       {trainerName}
                     </h3>
-                    <p className="text-zinc-300 font-semibold text-sm uppercase tracking-widest mt-1">
+                    <p className="text-white/80 font-semibold text-sm tracking-widest mt-1">
                       {trainerRole}
                     </p>
                   </div>
