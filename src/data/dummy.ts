@@ -194,7 +194,7 @@ export const homeData = {
     subHeader: "Have questions or ready to begin? Our team is here to help you achieve your best.",
     info: [
       { id: 1, type: "phone", title: "CALL US", details: "+91 92203 93004" },
-      { id: 2, type: "email", title: "EMAIL US", details: "info@fabfit.com" },
+      { id: 2, type: "email", title: "EMAIL US", details: "fabfitgym04@gmail.com" },
       { id: 3, type: "address", title: "VISIT US", details: "62C, 6th Floor, Supermart 1,\nDLF Phase-4, Gurgaon" },
       { id: 4, type: "hours", title: "OPENING HOURS", details: "Mon - Sun: 6:00 AM - 11:00 PM" }
     ],

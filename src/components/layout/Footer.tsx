@@ -17,16 +17,16 @@ import {
 // Inline SVGs for brand icons not in this lucide-react version
 const InstagramIcon = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4">
-    <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
-    <circle cx="12" cy="12" r="4"/>
-    <circle cx="17.5" cy="6.5" r="0.5" fill="currentColor" stroke="none"/>
+    <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
+    <circle cx="12" cy="12" r="4" />
+    <circle cx="17.5" cy="6.5" r="0.5" fill="currentColor" stroke="none" />
   </svg>
 );
 
 const YoutubeIcon = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4">
-    <path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46A2.78 2.78 0 0 0 1.46 6.42 29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58A2.78 2.78 0 0 0 3.41 19.6C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 0 0 1.95-1.95A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"/>
-    <polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02" fill="currentColor" stroke="none"/>
+    <path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46A2.78 2.78 0 0 0 1.46 6.42 29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58A2.78 2.78 0 0 0 3.41 19.6C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 0 0 1.95-1.95A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z" />
+    <polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02" fill="currentColor" stroke="none" />
   </svg>
 );
 
@@ -97,7 +97,7 @@ export function Footer() {
       </div>
 
       {/* Main Footer Grid */}
-      <div className="container mx-auto px-4 md:px-8 pt-14 pb-10">
+      <div className="relative z-10 container mx-auto px-4 md:px-8 pt-14 pb-10">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-14">
 
           {/* Brand Column */}
@@ -137,15 +137,19 @@ export function Footer() {
               <span className="w-4 h-px bg-primary inline-block" />
               Quick Links
             </h4>
-            <ul className="flex flex-col gap-3">
+            <ul className="flex flex-col gap-2">
               {navLinks.map(({ label, href }) => (
                 <li key={label}>
                   <Link
                     href={href}
-                    className="group flex items-center gap-2 text-zinc-500 hover:text-primary text-sm font-medium transition-colors duration-200"
+                    className="group flex items-center text-zinc-500 hover:text-primary text-sm font-medium transition-all duration-300 cursor-pointer w-full py-1"
                   >
-                    <ChevronRight className="w-3 h-3 opacity-0 group-hover:opacity-100 -ml-1 transition-all duration-200 text-primary" />
-                    {label}
+                    <span className="relative flex items-center">
+                      <ChevronRight className="absolute -left-4 w-3 h-3 opacity-0 -translate-x-2 group-hover:translate-x-0 group-hover:opacity-100 transition-all duration-300 text-primary" />
+                      <span className="transition-transform duration-300 group-hover:translate-x-3">
+                        {label}
+                      </span>
+                    </span>
                   </Link>
                 </li>
               ))}
@@ -197,29 +201,29 @@ export function Footer() {
               <span className="w-4 h-px bg-primary inline-block" />
               Get In Touch
             </h4>
-            <div className="flex flex-col gap-4">
+            <div className="flex flex-col gap-2">
               <a
                 href="tel:+919220393004"
-                className="flex items-center gap-3 text-zinc-500 hover:text-primary text-sm font-medium transition-colors duration-200"
+                className="group flex items-center gap-3 text-zinc-500 hover:text-primary text-sm font-medium transition-all duration-300 cursor-pointer w-full py-1.5 hover:translate-x-2"
               >
-                <Phone className="w-4 h-4 text-primary shrink-0" />
-                +91 92203 93004
+                <Phone className="w-4 h-4 text-primary shrink-0 transition-transform duration-300 group-hover:scale-125" />
+                <span>+91 92203 93004</span>
               </a>
               <a
                 href="https://wa.me/919220393004"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-3 text-zinc-500 hover:text-primary text-sm font-medium transition-colors duration-200"
+                className="group flex items-center gap-3 text-zinc-500 hover:text-primary text-sm font-medium transition-all duration-300 cursor-pointer w-full py-1.5 hover:translate-x-2"
               >
-                <MessageCircle className="w-4 h-4 text-primary shrink-0" />
-                WhatsApp Us
+                <MessageCircle className="w-4 h-4 text-primary shrink-0 transition-transform duration-300 group-hover:scale-125" />
+                <span>WhatsApp Us</span>
               </a>
               <a
-                href="mailto:info@fabfitperformance.com"
-                className="flex items-center gap-3 text-zinc-500 hover:text-primary text-sm font-medium transition-colors duration-200"
+                href="mailto:fabfitgym04@gmail.com"
+                className="group flex items-center gap-3 text-zinc-500 hover:text-primary text-sm font-medium transition-all duration-300 cursor-pointer w-full py-1.5 hover:translate-x-2"
               >
-                <Mail className="w-4 h-4 text-primary shrink-0" />
-                info@fabfitperformance.com
+                <Mail className="w-4 h-4 text-primary shrink-0 transition-transform duration-300 group-hover:scale-125" />
+                <span>fabfitgym04@gmail.com</span>
               </a>
             </div>
           </div>

@@ -75,9 +75,10 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="flex flex-col w-full">
+    <main className="flex flex-col w-full">
+      <h1 className="sr-only">FabFit Performance - Premium Gym & Elite Fitness Coaching in Gurgaon</h1>
       {USE_DYNAMIC_CMS && dynamicComponents ? dynamicComponents : staticOrder}
-    </div>
+    </main>
   );
 }
 
