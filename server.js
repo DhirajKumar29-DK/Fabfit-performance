@@ -1,12 +1,19 @@
 const path = require('path');
 const fs = require('fs');
 const dotenv = require('dotenv');
+const next = require('next');
 
 // Load environment variables
 dotenv.config({ path: path.join(__dirname, '.env') });
 dotenv.config({ path: path.join(__dirname, '.env.production') });
 dotenv.config({ path: path.join(__dirname, 'server/.env') });
 
+// Detect environment & configuration
+const isHostingerProd = __dirname.includes('/domains/') || __dirname.includes('\\domains\\');
+if (!process.env.NODE_ENV && isHostingerProd) {
+  process.env.NODE_ENV = 'production';
+}
+const dev = process.env.NODE_ENV !== 'production';
 const PORT = process.env.PORT || 5000;
 
 // Ensure Prisma Client is generated if missing
@@ -42,20 +49,51 @@ try {
   process.exit(1);
 }
 
-// Start Combined Server
-const server = app.listen(PORT, () => {
-  console.log(`\n==================================================`);
-  console.log(`🚀 Combined FabFit Server is Running!`);
-  console.log(`🌐 Website & Frontend: http://localhost:${PORT}`);
-  console.log(`⚙️  Backend API Base:   http://localhost:${PORT}/api`);
-  console.log(`📚 Swagger API Docs:   http://localhost:${PORT}/swagger-docs`);
-  console.log(`==================================================\n`);
+// Initialize Next.js app
+const nextApp = next({ dev, dir: __dirname });
+const nextHandler = nextApp.getRequestHandler();
+
+// Serve Next.js static files efficiently in production
+const nextStaticDir = path.join(__dirname, '.next', 'static');
+if (fs.existsSync(nextStaticDir)) {
+  const express = require('express');
+  app.use('/_next/static', express.static(nextStaticDir, {
+    maxAge: '1y',
+    immutable: true,
+  }));
+}
+
+// Delegate all other routes to Next.js Frontend (Express 5 compatible catch-all)
+app.use((req, res) => {
+  return nextHandler(req, res);
 });
 
-// Handle graceful shutdown
-process.on('SIGTERM', () => {
-  console.log('SIGTERM signal received: closing server');
-  server.close(() => {
-    console.log('Server closed cleanly');
+// Prepare Next.js and start unified server
+nextApp.prepare().then(() => {
+  const server = app.listen(PORT, () => {
+    console.log(`\n==================================================`);
+    console.log(`🚀 Unified FabFit Server is Running!`);
+    console.log(`🌐 Frontend (Next.js): http://localhost:${PORT}`);
+    console.log(`⚙️  Backend API (Express): http://localhost:${PORT}/api`);
+    console.log(`📚 Swagger Docs: http://localhost:${PORT}/swagger-docs`);
+    console.log(`⚡ Mode: ${dev ? 'Development' : 'Production'}`);
+    console.log(`==================================================\n`);
   });
+
+  // Handle graceful shutdown
+  const handleShutdown = () => {
+    console.log('Shutdown signal received: closing server cleanly...');
+    server.close(() => {
+      console.log('Server closed.');
+      process.exit(0);
+    });
+  };
+
+  process.on('SIGTERM', handleShutdown);
+  process.on('SIGINT', handleShutdown);
+}).catch((err) => {
+  console.error('❌ Failed to prepare Next.js application:', err);
+  process.exit(1);
 });
+
+module.exports = app;
