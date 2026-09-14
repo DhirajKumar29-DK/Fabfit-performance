@@ -71,7 +71,7 @@ export default function TestimonialsAdminPage() {
     try {
       const fd = new FormData();
       fd.append('image', file); // must match multer field name
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/upload`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || ''}/api/upload`, {
         method: 'POST',
         body: fd,
         credentials: 'include',

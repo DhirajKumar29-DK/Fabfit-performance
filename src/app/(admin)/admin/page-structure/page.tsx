@@ -182,7 +182,7 @@ export default function PageStructureAdmin() {
 
   const fetchSections = async () => {
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/page-structure`);
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || ''}/api/page-structure`);
       const data = await res.json();
       if (data.success) {
         setSections(data.data);
@@ -230,7 +230,7 @@ export default function PageStructureAdmin() {
     setIsSaving(true);
     setMessage(null);
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/page-structure/bulk-update`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || ''}/api/page-structure/bulk-update`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include', 

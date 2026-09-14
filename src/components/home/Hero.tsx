@@ -14,7 +14,7 @@ export function Hero() {
     // Fetch dynamic heroes from backend
     const fetchHeroes = async () => {
       try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/heroes`);
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || ''}/api/heroes`);
         const result = await response.json();
 
         if (result.success && result.data && result.data.length > 0) {

@@ -1,14 +1,19 @@
-const API_BASE_URL = `${(process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000').replace(/\/api$/, '')}/api`;
+import { getApiBaseUrl } from '@/lib/apiConfig';
+
+const getUrl = (endpoint: string) => {
+  const base = getApiBaseUrl();
+  const cleanEndpoint = endpoint.startsWith('/') ? endpoint : `/${endpoint}`;
+  return `${base}/api${cleanEndpoint}`;
+};
 
 export const api = {
   get: async (endpoint: string) => {
-    // Placeholder GET
-    return fetch(`${API_BASE_URL}${endpoint}`, {
+    return fetch(getUrl(endpoint), {
       credentials: 'include',
     });
   }, 
   post: async (endpoint: string, data: any) => {
-    return fetch(`${API_BASE_URL}${endpoint}`, {
+    return fetch(getUrl(endpoint), {
       method: 'POST',
       credentials: 'include',
       headers: {
@@ -18,7 +23,7 @@ export const api = {
     });
   },
   patch: async (endpoint: string, data: any) => {
-    return fetch(`${API_BASE_URL}${endpoint}`, {
+    return fetch(getUrl(endpoint), {
       method: 'PATCH',
       credentials: 'include',
       headers: {
@@ -28,7 +33,7 @@ export const api = {
     });
   },
   put: async (endpoint: string, data: any) => {
-    return fetch(`${API_BASE_URL}${endpoint}`, {
+    return fetch(getUrl(endpoint), {
       method: 'PUT',
       credentials: 'include',
       headers: {
@@ -38,7 +43,7 @@ export const api = {
     });
   },
   delete: async (endpoint: string) => {
-    return fetch(`${API_BASE_URL}${endpoint}`, {
+    return fetch(getUrl(endpoint), {
       method: 'DELETE',
       credentials: 'include',
     });

@@ -38,7 +38,7 @@ export function Transformations() {
   useEffect(() => {
     const fetchSection = async () => {
       try {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/transformation-section?public=true`);
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || ''}/api/transformation-section?public=true`);
         const json = await res.json();
         if (json.success && json.data) {
           setSectionData(json.data);
@@ -50,7 +50,7 @@ export function Transformations() {
     
     const fetchCards = async () => {
       try {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/transformations?public=true`);
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || ''}/api/transformations?public=true`);
         const json = await res.json();
         if (json.success && json.data) {
           const sortedCards = [...json.data].sort((a: any, b: any) => (Number(a.displayOrder) || 0) - (Number(b.displayOrder) || 0));

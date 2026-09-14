@@ -39,7 +39,7 @@ export function Navbar() {
 
   useEffect(() => {
     if (USE_DYNAMIC_CMS) {
-      fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/page-structure`)
+      fetch(`${process.env.NEXT_PUBLIC_API_URL || ''}/api/page-structure`)
         .then(res => res.json())
         .then(data => {
           if (data.success && data.data) {

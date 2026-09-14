@@ -83,7 +83,7 @@ export default function TransformationCardsPage() {
     data.append('image', file);
 
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/upload`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || ''}/api/upload`, {
         method: 'POST',
         body: data,
         credentials: 'include',
@@ -113,7 +113,7 @@ export default function TransformationCardsPage() {
     data.append('image', file);
 
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/upload`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || ''}/api/upload`, {
         method: 'POST',
         body: data,
         credentials: 'include',

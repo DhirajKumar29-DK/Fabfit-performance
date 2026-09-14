@@ -18,7 +18,7 @@ import { homeData } from "@/data/dummy";
 
 async function getServiceBySlug(slug: string) {
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/services/${slug}`, { next: { revalidate: 10 } });
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || ''}/api/services/${slug}`, { next: { revalidate: 10 } });
     if (!res.ok) return null;
     const json = await res.json();
     return json.success ? json.data : null;
@@ -30,7 +30,7 @@ async function getServiceBySlug(slug: string) {
 
 export async function generateStaticParams() {
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/services?public=true`);
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || ''}/api/services?public=true`);
     if (res.ok) {
       const json = await res.json();
       const services = json.success ? json.data : json;

@@ -1,5 +1,5 @@
 /** @type {import('next').NextConfig} */
-const backendUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
+const backendUrl = process.env.NEXT_PUBLIC_API_URL || '';
 let backendHostname = 'localhost';
 let backendPort = '5000';
 let backendProtocol = 'http';

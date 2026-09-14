@@ -75,7 +75,7 @@ export default function DashboardPage() {
 
   const fetchStats = async () => {
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/visitors/dashboard`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || ''}/api/visitors/dashboard`, {
         credentials: 'include',
       });
       const data = await response.json();

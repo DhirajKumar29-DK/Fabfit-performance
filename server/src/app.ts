@@ -4,6 +4,7 @@ import cookieParser from 'cookie-parser';
 import swaggerUi from 'swagger-ui-express';
 import swaggerJsDoc from 'swagger-jsdoc';
 import path from 'path';
+import fs from 'fs';
 import { errorHandler } from './middlewares/errorHandler';
 import assessmentRoutes from './modules/assessment/assessment.routes';
 import heroRoutes from './modules/hero/hero.routes';
@@ -33,8 +34,23 @@ const app: Application = express();
 app.use(express.json({ limit: '50mb' })); 
 app.use(express.urlencoded({ limit: '50mb', extended: true }));
 app.use(cookieParser());
+const allowedOrigins = [
+  'http://localhost:3000',
+  'http://localhost:5000',
+  'https://fabfitperformance.com',
+  'https://www.fabfitperformance.com',
+  'http://fabfitperformance.com',
+  process.env.FRONTEND_URL
+].filter(Boolean);
+
 app.use(cors({
-  origin: process.env.FRONTEND_URL || 'http://localhost:3000',
+  origin: (origin, callback) => {
+    if (!origin || allowedOrigins.includes(origin) || origin.endsWith('fabfitperformance.com')) {
+      callback(null, true);
+    } else {
+      callback(null, true);
+    }
+  },
   credentials: true
 })); 
 
@@ -93,5 +109,30 @@ app.use('/swagger-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 // Global Error Handler should always be the last middleware
 app.use(errorHandler);
+
+// Serve exported Next.js frontend if out directory exists
+const outDirectory = path.join(__dirname, '../../out');
+if (fs.existsSync(outDirectory)) {
+  app.use(express.static(outDirectory));
+  app.use((req: Request, res: Response, next) => {
+    if (req.method === 'GET' && !req.path.startsWith('/api') && !req.path.startsWith('/uploads') && !req.path.startsWith('/swagger-docs')) {
+      const cleanPath = req.path.replace(/^\/|\/$/g, '');
+      const htmlFile = cleanPath === '' ? 'index.html' : `${cleanPath}.html`;
+      const targetPath = path.join(outDirectory, htmlFile);
+      if (fs.existsSync(targetPath)) {
+        return res.sendFile(targetPath);
+      }
+      const indexFallback = path.join(outDirectory, cleanPath, 'index.html');
+      if (fs.existsSync(indexFallback)) {
+        return res.sendFile(indexFallback);
+      }
+      const notFoundPath = path.join(outDirectory, '404.html');
+      if (fs.existsSync(notFoundPath)) {
+        return res.status(404).sendFile(notFoundPath);
+      }
+    }
+    next();
+  });
+}
 
 export default app;

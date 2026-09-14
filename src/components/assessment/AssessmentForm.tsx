@@ -174,7 +174,7 @@ export function AssessmentForm() {
         if (physiqueImage) formData.append('physiqueImage', physiqueImage);
         if (bloodReport) formData.append('bloodReport', bloodReport);
 
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/assessments`, {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || ''}/api/assessments`, {
           method: 'POST',
           body: formData
         });

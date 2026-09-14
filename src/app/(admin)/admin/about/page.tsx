@@ -177,7 +177,7 @@ export default function AboutPage() {
       
       setIsUploading(true);
       try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/upload`, {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || ''}/api/upload`, {
           method: 'POST',
           body: uploadData,
         credentials: 'include',
@@ -213,7 +213,7 @@ export default function AboutPage() {
       
       setIsUploading(true);
       try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/upload`, {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || ''}/api/upload`, {
           method: 'POST',
           body: uploadData,
           credentials: 'include',
