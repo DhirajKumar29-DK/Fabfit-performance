@@ -1,0 +1,14 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.testimonialRoutes = void 0;
+const express_1 = require("express");
+const testimonial_controller_1 = require("./testimonial.controller");
+const auth_middleware_1 = require("../../middlewares/auth.middleware");
+const router = (0, express_1.Router)();
+const controller = new testimonial_controller_1.TestimonialController();
+router.get('/', controller.getAll.bind(controller));
+router.get('/:id', controller.getById.bind(controller));
+router.post('/', auth_middleware_1.authenticateAdmin, controller.create.bind(controller));
+router.patch('/:id', auth_middleware_1.authenticateAdmin, controller.update.bind(controller));
+router.delete('/:id', auth_middleware_1.authenticateAdmin, controller.delete.bind(controller));
+exports.testimonialRoutes = router;

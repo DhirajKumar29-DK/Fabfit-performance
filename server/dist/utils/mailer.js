@@ -1,0 +1,60 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.sendAssessmentEmail = void 0;
+const nodemailer_1 = __importDefault(require("nodemailer"));
+const dns_1 = __importDefault(require("dns"));
+// Force DNS to use IPv4 first to prevent ENETUNREACH on IPv6 addresses in Render
+dns_1.default.setDefaultResultOrder('ipv4first');
+// Create a transporter using Gmail SMTP with explicit host and port
+const transporter = nodemailer_1.default.createTransport({
+    host: 'smtp.gmail.com',
+    port: 465,
+    secure: true,
+    auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_APP_PASSWORD,
+    },
+});
+const sendAssessmentEmail = async (assessmentData) => {
+    // If credentials are not set, log and return early without failing
+    if (!process.env.EMAIL_USER || !process.env.EMAIL_APP_PASSWORD) {
+        console.warn("EMAIL_USER or EMAIL_APP_PASSWORD not set. Assessment email skipped.");
+        return;
+    }
+    const adminPanelUrl = process.env.ADMIN_PANEL_URL || 'http://localhost:3000';
+    const assessmentLink = `${adminPanelUrl}/admin/assessments?id=${assessmentData.id}`;
+    const mailOptions = {
+        from: `"FabFit Notifications" <${process.env.EMAIL_USER}>`,
+        to: process.env.EMAIL_USER, // Sending to yourself
+        subject: `New Assessment Form: ${assessmentData.firstName} ${assessmentData.lastName}`,
+        html: `
+      <h2>New Assessment Submitted!</h2>
+      <p>A new assessment form has been successfully saved in the database.</p>
+      
+      <h3>Key Details:</h3>
+      <ul>
+        <li><strong>Name:</strong> ${assessmentData.firstName} ${assessmentData.lastName}</li>
+        <li><strong>Email:</strong> ${assessmentData.email}</li>
+        <li><strong>Phone:</strong> ${assessmentData.phone}</li>
+        <li><strong>Age:</strong> ${assessmentData.age}</li>
+        <li><strong>Primary Goal:</strong> ${assessmentData.primaryGoal}</li>
+      </ul>
+      
+      <br />
+      <p>Click the link below to view the full details in the Admin Panel:</p>
+      <a href="${assessmentLink}" style="padding: 10px 15px; background-color: #000; color: #fff; text-decoration: none; border-radius: 5px;">View Full Assessment</a>
+    `,
+    };
+    try {
+        const info = await transporter.sendMail(mailOptions);
+        console.log(`Assessment notification email sent: ${info.messageId}`);
+    }
+    catch (error) {
+        console.error("Failed to send assessment notification email:", error);
+        // We intentionally catch the error here so it doesn't crash the main controller
+    }
+};
+exports.sendAssessmentEmail = sendAssessmentEmail;

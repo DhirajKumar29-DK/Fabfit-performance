@@ -41,7 +41,7 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 server/node_modules/
-server/dist/  
+# server/dist/ (included for shared host deployments where build steps don't run)
 
 # Ignore uploaded files from local testing
 server/public/uploads/*

@@ -23,6 +23,9 @@ try {
   }
 } catch (err) {
   console.error('❌ Failed to load Express backend app:', err);
+  if (!fs.existsSync(path.join(__dirname, 'server/dist/app.js'))) {
+    console.error('💡 TIP: server/dist/app.js was not found and tsx execution failed on server. Please run "npm run build" to compile the backend into JavaScript before deploying.');
+  }
   process.exit(1);
 }
 
