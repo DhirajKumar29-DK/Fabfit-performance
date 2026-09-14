@@ -5,7 +5,7 @@
     "scripts": {
         "dev": "concurrently \"npm run dev:ui\" \"npm run dev:api\"",
         "build": "npm run build:frontend && npm run build:backend",
-        "build:frontend": "next build",
+        "build:frontend": "next build --webpack",
         "build:backend": "cd server && npm run build",
         "start": "cd server && npm start",
         "lint": "eslint",
