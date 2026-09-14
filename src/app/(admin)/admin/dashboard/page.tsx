@@ -87,6 +87,21 @@ export default function DashboardPage() {
     }
   };
 
+  const handleResetVisitors = async () => {
+    if (!confirm("Are you sure you want to reset the Website Visitors count to 0?")) return;
+    try {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || ''}/api/visitors/reset`, {
+        method: 'POST',
+        credentials: 'include',
+      });
+      if (response.ok) {
+        setStats(prev => prev ? { ...prev, totalVisitors: 0 } : null);
+      }
+    } catch (error) {
+      console.error('Failed to reset visitors count:', error);
+    }
+  };
+
   return (
     <div className="space-y-8 p-1">
 
@@ -128,6 +143,15 @@ export default function DashboardPage() {
                     <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-violet-400 opacity-60" />
                     <span className="relative inline-flex rounded-full h-5 w-5 bg-violet-500 items-center justify-center text-white text-[10px] font-black">N</span>
                   </span>
+                )}
+                {key === 'totalVisitors' && (
+                  <button
+                    onClick={handleResetVisitors}
+                    className="text-[10px] font-bold text-gray-400 hover:text-red-600 bg-gray-100 hover:bg-red-50 border border-gray-200 rounded px-2 py-1 transition-colors"
+                    title="Reset visitor counter to 0"
+                  >
+                    Reset to 0
+                  </button>
                 )}
               </div>
 
