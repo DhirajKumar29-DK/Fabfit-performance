@@ -2,7 +2,8 @@ import { getApiBaseUrl } from '@/lib/apiConfig';
 
 const getUrl = (endpoint: string) => {
   const base = getApiBaseUrl();
-  const cleanEndpoint = endpoint.startsWith('/') ? endpoint : `/${endpoint}`;
+  const formatted = endpoint.startsWith('/') ? endpoint : `/${endpoint}`;
+  const cleanEndpoint = formatted.length > 1 ? formatted.replace(/\/+$/, '') : formatted;
   return `${base}/api${cleanEndpoint}`;
 };
 

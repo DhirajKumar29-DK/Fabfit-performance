@@ -6,7 +6,11 @@
   "scripts": {
     "start": "node dist/server.js",
     "dev": "tsx watch src/server.ts",
-    "build": "npx prisma generate && tsc"
+    "build": "npx prisma generate && tsc",
+    "seed:admin": "npx tsx src/scripts/seedAdmin.ts"
+  },
+  "prisma": {
+    "seed": "npx tsx src/scripts/seedAdmin.ts"
   },
   "keywords": [],
   "author": "",
