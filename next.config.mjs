@@ -1,5 +1,4 @@
-import type { NextConfig } from "next";
-
+/** @type {import('next').NextConfig} */
 const backendUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
 let backendHostname = 'localhost';
 let backendPort = '5000';
@@ -14,14 +13,14 @@ try {
   console.error("Invalid NEXT_PUBLIC_API_URL:", backendUrl);
 }
 
-const nextConfig: NextConfig = {
+const nextConfig = {
   output: 'export',
   trailingSlash: true,
   images: {
     unoptimized: true,
     remotePatterns: [
       {
-        protocol: backendProtocol as "http" | "https",
+        protocol: backendProtocol,
         hostname: backendHostname,
         port: backendPort,
         pathname: '/uploads/**',
