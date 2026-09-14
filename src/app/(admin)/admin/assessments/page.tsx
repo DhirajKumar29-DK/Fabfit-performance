@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { Search, Filter, MoreVertical, Eye, RefreshCw, Download, Calendar, X, ChevronDown, Trash2 } from 'lucide-react';
 import { api } from '@/services/api';
+import { fixImageUrl } from '@/lib/apiConfig';
 import ConfirmDeleteModal from '@/components/ui/ConfirmDeleteModal';
 
 // Interface matching the backend Prisma schema
@@ -824,7 +825,7 @@ export default function AssessmentsPage() {
                             className="relative block aspect-square w-full rounded-xl overflow-hidden border border-zinc-200 hover:opacity-90 transition-opacity"
                             title="Click to view full size"
                           >
-                            <img src={selectedAssessment.physiqueImageUrl} alt="Physique" className="object-cover w-full h-full" />
+                            <img src={fixImageUrl(selectedAssessment.physiqueImageUrl)} alt="Physique" className="object-cover w-full h-full" />
                           </button>
                         ) : (
                           <div className="flex flex-col items-center justify-center h-48 bg-gray-50 rounded-xl border border-dashed border-gray-300">
@@ -877,7 +878,7 @@ export default function AssessmentsPage() {
             <X size={24} />
           </button>
           <img 
-            src={fullScreenImage} 
+            src={fixImageUrl(fullScreenImage)} 
             alt="Full size physique" 
             className="max-w-full max-h-[90vh] object-contain rounded-lg"
           />

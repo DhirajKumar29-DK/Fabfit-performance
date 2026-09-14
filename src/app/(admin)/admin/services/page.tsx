@@ -1,6 +1,7 @@
 'use client';
 import { useState, useEffect } from 'react';
 import { api } from '@/services/api';
+import { fixImageUrl } from '@/lib/apiConfig';
 import { Plus, Edit3, Trash2, X, UploadCloud, Eye } from 'lucide-react';
 import ConfirmDeleteModal from '@/components/ui/ConfirmDeleteModal';
 import * as LucideIcons from 'lucide-react';
@@ -302,7 +303,7 @@ export default function ServicesPage() {
                         </td>
                         <td className="py-4 px-6">
                           <div className="flex items-center gap-4">
-                            <img src={service.cardImage || 'https://via.placeholder.com/150'} alt={service.title} className="w-12 h-12 rounded-lg object-cover bg-gray-100" />
+                            <img src={fixImageUrl(service.cardImage) || 'https://via.placeholder.com/150'} alt={service.title} className="w-12 h-12 rounded-lg object-cover bg-gray-100" />
                             <div>
                               <p className="font-semibold text-gray-900 text-sm">{service.title}</p>
                               <p className="text-xs text-gray-500 mt-0.5">{service.slug}</p>
@@ -381,7 +382,7 @@ export default function ServicesPage() {
                       <label className="block text-sm font-medium text-gray-700 mb-2">Card Image *</label>
                       {formData.cardImage ? (
                         <div className="relative rounded-lg overflow-hidden border border-zinc-300 group">
-                          <img src={formData.cardImage} alt="Card Preview" className="w-full h-48 object-cover" />
+                          <img src={fixImageUrl(formData.cardImage)} alt="Card Preview" className="w-full h-48 object-cover" />
                           <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-3">
                             <label className="cursor-pointer bg-white text-gray-900 px-3 py-1.5 rounded text-sm font-medium shadow-sm hover:bg-gray-100 transition-colors">
                               Replace
@@ -404,7 +405,7 @@ export default function ServicesPage() {
                       <label className="block text-sm font-medium text-gray-700 mb-2">Hero Image *</label>
                       {formData.heroImage ? (
                         <div className="relative rounded-lg overflow-hidden border border-zinc-300 group">
-                          <img src={formData.heroImage} alt="Hero Preview" className="w-full h-48 object-cover" />
+                          <img src={fixImageUrl(formData.heroImage)} alt="Hero Preview" className="w-full h-48 object-cover" />
                           <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-3">
                             <label className="cursor-pointer bg-white text-gray-900 px-3 py-1.5 rounded text-sm font-medium shadow-sm hover:bg-gray-100 transition-colors">
                               Replace
@@ -611,7 +612,7 @@ export default function ServicesPage() {
                       <label className="block text-sm font-medium text-gray-700 mb-2">CTA Background Image (Optional)</label>
                       {formData.ctaImage ? (
                         <div className="relative rounded-lg overflow-hidden border border-zinc-300 group w-full md:w-1/2">
-                          <img src={formData.ctaImage} alt="CTA Preview" className="w-full h-40 object-cover" />
+                          <img src={fixImageUrl(formData.ctaImage)} alt="CTA Preview" className="w-full h-40 object-cover" />
                           <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-3">
                             <label className="cursor-pointer bg-white text-gray-900 px-3 py-1.5 rounded text-sm font-medium shadow-sm hover:bg-gray-100 transition-colors">
                               Replace

@@ -1,6 +1,7 @@
 'use client';
 import { useState, useEffect } from 'react';
 import { api } from '@/services/api';
+import { fixImageUrl } from '@/lib/apiConfig';
 import { Plus, Edit3, Trash2, X, UploadCloud, Eye } from 'lucide-react';
 import ConfirmDeleteModal from '@/components/ui/ConfirmDeleteModal';
 
@@ -286,7 +287,7 @@ export default function TeamMembersPage() {
                         <td className="px-6 py-4 whitespace-nowrap">
                           <div className="w-12 h-12 rounded-full overflow-hidden border border-zinc-300 bg-gray-100 cursor-pointer" onClick={() => setPreviewImage(member.image)}>
                             {member.image ? (
-                              <img src={member.image} alt={member.name} className="w-full h-full object-cover" />
+                              <img src={fixImageUrl(member.image)} alt={member.name} className="w-full h-full object-cover" />
                             ) : (
                               <div className="w-full h-full flex items-center justify-center text-[10px] text-gray-400">N/A</div>
                             )}
@@ -441,7 +442,7 @@ export default function TeamMembersPage() {
                     <div className="w-full h-48 rounded-lg border-2 border-dashed border-gray-300 relative overflow-hidden bg-gray-50 hover:bg-gray-100 transition-colors flex flex-col items-center justify-center cursor-pointer">
                       {formData.image ? (
                         <>
-                          <img src={formData.image} alt="Preview" className="absolute inset-0 w-full h-full object-contain object-bottom" />
+                          <img src={fixImageUrl(formData.image)} alt="Preview" className="absolute inset-0 w-full h-full object-contain object-bottom" />
                           <div className="absolute inset-0 bg-black/40 flex flex-col items-center justify-center opacity-0 hover:opacity-100 transition-opacity">
                             <UploadCloud className="text-white mb-2" size={24} />
                             <span className="text-white text-xs font-bold">Change Image</span>
@@ -504,7 +505,7 @@ export default function TeamMembersPage() {
                 <div className="relative h-[400px] w-full overflow-hidden">
                   <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0c] via-[#0a0a0c]/20 to-transparent z-10" />
                   <img
-                    src={viewingMember.image}
+                    src={fixImageUrl(viewingMember.image)}
                     alt={viewingMember.name}
                     className="w-full h-full object-cover object-top"
                   />
@@ -570,7 +571,7 @@ export default function TeamMembersPage() {
             >
               <X size={24} />
             </button>
-            <img src={previewImage} alt="Preview" className="max-w-full max-h-[90vh] object-contain rounded-lg shadow-2xl" />
+            <img src={fixImageUrl(previewImage)} alt="Preview" className="max-w-full max-h-[90vh] object-contain rounded-lg shadow-2xl" />
           </div>
         </div>
       )}

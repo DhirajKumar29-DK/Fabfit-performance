@@ -3,6 +3,7 @@
 import React, { useRef, useState, useEffect } from "react";
 import { homeData } from "@/data/dummy";
 import { motion, useInView, Variants } from "framer-motion";
+import { fixImageUrl } from "@/lib/apiConfig";
 
 // Custom SVG Icons
 const BicepIcon = () => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="text-primary"><path d="M20.2 11.5c-1-1.3-3.6-2.5-6.2-2.5V3c0-.6-.4-1-1-1H9C8.4 2 8 2.4 8 3v4c0 1.1-.9 2-2 2H4c-1.1 0-2 .9-2 2v2c0 3.3 2.7 6 6 6h1.4c.5 1.7 2.1 3 4.1 3 2.5 0 4.5-2 4.5-4.5 0-1.2-.5-2.3-1.3-3.1.5-.7 1.5-1.9 1.5-2.9 0-.3 0-.6-.1-.9z"/><path d="M12 9v4"/><path d="M16 13h-4"/></svg>;
@@ -190,7 +191,7 @@ export function Transformations() {
                       <div className="absolute top-4 left-1/2 -translate-x-1/2 z-30 bg-zinc-800/90 border border-zinc-600 text-zinc-300 text-[9px] font-bold px-3 py-1 tracking-widest uppercase rounded">
                         BEFORE
                       </div>
-                      <img src={item.beforeImage || undefined} alt="Before" className="absolute inset-0 w-full h-full object-cover object-center grayscale-[50%] transition-transform duration-700 group-hover:scale-110" />
+                      <img src={fixImageUrl(item.beforeImage) || undefined} alt="Before" className="absolute inset-0 w-full h-full object-cover object-center grayscale-[50%] transition-transform duration-700 group-hover:scale-110" />
                     </div>
 
                     {/* After */}
@@ -198,7 +199,7 @@ export function Transformations() {
                       <div className="absolute top-4 left-1/2 -translate-x-1/2 z-30 bg-primary border border-primary text-black text-[9px] font-black px-3 py-1 tracking-widest uppercase rounded shadow-[0_0_10px_rgba(var(--primary-rgb),0.5)]">
                         AFTER
                       </div>
-                      <img src={item.afterImage || undefined} alt="After" className="absolute inset-0 w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-110" />
+                      <img src={fixImageUrl(item.afterImage) || undefined} alt="After" className="absolute inset-0 w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-110" />
                     </div>
                   </div>
                 </motion.div>
@@ -256,12 +257,12 @@ export function Transformations() {
                   
                   {/* Before */}
                   <div className="w-1/2 h-full relative overflow-hidden">
-                    <img src={item.beforeImage || undefined} className="absolute inset-0 w-full h-full object-cover object-center grayscale-[30%] transition-transform duration-700 group-hover:scale-110" />
+                    <img src={fixImageUrl(item.beforeImage) || undefined} className="absolute inset-0 w-full h-full object-cover object-center grayscale-[30%] transition-transform duration-700 group-hover:scale-110" />
                   </div>
                   
                   {/* After */}
                   <div className="w-1/2 h-full relative overflow-hidden border-l border-zinc-800">
-                    <img src={item.afterImage || undefined} className="absolute inset-0 w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-110" />
+                    <img src={fixImageUrl(item.afterImage) || undefined} className="absolute inset-0 w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-110" />
                   </div>
 
                   {/* Center Arrow Circle */}

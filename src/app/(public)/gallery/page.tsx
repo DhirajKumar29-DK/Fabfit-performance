@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { api } from "@/services/api";
 import Link from "next/link";
+import { fixImageUrl } from "@/lib/apiConfig";
 
 // --- SVG Icons ---
 const ArrowLeft = () => <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m15 18-6-6 6-6"/></svg>;
@@ -227,7 +228,7 @@ export default function GalleryPage() {
                     className="aspect-square bg-zinc-900 rounded-lg overflow-hidden cursor-pointer group relative"
                   >
                     <img 
-                      src={photo.mediaUrl} 
+                      src={fixImageUrl(photo.mediaUrl)} 
                       alt={photo.category} 
                       className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-80 group-hover:opacity-100" 
                     />
@@ -285,7 +286,7 @@ export default function GalleryPage() {
                   >
                     {video.thumbnailUrl ? (
                       <img 
-                        src={video.thumbnailUrl} 
+                        src={fixImageUrl(video.thumbnailUrl)} 
                         alt={video.title} 
                         className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 opacity-60 group-hover:opacity-100" 
                       />
@@ -342,7 +343,7 @@ export default function GalleryPage() {
                 key={lightboxPhotoIndex}
                 initial={{ opacity: 0, scale: 0.98 }}
                 animate={{ opacity: 1, scale: 1 }}
-                src={filteredPhotos[lightboxPhotoIndex].mediaUrl}
+                src={fixImageUrl(filteredPhotos[lightboxPhotoIndex].mediaUrl)}
                 alt="Fullscreen view"
                 className="max-w-full max-h-full object-contain rounded-lg shadow-2xl"
                 onClick={(e) => e.stopPropagation()}
@@ -362,7 +363,7 @@ export default function GalleryPage() {
                     onClick={() => setLightboxPhotoIndex(index)}
                     className={`shrink-0 w-20 h-14 rounded overflow-hidden border-2 transition-all duration-300 ${index === lightboxPhotoIndex ? 'border-primary scale-110 opacity-100' : 'border-transparent opacity-40 hover:opacity-100'}`}
                   >
-                    <img src={photo.mediaUrl} className="w-full h-full object-cover" alt={`Thumb ${index}`} />
+                    <img src={fixImageUrl(photo.mediaUrl)} className="w-full h-full object-cover" alt={`Thumb ${index}`} />
                   </button>
                 ))}
               </div>

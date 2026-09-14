@@ -7,6 +7,7 @@ import { ArrowRight, ChevronLeft, ChevronRight, Dumbbell, PersonStanding, HeartP
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { api } from "@/services/api";
+import { fixImageUrl } from "@/lib/apiConfig";
 
 const IconMap: Record<string, React.ElementType> = {
   Dumbbell,
@@ -121,7 +122,7 @@ export function Services() {
 
                       {/* Background Image filling the card */}
                       <img
-                        src={item.cardImage || item.image}
+                        src={fixImageUrl(item.cardImage || item.image)}
                         alt={item.title}
                         className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover/card:scale-105"
                       />

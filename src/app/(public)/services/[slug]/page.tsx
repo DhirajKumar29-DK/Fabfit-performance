@@ -15,6 +15,7 @@ const IconMap: Record<string, React.ElementType> = {
 };
 
 import { homeData } from "@/data/dummy";
+import { fixImageUrl } from "@/lib/apiConfig";
 
 async function getServiceBySlug(slug: string) {
   try {
@@ -210,7 +211,7 @@ export default async function ServiceDetailPage({ params }: { params: Promise<{ 
               <div className="absolute inset-0 bg-gradient-to-r from-[#020202] via-transparent to-transparent z-10 hidden lg:block opacity-70"></div>
               <div className="absolute inset-0 bg-gradient-to-t from-[#020202] via-transparent to-transparent z-10 opacity-70"></div>
               <img 
-                src={service.heroImage} 
+                src={fixImageUrl(service.heroImage)} 
                 alt={service.title} 
                 className="w-full h-full object-cover grayscale-[20%] contrast-110 transition-transform duration-[20s] group-hover:scale-110"
               />

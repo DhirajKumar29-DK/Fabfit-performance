@@ -5,6 +5,7 @@ import { homeData } from "@/data/dummy";
 import { motion, useInView, Variants, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import { api } from "@/services/api";
+import { fixImageUrl } from "@/lib/apiConfig";
 
 const PlayIcon = () => (
   <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="currentColor" className="text-white">
@@ -126,7 +127,7 @@ export function GalleryPreview() {
             >
               {/* Background Image */}
               <img 
-                src={(item.type === 'VIDEO' ? item.thumbnailUrl : item.mediaUrl) || undefined} 
+                src={fixImageUrl((item.type === 'VIDEO' ? item.thumbnailUrl : item.mediaUrl) || '') || undefined} 
                 alt={item.title} 
                 className="absolute inset-0 w-full h-full object-cover grayscale-[40%] group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700" 
               />

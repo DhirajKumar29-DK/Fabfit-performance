@@ -95,12 +95,19 @@ const swaggerOptions = {
     },
     servers: [
       {
-        url: process.env.BASE_URL || 'http://localhost:5000',
-        description: 'API Server',
+        url: process.env.BASE_URL || 'https://fabfitperformance.com',
+        description: 'Production Server',
+      },
+      {
+        url: 'http://localhost:5000',
+        description: 'Local Development Server',
       },
     ],
   },
-  apis: ['./src/modules/**/*.routes.ts', './src/app.ts'], 
+  apis: [
+    path.join(__dirname, './modules/**/*.routes.{ts,js}'),
+    path.join(__dirname, './app.{ts,js}')
+  ], 
 };
 
 const swaggerSpec = swaggerJsDoc(swaggerOptions);

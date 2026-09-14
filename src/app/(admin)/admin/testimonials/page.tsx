@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { Plus, Edit3, Trash2, X, Upload } from 'lucide-react';
 import { api } from '@/services/api';
+import { fixImageUrl } from '@/lib/apiConfig';
 import { IconSelect } from '@/components/ui/IconSelect';
 
 const EMPTY_FORM = {
@@ -239,7 +240,7 @@ export default function TestimonialsAdminPage() {
                       <td className="py-4 px-6">
                         <div className="flex items-center gap-3">
                           {t.image && (
-                            <img src={t.image} alt={t.name} className="w-9 h-9 rounded-full object-cover border border-zinc-300" />
+                            <img src={fixImageUrl(t.image)} alt={t.name} className="w-9 h-9 rounded-full object-cover border border-zinc-300" />
                           )}
                           <div>
                             <div className="text-sm font-bold text-gray-900">{t.name}</div>
@@ -322,7 +323,7 @@ export default function TestimonialsAdminPage() {
                   <label className="block text-xs font-bold text-gray-900 mb-1.5">Profile Image</label>
                   <div className="flex items-center gap-4">
                     {formData.image && (
-                      <img src={formData.image} alt="Preview" className="w-14 h-14 rounded-full object-cover border-2 border-violet-200" />
+                      <img src={fixImageUrl(formData.image)} alt="Preview" className="w-14 h-14 rounded-full object-cover border-2 border-violet-200" />
                     )}
                     <label className="flex items-center gap-2 cursor-pointer px-4 py-2.5 border-2 border-dashed border-gray-300 rounded-lg hover:border-violet-400 transition-colors text-sm text-gray-600 font-medium">
                       <Upload size={16} />

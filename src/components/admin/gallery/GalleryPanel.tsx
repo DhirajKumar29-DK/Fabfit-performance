@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { api } from '@/services/api';
+import { fixImageUrl } from '@/lib/apiConfig';
 import { Plus, Edit3, Trash2, X, UploadCloud, ImageIcon, Film, Eye, Link as LinkIcon } from 'lucide-react';
 import ConfirmDeleteModal from '@/components/ui/ConfirmDeleteModal';
 
@@ -291,11 +292,11 @@ export default function GalleryPanel({ type }: GalleryPanelProps) {
                 </div>
 
                 {type === 'IMAGE' ? (
-                  <img src={item.mediaUrl} alt={item.title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+                  <img src={fixImageUrl(item.mediaUrl)} alt={item.title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
                 ) : (
                   <>
                     {item.thumbnailUrl ? (
-                      <img src={item.thumbnailUrl} alt={item.title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+                      <img src={fixImageUrl(item.thumbnailUrl)} alt={item.title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
                     ) : (
                       <div className="w-full h-full flex items-center justify-center text-gray-400"><Film size={32} /></div>
                     )}
@@ -446,7 +447,7 @@ export default function GalleryPanel({ type }: GalleryPanelProps) {
                     <div className="border border-dashed border-gray-300 rounded-xl p-3 flex items-center gap-4 bg-white">
                        <div className="relative w-16 h-12 bg-gray-100 rounded-md overflow-hidden flex-shrink-0 border border-gray-200">
                           {formData.thumbnailUrl ? (
-                            <img src={formData.thumbnailUrl} className="w-full h-full object-cover" alt="thumb" />
+                            <img src={fixImageUrl(formData.thumbnailUrl)} className="w-full h-full object-cover" alt="thumb" />
                           ) : (
                             <div className="w-full h-full flex items-center justify-center text-gray-400"><ImageIcon size={16} /></div>
                           )}
@@ -479,7 +480,7 @@ export default function GalleryPanel({ type }: GalleryPanelProps) {
                     />
                     {formData.mediaUrl ? (
                       <div className="absolute inset-0 z-0 bg-white">
-                        <img src={formData.mediaUrl} alt="Preview" className="w-full h-full object-contain" />
+                        <img src={fixImageUrl(formData.mediaUrl)} alt="Preview" className="w-full h-full object-contain" />
                         <div className="absolute inset-0 flex items-center justify-center bg-black/0 group-hover:bg-black/20 transition-colors">
                           <span className="bg-white/90 px-3 py-1 rounded text-xs font-bold shadow-sm opacity-0 group-hover:opacity-100 transition-opacity">Change Image</span>
                         </div>

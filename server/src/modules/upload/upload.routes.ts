@@ -46,8 +46,7 @@ router.post('/', authenticateAdmin, upload.single('image'), (req, res) => {
     return res.status(400).json({ success: false, message: 'Image size must not exceed 50 MB.' });
   }
 
-  const baseUrl = process.env.BASE_URL || 'http://localhost:5000';
-  const url = `${baseUrl}/uploads/${req.file.filename}`;
+  const url = `/uploads/${req.file.filename}`;
   return res.status(200).json({ success: true, url });
 });
 

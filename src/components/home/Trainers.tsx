@@ -3,6 +3,7 @@
 import React, { useRef, useEffect, useState } from "react";
 import { homeData } from "@/data/dummy";
 import { api } from "@/services/api";
+import { fixImageUrl } from "@/lib/apiConfig";
 import { motion, useInView } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 
@@ -132,7 +133,7 @@ export function Trainers() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-10">
           {displayMembers.map((trainer, index) => {
             // Adapt API properties to match Dummy structure where necessary
-            const trainerImage = trainer.image;
+            const trainerImage = fixImageUrl(trainer.image);
             const trainerName = trainer.name;
             const trainerCategory = trainer.category || trainer.specialty; // specialty is dummy property
             const trainerRole = trainer.specialization || trainer.role; // role is dummy property

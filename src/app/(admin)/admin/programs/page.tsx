@@ -1,6 +1,7 @@
 'use client';
 import { useState, useEffect } from 'react';
 import { api } from '@/services/api';
+import { fixImageUrl } from '@/lib/apiConfig';
 import * as LucideIcons from 'lucide-react';
 import { Plus, Eye, ImageIcon, X, Edit3, Trash2, UploadCloud } from 'lucide-react';
 import { IconSelect } from '@/components/ui/IconSelect';
@@ -309,7 +310,7 @@ export default function ProgramsPage() {
                         <div className="flex items-center gap-4">
                           {program.image ? (
                             <button onClick={() => setPreviewImage(program.image)} className="block hover:opacity-80 transition-opacity relative group">
-                              <img src={program.image} alt={program.title} className="w-12 h-12 object-cover rounded-md bg-gray-100 shadow-sm" />
+                              <img src={fixImageUrl(program.image)} alt={program.title} className="w-12 h-12 object-cover rounded-md bg-gray-100 shadow-sm" />
                             </button>
                           ) : (
                             <div className="w-12 h-12 bg-gray-100 rounded-md flex items-center justify-center text-gray-400">
@@ -463,7 +464,7 @@ export default function ProgramsPage() {
                         <div className="text-sm text-gray-500 font-medium">Uploading...</div>
                       ) : formData.image ? (
                         <div className="absolute inset-0 z-0">
-                          <img src={formData.image} alt="Preview" className="w-full h-full object-cover" />
+                          <img src={fixImageUrl(formData.image)} alt="Preview" className="w-full h-full object-cover" />
                           <div className="absolute inset-0 flex items-center justify-center bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity">
                             <span className="bg-white/90 px-3 py-1 rounded text-xs font-bold shadow-sm">Change Image</span>
                           </div>
@@ -536,7 +537,7 @@ export default function ProgramsPage() {
             >
               <X size={24} />
             </button>
-            <img src={previewImage} alt="Preview" className="max-w-full max-h-[90vh] object-contain rounded-lg shadow-2xl" />
+            <img src={fixImageUrl(previewImage)} alt="Preview" className="max-w-full max-h-[90vh] object-contain rounded-lg shadow-2xl" />
           </div>
         </div>
       )}

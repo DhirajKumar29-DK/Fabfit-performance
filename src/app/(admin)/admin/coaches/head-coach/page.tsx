@@ -1,6 +1,7 @@
 'use client';
 import { useState, useEffect } from 'react';
 import { api } from '@/services/api';
+import { fixImageUrl } from '@/lib/apiConfig';
 import { Plus, Edit3, Trash2, X, UploadCloud, Eye } from 'lucide-react';
 import ConfirmDeleteModal from '@/components/ui/ConfirmDeleteModal';
 import { AdminPageHeader } from '@/components/admin/AdminPageHeader';
@@ -282,7 +283,7 @@ export default function HeadCoachPage() {
                         <td className="px-6 py-4 whitespace-nowrap">
                           <div className="w-12 h-12 rounded-full overflow-hidden border border-zinc-300 bg-gray-100 cursor-pointer" onClick={() => setPreviewImage(coach.image)}>
                             {coach.image ? (
-                              <img src={coach.image} alt={coach.coachName} className="w-full h-full object-cover" />
+                              <img src={fixImageUrl(coach.image)} alt={coach.coachName} className="w-full h-full object-cover" />
                             ) : (
                               <div className="w-full h-full flex items-center justify-center text-[10px] text-gray-400">N/A</div>
                             )}
@@ -445,7 +446,7 @@ export default function HeadCoachPage() {
                     <div className="w-full h-48 rounded-lg border-2 border-dashed border-gray-300 relative overflow-hidden bg-gray-50 hover:bg-gray-100 transition-colors flex flex-col items-center justify-center cursor-pointer">
                       {formData.image ? (
                         <>
-                          <img src={formData.image} alt="Preview" className="absolute inset-0 w-full h-full object-cover" />
+                          <img src={fixImageUrl(formData.image)} alt="Preview" className="absolute inset-0 w-full h-full object-cover" />
                           <div className="absolute inset-0 bg-black/40 flex flex-col items-center justify-center opacity-0 hover:opacity-100 transition-opacity">
                             <UploadCloud className="text-white mb-2" size={24} />
                             <span className="text-white text-xs font-bold">Change Image</span>
@@ -551,7 +552,7 @@ export default function HeadCoachPage() {
                     <div className="w-full aspect-[3/4] rounded-xl overflow-hidden bg-gray-100 border border-zinc-300 relative group mb-4">
                       {viewingCoach.image ? (
                         <>
-                          <img src={viewingCoach.image} alt={viewingCoach.coachName} className="w-full h-full object-cover" />
+                          <img src={fixImageUrl(viewingCoach.image)} alt={viewingCoach.coachName} className="w-full h-full object-cover" />
                           <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                             <button onClick={() => setPreviewImage(viewingCoach.image)} className="p-3 bg-white/20 hover:bg-white/40 rounded-full text-white backdrop-blur-sm">
                               <Eye size={24} />
@@ -580,7 +581,7 @@ export default function HeadCoachPage() {
             >
               <X size={24} />
             </button>
-            <img src={previewImage} alt="Preview" className="max-w-full max-h-[90vh] object-contain rounded-lg shadow-2xl" />
+            <img src={fixImageUrl(previewImage)} alt="Preview" className="max-w-full max-h-[90vh] object-contain rounded-lg shadow-2xl" />
           </div>
         </div>
       )}

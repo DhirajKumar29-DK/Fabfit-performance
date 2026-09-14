@@ -12,7 +12,7 @@ export class AssessmentController {
       
       const files = req.files as { [fieldname: string]: Express.Multer.File[] };
       if (files) {
-        const baseUrl = process.env.BASE_URL || 'http://localhost:5000';
+        const baseUrl = process.env.BASE_URL || 'http://localhost:5000'; 
         if (files['bloodReport'] && files['bloodReport'].length > 0) {
           data.bloodReportUrl = `${baseUrl}/uploads/${files['bloodReport'][0].filename}`;
         }

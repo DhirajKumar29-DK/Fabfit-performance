@@ -5,6 +5,7 @@ import { homeData } from "@/data/dummy";
 import { Check } from "lucide-react";
 import { motion } from "framer-motion";
 import { api } from "@/services/api";
+import { fixImageUrl } from "@/lib/apiConfig";
 
 const containerVariants = {
   hidden: {},
@@ -146,7 +147,7 @@ export function About() {
                 <motion.div variants={imageVariants} className="col-span-1 h-full rounded-2xl overflow-hidden relative group shadow-[0_20px_40px_rgba(0,0,0,0.5)] border border-white/5">
                   <div className="absolute inset-0 bg-[#d4af37]/10 opacity-0 group-hover:opacity-100 transition-opacity z-10"></div>
                   <img 
-                    src={data.images[0]} 
+                    src={fixImageUrl(data.images[0])} 
                     alt="About visual 1" 
                     className="w-full h-full object-cover transition-transform duration-[10s] group-hover:scale-110"
                   />
@@ -158,7 +159,7 @@ export function About() {
                     <motion.div variants={imageVariants} className={`rounded-2xl overflow-hidden relative group shadow-[0_20px_40px_rgba(0,0,0,0.5)] border border-white/5 ${data.images.length === 2 ? 'h-full' : 'flex-1'}`}>
                       <div className="absolute inset-0 bg-[#d4af37]/10 opacity-0 group-hover:opacity-100 transition-opacity z-10"></div>
                       <img 
-                        src={data.images[1]} 
+                        src={fixImageUrl(data.images[1])} 
                         alt="About visual 2" 
                         className="w-full h-full object-cover transition-transform duration-[10s] group-hover:scale-110"
                       />
@@ -168,7 +169,7 @@ export function About() {
                       <motion.div variants={imageVariants} className="flex-1 rounded-2xl overflow-hidden relative group shadow-[0_20px_40px_rgba(0,0,0,0.5)] border border-white/5">
                         <div className="absolute inset-0 bg-[#d4af37]/10 opacity-0 group-hover:opacity-100 transition-opacity z-10"></div>
                         <img 
-                          src={data.images[2]} 
+                          src={fixImageUrl(data.images[2])} 
                           alt="About visual 3" 
                           className="w-full h-full object-cover transition-transform duration-[10s] group-hover:scale-110"
                         />

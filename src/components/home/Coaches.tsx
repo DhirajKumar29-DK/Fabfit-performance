@@ -2,6 +2,7 @@
 
 import React, { useRef, useEffect, useState } from "react";
 import { api } from "@/services/api";
+import { fixImageUrl } from "@/lib/apiConfig";
 import { motion, useScroll, useTransform, useInView } from "framer-motion";
 import Link from "next/link";
 
@@ -192,7 +193,7 @@ export function Coaches() {
                   variants={imageRevealVariants}
                   initial="hidden"
                   animate={isInView ? "visible" : "hidden"}
-                  src={expert.image}
+                  src={fixImageUrl(expert.image)}
                   alt={expert.coachName}
                   className="w-auto h-auto max-h-[600px] lg:max-h-[750px] object-contain object-bottom drop-shadow-[0_10px_30px_rgba(0,0,0,0.5)]"
                 />

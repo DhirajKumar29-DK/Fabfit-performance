@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { api } from '@/services/api';
 import { Plus, Edit3, Trash2, X, UploadCloud, ImageIcon, Eye } from 'lucide-react';
 import ConfirmDeleteModal from '@/components/ui/ConfirmDeleteModal';
+import { fixImageUrl } from '@/lib/apiConfig';
 
 interface Hero {
   id: string;
@@ -308,7 +309,7 @@ export default function HeroPage() {
                         <div className="flex items-center gap-4">
                           {hero.backgroundImage ? (
                             <div className="block relative">
-                              <img src={hero.backgroundImage} alt={hero.title} className="w-16 h-12 object-cover rounded-md bg-gray-100 shadow-sm" />
+                              <img src={fixImageUrl(hero.backgroundImage)} alt={hero.title} className="w-16 h-12 object-cover rounded-md bg-gray-100 shadow-sm" />
                             </div>
                           ) : (
                             <div className="w-16 h-12 bg-gray-100 rounded-md flex items-center justify-center text-gray-400">
@@ -474,7 +475,7 @@ export default function HeroPage() {
                       />
                       {formData.backgroundImage ? (
                         <div className="absolute inset-0 z-0">
-                          <img src={formData.backgroundImage} alt="Background Preview" className="w-full h-full object-cover opacity-60" />
+                          <img src={fixImageUrl(formData.backgroundImage)} alt="Background Preview" className="w-full h-full object-cover opacity-60" />
                           <div className="absolute inset-0 flex items-center justify-center">
                             <span className="bg-white/90 px-3 py-1 rounded text-xs font-bold shadow-sm">Change Image</span>
                           </div>
@@ -548,7 +549,7 @@ export default function HeroPage() {
             >
               <X size={24} />
             </button>
-            <img src={previewImage} alt="Preview" className="max-w-full max-h-[90vh] object-contain rounded-lg shadow-2xl" />
+            <img src={fixImageUrl(previewImage)} alt="Preview" className="max-w-full max-h-[90vh] object-contain rounded-lg shadow-2xl" />
           </div>
         </div>
       )}

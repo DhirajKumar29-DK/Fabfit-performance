@@ -4,6 +4,7 @@ import React, { useRef, useState, useEffect } from "react";
 import { motion, useInView, Variants } from "framer-motion";
 import { homeData } from "@/data/dummy";
 import { api } from "@/services/api";
+import { fixImageUrl } from "@/lib/apiConfig";
 import { Dumbbell, Activity, HeartPulse, PersonStanding, Accessibility, Footprints, Bike, Timer, Flame, Target, Trophy, Medal, Award, Star, Zap, CircleDot, BadgeCheck, Users, UserRound, Shield, ShieldCheck, Apple, Utensils, Salad, Waves, Wind, Sparkles, CalendarDays, Clock, TrendingUp } from 'lucide-react';
 
 const LUCIDE_ICONS: Record<string, React.ElementType> = {
@@ -218,7 +219,7 @@ export function Programs() {
                 className="bg-[#0a0a0a] border border-primary/40 rounded-xl overflow-hidden flex flex-col group hover:border-primary transition-colors duration-500"
               >
                 <div className="relative h-[320px] w-full overflow-hidden">
-                  <img src={card.image || 'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=600&auto=format&fit=crop'} alt={card.title} className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-all duration-700" />
+                  <img src={fixImageUrl(card.image) || 'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=600&auto=format&fit=crop'} alt={card.title} className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-all duration-700" />
                   <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#0a0a0a]/50 to-[#0a0a0a]"></div>
                   
                   {/* Bordered Primary Icon Circle (Solid on Hover) */}
@@ -266,7 +267,7 @@ export function Programs() {
           >
             {/* Left Image */}
             <div className="relative w-full lg:w-[40%] h-64 lg:h-auto">
-              <img src={featuredProgram.image || 'https://images.unsplash.com/photo-1554284126-aa88f22d8b74?q=80&w=1200&auto=format&fit=crop'} alt={featuredProgram.title} className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-all duration-700" />
+              <img src={fixImageUrl(featuredProgram.image) || 'https://images.unsplash.com/photo-1554284126-aa88f22d8b74?q=80&w=1200&auto=format&fit=crop'} alt={featuredProgram.title} className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-all duration-700" />
               <div className="absolute inset-0 bg-gradient-to-r from-transparent via-[#0a0a0a]/50 to-[#0a0a0a] hidden lg:block"></div>
               <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#0a0a0a]/50 to-[#0a0a0a] block lg:hidden"></div>
               

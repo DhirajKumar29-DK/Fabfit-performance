@@ -5,6 +5,7 @@ import Link from "next/link";
 import { ChevronRight, CheckCircle2, Clock, Calendar, BarChart, Dumbbell, Target, Sparkles, Activity, ArrowRight, HeartPulse, PersonStanding, Utensils, MonitorSmartphone, Loader2 } from "lucide-react";
 import { useSearchParams } from "next/navigation";
 import { api } from "@/services/api";
+import { fixImageUrl } from "@/lib/apiConfig";
 
 const IconMap: Record<string, React.ElementType> = {
   Dumbbell,
@@ -223,7 +224,7 @@ function ServiceDetailContent() {
               <div className="absolute inset-0 bg-gradient-to-r from-[#020202] via-transparent to-transparent z-10 hidden lg:block opacity-70"></div>
               <div className="absolute inset-0 bg-gradient-to-t from-[#020202] via-transparent to-transparent z-10 opacity-70"></div>
               <img 
-                src={service.heroImage || 'https://via.placeholder.com/800'} 
+                src={fixImageUrl(service.heroImage || 'https://via.placeholder.com/800')} 
                 alt={service.title} 
                 className="w-full h-full object-cover grayscale-[20%] contrast-110 transition-transform duration-[20s] group-hover:scale-110"
               />
@@ -287,7 +288,7 @@ function ServiceDetailContent() {
               <div className="relative w-full h-[320px] md:h-[420px] rounded-3xl overflow-hidden shadow-2xl">
                 <div className="absolute inset-0 bg-[#d4af37]/20 mix-blend-overlay z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
                 <img 
-                  src={service.cardImage || service.heroImage} 
+                  src={fixImageUrl(service.cardImage || service.heroImage)} 
                   alt="About Training" 
                   className="w-full h-full object-cover grayscale-[30%] group-hover:grayscale-0 transition-all duration-700 group-hover:scale-105"
                 />
@@ -361,7 +362,7 @@ function ServiceDetailContent() {
                <div className="absolute top-0 left-[-40px] w-[80px] h-[120%] -top-[10%] bg-[#050505] transform skew-x-12 z-20 hidden lg:block"></div>
                
                <img 
-                src={service.ctaImage || "https://images.unsplash.com/photo-1606902965551-dce093cda6e7?q=80&w=800&auto=format&fit=crop"} 
+                src={fixImageUrl(service.ctaImage || "https://images.unsplash.com/photo-1606902965551-dce093cda6e7?q=80&w=800&auto=format&fit=crop")} 
                 alt={service.ctaTitle || "CTA Image"} 
                 className="object-cover h-full w-full opacity-80 grayscale-[30%] group-hover:grayscale-0 group-hover:scale-105 group-hover:opacity-100 transition-all duration-1000" 
                 style={{ objectPosition: 'center center' }}

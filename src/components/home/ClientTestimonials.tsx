@@ -4,6 +4,7 @@ import React, { useRef, useState, useEffect } from "react";
 import { homeData } from "@/data/dummy";
 import { motion, useInView, Variants } from "framer-motion";
 import { api } from "@/services/api";
+import { fixImageUrl } from "@/lib/apiConfig";
 import { FITNESS_ICONS } from "@/components/ui/IconSelect";
 
 // Custom SVG Icons
@@ -164,7 +165,7 @@ export function ClientTestimonials() {
               
               {/* Left: Client Image */}
               <div className="w-full lg:w-[220px] h-[220px] lg:h-auto shrink-0 relative overflow-hidden">
-                <img src={review.image} alt={review.name} className="w-full h-full object-cover object-center grayscale-[20%] transition-all duration-700 group-hover:grayscale-0 group-hover:scale-110" />
+                <img src={fixImageUrl(review.image)} alt={review.name} className="w-full h-full object-cover object-center grayscale-[20%] transition-all duration-700 group-hover:grayscale-0 group-hover:scale-110" />
               </div>
 
               {/* Middle: Content */}

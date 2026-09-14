@@ -1,6 +1,7 @@
 'use client';
 import { useState, useEffect } from 'react';
 import { api } from '@/services/api';
+import { fixImageUrl } from '@/lib/apiConfig';
 import { Plus, Edit3, Trash2, X, UploadCloud, Eye, Image as ImageIcon } from 'lucide-react';
 import ConfirmDeleteModal from '@/components/ui/ConfirmDeleteModal';
 
@@ -258,7 +259,7 @@ export default function TransformationSectionPage() {
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="w-16 h-12 rounded-md overflow-hidden border border-zinc-300 bg-gray-100">
                         {section.backgroundImage ? (
-                          <img src={section.backgroundImage} alt="Background Preview" className="w-full h-full object-cover" />
+                          <img src={fixImageUrl(section.backgroundImage)} alt="Background Preview" className="w-full h-full object-cover" />
                         ) : (
                           <div className="w-full h-full flex items-center justify-center text-[10px] text-gray-400">N/A</div>
                         )}
@@ -356,7 +357,7 @@ export default function TransformationSectionPage() {
                     <label className="block text-xs font-bold text-slate-900 mb-1.5">Background Image</label>
                     {formData.backgroundImage ? (
                       <div className="relative rounded-xl overflow-hidden border border-zinc-200 group bg-slate-50">
-                        <img src={formData.backgroundImage} alt="Preview" className="w-full h-40 object-cover" />
+                        <img src={fixImageUrl(formData.backgroundImage)} alt="Preview" className="w-full h-40 object-cover" />
                         <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-4">
                           <label className="cursor-pointer bg-white/20 hover:bg-white/30 text-white px-4 py-2 rounded-lg text-sm font-medium backdrop-blur-sm transition-colors border border-white/30">
                             <input type="file" accept="image/*" className="hidden" onChange={handleUpload} disabled={isUploading} />

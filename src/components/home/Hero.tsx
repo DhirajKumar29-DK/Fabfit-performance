@@ -5,6 +5,8 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { homeData } from "@/data/dummy";
 import { motion, AnimatePresence } from "framer-motion";
+import { api } from "@/services/api";
+import { fixImageUrl } from "@/lib/apiConfig";
 
 export function Hero() {
   const [heroSlides, setHeroSlides] = useState(homeData.heroSlides);
@@ -14,7 +16,7 @@ export function Hero() {
     // Fetch dynamic heroes from backend
     const fetchHeroes = async () => {
       try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || ''}/api/heroes`);
+        const response = await api.get('/heroes');
         const result = await response.json();
 
         if (result.success && result.data && result.data.length > 0) {
@@ -37,7 +39,7 @@ export function Hero() {
               description: h.description,
               primaryCTA: h.primaryButtonText,
               secondaryCTA: h.secondaryButtonText,
-              src: h.backgroundImage,
+              src: fixImageUrl(h.backgroundImage),
               type: "image" // Backend currently only supports images
             }));
 
@@ -83,12 +85,12 @@ export function Hero() {
             {slide.type === "video" ? (
               <>
                 <video
-                  src={slide.src || undefined}
+                  src={fixImageUrl(slide.src) || undefined}
                   autoPlay muted loop playsInline
                   className="absolute inset-0 w-full h-full object-cover scale-110 blur-xl opacity-40 brightness-[0.4]"
                 />
                 <video
-                  src={slide.src || undefined}
+                  src={fixImageUrl(slide.src) || undefined}
                   autoPlay muted loop playsInline
                   className="relative w-full h-full object-contain object-center z-10 brightness-[0.8]"
                 />
@@ -96,12 +98,12 @@ export function Hero() {
             ) : (
               <>
                 <img
-                  src={slide.src || undefined}
+                  src={fixImageUrl(slide.src) || undefined}
                   alt="Hero Slide Background"
                   className="absolute inset-0 w-full h-full object-cover scale-110 blur-2xl opacity-30 brightness-[0.3]"
                 />
                 <img
-                  src={slide.src || undefined}
+                  src={fixImageUrl(slide.src) || undefined}
                   alt="Hero Slide"
                   className="relative w-full h-full object-contain object-center z-10 brightness-[0.85] drop-shadow-2xl"
                 />

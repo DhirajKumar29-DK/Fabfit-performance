@@ -1,6 +1,7 @@
 'use client';
 import { useState, useEffect } from 'react';
 import { api } from '@/services/api';
+import { fixImageUrl } from '@/lib/apiConfig';
 import { Plus, Edit3, Trash2, X, UploadCloud, ImageIcon, Eye, Minus } from 'lucide-react';
 import ConfirmDeleteModal from '@/components/ui/ConfirmDeleteModal';
 
@@ -495,7 +496,7 @@ export default function AboutPage() {
                     <div className="grid grid-cols-3 gap-3 mb-3">
                       {formData.images.map((img, idx) => (
                         <div key={idx} className="relative group rounded-lg overflow-hidden border border-zinc-300 aspect-square">
-                          <img src={img} alt={`Preview ${idx}`} className="w-full h-full object-cover" />
+                          <img src={fixImageUrl(img)} alt={`Preview ${idx}`} className="w-full h-full object-cover" />
                           <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center gap-2">
                             <label className="cursor-pointer bg-white/20 hover:bg-white/30 text-white px-3 py-1.5 rounded text-xs font-medium backdrop-blur-sm transition-colors mb-1">
                               <input type="file" accept="image/*" className="hidden" onChange={(e) => handleImageReplace(e, idx)} disabled={isUploading} />
@@ -560,7 +561,7 @@ export default function AboutPage() {
             >
               <X size={24} />
             </button>
-            <img src={previewImage} alt="Preview" className="max-w-full max-h-[90vh] object-contain rounded-lg shadow-2xl" />
+            <img src={fixImageUrl(previewImage)} alt="Preview" className="max-w-full max-h-[90vh] object-contain rounded-lg shadow-2xl" />
           </div>
         </div>
       )}

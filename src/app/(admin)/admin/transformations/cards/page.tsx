@@ -1,6 +1,7 @@
 'use client';
 import { useState, useEffect } from 'react';
 import { api } from '@/services/api';
+import { fixImageUrl } from '@/lib/apiConfig';
 import { Plus, Edit3, Trash2, X, UploadCloud, Eye, Image as ImageIcon } from 'lucide-react';
 import ConfirmDeleteModal from '@/components/ui/ConfirmDeleteModal';
 import { IconSelect } from '@/components/ui/IconSelect';
@@ -349,11 +350,11 @@ export default function TransformationCardsPage() {
               </div>
               <div className="flex h-32 w-full relative">
                 <div className="w-1/2 h-full relative">
-                  <img src={card.beforeImage} alt="Before" className="w-full h-full object-cover" />
+                  <img src={fixImageUrl(card.beforeImage)} alt="Before" className="w-full h-full object-cover" />
                   <div className="absolute top-2 left-9 bg-black/60 text-white text-[10px] px-2 py-0.5 rounded font-bold uppercase tracking-wider">Before</div>
                 </div>
                 <div className="w-1/2 h-full relative">
-                  <img src={card.afterImage} alt="After" className="w-full h-full object-cover" />
+                  <img src={fixImageUrl(card.afterImage)} alt="After" className="w-full h-full object-cover" />
                   <div className="absolute top-2 left-2 bg-primary/90 text-black text-[10px] px-2 py-0.5 rounded font-bold uppercase tracking-wider">After</div>
                 </div>
                 <div className="absolute top-2 right-2 flex gap-1 z-10">
@@ -493,7 +494,7 @@ export default function TransformationCardsPage() {
                         <label className="block text-xs font-bold text-slate-700 mb-2">Before Image <span className="text-red-500">*</span></label>
                         {formData.beforeImage ? (
                           <div className="relative rounded-lg overflow-hidden border border-slate-200 group h-32">
-                            <img src={formData.beforeImage} alt="Before" className="w-full h-full object-cover" />
+                            <img src={fixImageUrl(formData.beforeImage)} alt="Before" className="w-full h-full object-cover" />
                             <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center gap-2">
                               <label className="cursor-pointer bg-white/20 hover:bg-white/30 text-white px-3 py-1.5 rounded text-xs font-medium backdrop-blur-sm transition-colors">
                                 <input type="file" accept="image/*" className="hidden" onChange={handleUploadBefore} disabled={isUploading} />
@@ -514,7 +515,7 @@ export default function TransformationCardsPage() {
                         <label className="block text-xs font-bold text-slate-700 mb-2">After Image <span className="text-red-500">*</span></label>
                         {formData.afterImage ? (
                           <div className="relative rounded-lg overflow-hidden border border-slate-200 group h-32">
-                            <img src={formData.afterImage} alt="After" className="w-full h-full object-cover" />
+                            <img src={fixImageUrl(formData.afterImage)} alt="After" className="w-full h-full object-cover" />
                             <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center gap-2">
                               <label className="cursor-pointer bg-white/20 hover:bg-white/30 text-white px-3 py-1.5 rounded text-xs font-medium backdrop-blur-sm transition-colors">
                                 <input type="file" accept="image/*" className="hidden" onChange={handleUploadAfter} disabled={isUploadingAfter} />
