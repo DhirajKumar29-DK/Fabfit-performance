@@ -318,14 +318,14 @@ export default function AssessmentsPage() {
           </div>
 
           {/* Tabs */}
-          <div className="flex gap-2 mb-2">
+          <div className="flex gap-2 mb-2 overflow-x-auto pb-1 max-w-full [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
             {TABS.map((tab) => {
               const count = getTabCount(tab.label);
               return (
                 <button
                   key={tab.label}
                   onClick={() => setActiveTab(tab.label)}
-                  className={`flex items-center px-4 py-2 text-sm font-medium rounded-lg border transition-colors ${
+                  className={`shrink-0 flex items-center px-4 py-2 text-sm font-medium rounded-lg border transition-colors ${
                     activeTab === tab.label 
                       ? 'bg-primary text-black border-primary' 
                       : 'bg-white text-gray-600 border-zinc-300 hover:bg-gray-50'
@@ -345,7 +345,7 @@ export default function AssessmentsPage() {
           </div>
 
           {/* Search and Filters */}
-          <div className="flex justify-between items-center mb-4 gap-4">
+          <div className="flex flex-col sm:flex-row justify-between items-stretch sm:items-center mb-4 gap-4">
             <div className="relative w-full max-w-md">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
               <input 

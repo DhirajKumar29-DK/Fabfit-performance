@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import Logo from "@/assets/logo.png";
 import { Menu, X, ArrowRight } from "lucide-react";
 
@@ -23,6 +24,7 @@ const navbarData = {
 const USE_DYNAMIC_CMS = true;
 
 export function Navbar() {
+  const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [dynamicLinks, setDynamicLinks] = useState(navbarData.links);
@@ -55,10 +57,28 @@ export function Navbar() {
     }
   }, []);
 
-  // ✅ Core fix: always scroll to target element, even if URL hash is already the same
+  // ✅ Auto-scroll to hash target when arriving at home page from another route (e.g. /gallery)
+  useEffect(() => {
+    if (pathname === "/" && window.location.hash) {
+      const sectionId = window.location.hash.replace("#", "");
+      if (sectionId === "home") {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      } else {
+        const timer = setTimeout(() => {
+          const el = document.getElementById(sectionId);
+          if (el) {
+            el.scrollIntoView({ behavior: "smooth", block: "start" });
+          }
+        }, 150);
+        return () => clearTimeout(timer);
+      }
+    }
+  }, [pathname]);
+
+  // ✅ Core fix: only handle smooth scroll via e.preventDefault() when on the home page ("/")
   const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
     // Only handle hash links on the home page
-    if (!href.startsWith("/#")) return;
+    if (pathname !== "/" || !href.startsWith("/#")) return;
 
     e.preventDefault();
     const sectionId = href.replace("/#", "");
