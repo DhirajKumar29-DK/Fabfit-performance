@@ -9,6 +9,19 @@ dotenv.config({ path: path.join(__dirname, 'server/.env') });
 
 const PORT = process.env.PORT || 5000;
 
+// Ensure Prisma Client is generated if missing
+try {
+  const { execSync } = require('child_process');
+  const prismaClientGenerated = fs.existsSync(path.join(__dirname, 'node_modules/.prisma/client/index.js'));
+  if (!prismaClientGenerated) {
+    console.log('🔄 Prisma Client not found in node_modules. Generating Prisma Client now...');
+    execSync('npx prisma generate', { stdio: 'inherit' });
+    console.log('✅ Prisma Client successfully generated.');
+  }
+} catch (prismaErr) {
+  console.warn('⚠️ Warning during Prisma generate check:', prismaErr.message);
+}
+
 // Import Express Backend App
 let app;
 try {
