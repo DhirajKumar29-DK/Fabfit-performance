@@ -49,6 +49,9 @@ try {
   if (!prismaClientGenerated) {
     console.log('🔄 Prisma Client not found in node_modules. Generating Prisma Client now...');
     execSync('npx prisma generate', { stdio: 'inherit' });
+    if (fs.existsSync(path.join(__dirname, 'server/prisma/schema.prisma'))) {
+      execSync('npx prisma generate --schema=./server/prisma/schema.prisma', { stdio: 'inherit' });
+    }
     console.log('✅ Prisma Client successfully generated.');
   }
 } catch (prismaErr) {

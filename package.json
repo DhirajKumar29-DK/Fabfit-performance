@@ -8,7 +8,7 @@
         "build:frontend": "next build --webpack",
         "build:backend": "cd server && npm install && npm run build",
         "start": "node server.js",
-        "postinstall": "prisma generate",
+        "postinstall": "prisma generate && prisma generate --schema=./server/prisma/schema.prisma",
         "lint": "eslint",
         "dev:ui": "next dev",
         "dev:api": "cd server && npm run dev"
