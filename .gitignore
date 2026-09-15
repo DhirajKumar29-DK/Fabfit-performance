@@ -46,3 +46,4 @@ server/node_modules/
 # Ignore uploaded files from local testing
 server/public/uploads/*
 !server/public/uploads/.gitkeep
+uploads_backup/

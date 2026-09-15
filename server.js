@@ -31,6 +31,17 @@ if (!process.env.JWT_SECRET) {
 if (!process.env.NEXT_PUBLIC_API_URL) {
   process.env.NEXT_PUBLIC_API_URL = 'https://fabfitperformance.com';
 }
+if (!process.env.CLOUDINARY_CLOUD_NAME) process.env.CLOUDINARY_CLOUD_NAME = 'oqhdekyw';
+if (!process.env.CLOUDINARY_API_KEY) process.env.CLOUDINARY_API_KEY = '421746458968346';
+if (!process.env.CLOUDINARY_API_SECRET) process.env.CLOUDINARY_API_SECRET = '9G4ooxiyafgZtRbyeZlEq1p9VHQ';
+if (!process.env.CLOUDINARY_URL) process.env.CLOUDINARY_URL = 'cloudinary://421746458968346:9G4ooxiyafgZtRbyeZlEq1p9VHQ@oqhdekyw';
+
+if (isHostingerProd && process.env.DATABASE_URL) {
+  // On Hostinger internal servers, connecting to public hostname srv1100.hstgr.io drops packets (hairpin NAT blocked)
+  process.env.DATABASE_URL = process.env.DATABASE_URL
+    .replace(/srv1100\.hstgr\.io/g, '127.0.0.1')
+    .replace(/194\.59\.164\.75/g, '127.0.0.1');
+}
 
 const PORT = parseInt(process.env.PORT || '3000', 10);
 const HOST = process.env.HOST || '0.0.0.0';
@@ -45,7 +56,7 @@ console.log(`[STARTUP] Starting FabFit Unified Server (Mode: ${NODE_ENV}, Port: 
 try {
   const { execSync } = require('child_process');
   const prismaClientGenerated = fs.existsSync(path.join(__dirname, 'node_modules/.prisma/client/index.js')) ||
-                                fs.existsSync(path.join(__dirname, 'node_modules/.prisma/client/default.js'));
+    fs.existsSync(path.join(__dirname, 'node_modules/.prisma/client/default.js'));
   if (!prismaClientGenerated) {
     console.log('🔄 Prisma Client not found in node_modules. Generating Prisma Client now...');
     execSync('npx prisma generate', { stdio: 'inherit' });

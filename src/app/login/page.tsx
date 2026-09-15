@@ -13,11 +13,28 @@ export default function LoginPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [isCheckingAuth, setIsCheckingAuth] = useState(true);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [rememberMe, setRememberMe] = useState(false);
 
   useEffect(() => {
+    // Check if user has saved credentials
+    try {
+      const savedRemember = localStorage.getItem('fabfit_remember_me');
+      if (savedRemember === 'true') {
+        const savedEmail = localStorage.getItem('fabfit_remember_email');
+        const savedPassword = localStorage.getItem('fabfit_remember_password');
+        if (savedEmail) setEmail(savedEmail);
+        if (savedPassword) setPassword(savedPassword);
+        setRememberMe(true);
+      }
+    } catch (e) {
+      // ignore localStorage restriction in private mode
+    }
+
     const checkAuth = async () => {
       try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || ''}/api/auth/me`, {
+        const response = await fetch('/api/auth/me', {
           method: 'GET',
           credentials: 'include',
         });
@@ -37,31 +54,50 @@ export default function LoginPage() {
     e.preventDefault();
     setIsLoading(true);
     setError('');
-    
-    const formData = new FormData(e.currentTarget);
-    const email = formData.get('email');
-    const password = formData.get('password');
-    
+
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || ''}/api/auth/login`, {
+      const response = await fetch('/api/auth/login', {
         method: 'POST',
         credentials: 'include',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ email, password, rememberMe }),
       });
-      
-      const result = await response.json();
-      
-      if (!response.ok || !result.success) {
-        setError(result.message || 'Invalid email or password.');
+
+      let result: any = null;
+      try {
+        result = await response.json();
+      } catch (jsonErr) {
+        // Non-JSON response e.g. 504 Time-out
+      }
+
+      if (!response.ok || !result || !result.success) {
+        setError(
+          result?.message || 
+          (response.status === 504 ? 'Server connection timed out. Please try again in a few moments.' : 'Invalid email or password.')
+        );
         setIsLoading(false);
       } else {
+        // Save or clear credentials in localStorage based on Remember Me
+        try {
+          if (rememberMe) {
+            localStorage.setItem('fabfit_remember_me', 'true');
+            localStorage.setItem('fabfit_remember_email', email);
+            localStorage.setItem('fabfit_remember_password', password);
+          } else {
+            localStorage.removeItem('fabfit_remember_me');
+            localStorage.removeItem('fabfit_remember_email');
+            localStorage.removeItem('fabfit_remember_password');
+          }
+        } catch (e) {
+          // ignore
+        }
+
         setIsLoading(false);
         router.push('/admin');
         router.refresh();
       }
-    } catch (err) {
-      setError('An unexpected error occurred. Please try again.');
+    } catch (err: any) {
+      setError(err?.message || 'An unexpected error occurred. Please try again.');
       setIsLoading(false);
     }
   };
@@ -79,7 +115,7 @@ export default function LoginPage() {
       {/* Left Image Section */}
       <div className="hidden lg:flex lg:w-1/2 relative bg-zinc-900 overflow-hidden">
         <div className="absolute inset-0 z-10 bg-gradient-to-t from-zinc-950 via-zinc-950/40 to-transparent" />
-        <Image 
+        <Image
           src="/fabfit.jpeg"
           alt="Fitness Training"
           fill
@@ -87,7 +123,7 @@ export default function LoginPage() {
           priority
         />
         <div className="absolute bottom-12 left-12 z-20 max-w-xl">
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
@@ -104,7 +140,7 @@ export default function LoginPage() {
 
       {/* Right Login Section */}
       <div className="flex-1 flex flex-col justify-center px-4 sm:px-6 lg:px-20 xl:px-24">
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.5 }}
@@ -128,7 +164,7 @@ export default function LoginPage() {
           <div className="mt-8">
             <form className="space-y-5" onSubmit={handleSubmit}>
               {error && (
-                <motion.div 
+                <motion.div
                   initial={{ opacity: 0, y: -10 }}
                   animate={{ opacity: 1, y: 0 }}
                   className="bg-amber-500/10 border border-amber-500/20 rounded-lg p-4 flex gap-3 items-center text-sm text-amber-400"
@@ -146,13 +182,15 @@ export default function LoginPage() {
                     id="email"
                     name="email"
                     type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
                     autoComplete="email"
                     required
                     className="peer block w-full rounded-lg border-0 bg-zinc-900/50 py-2.5 px-4 text-white shadow-sm ring-1 ring-inset ring-zinc-800 focus:ring-2 focus:ring-inset focus:ring-amber-500 sm:text-sm sm:leading-6 transition-all"
                     placeholder=" "
                   />
-                  <label 
-                    htmlFor="email" 
+                  <label
+                    htmlFor="email"
                     className="absolute left-3 -top-2 bg-zinc-950 px-1 text-[11px] text-zinc-500 transition-all duration-300 pointer-events-none rounded-md peer-placeholder-shown:text-sm peer-placeholder-shown:top-2.5 peer-placeholder-shown:left-4 peer-placeholder-shown:bg-transparent peer-focus:-top-2 peer-focus:left-3 peer-focus:text-[11px] peer-focus:text-amber-500 peer-focus:bg-zinc-950 font-medium"
                   >
                     Email address
@@ -166,13 +204,15 @@ export default function LoginPage() {
                     id="password"
                     name="password"
                     type={showPassword ? 'text' : 'password'}
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
                     autoComplete="current-password"
                     required
                     className="peer block w-full rounded-lg border-0 bg-zinc-900/50 py-2.5 px-4 text-white shadow-sm ring-1 ring-inset ring-zinc-800 focus:ring-2 focus:ring-inset focus:ring-amber-500 sm:text-sm sm:leading-6 transition-all"
                     placeholder=" "
                   />
-                  <label 
-                    htmlFor="password" 
+                  <label
+                    htmlFor="password"
                     className="absolute left-3 -top-2 bg-zinc-950 px-1 text-[11px] text-zinc-500 transition-all duration-300 pointer-events-none rounded-md peer-placeholder-shown:text-sm peer-placeholder-shown:top-2.5 peer-placeholder-shown:left-4 peer-placeholder-shown:bg-transparent peer-focus:-top-2 peer-focus:left-3 peer-focus:text-[11px] peer-focus:text-amber-500 peer-focus:bg-zinc-950 font-medium"
                   >
                     Password
@@ -197,9 +237,11 @@ export default function LoginPage() {
                     id="remember-me"
                     name="remember-me"
                     type="checkbox"
-                    className="h-4 w-4 rounded border-zinc-800 bg-zinc-900 text-amber-500 focus:ring-amber-500 focus:ring-offset-zinc-950"
+                    checked={rememberMe}
+                    onChange={(e) => setRememberMe(e.target.checked)}
+                    className="h-4 w-4 rounded border-zinc-800 bg-zinc-900 text-amber-500 focus:ring-amber-500 focus:ring-offset-zinc-950 cursor-pointer"
                   />
-                  <label htmlFor="remember-me" className="ml-2 block text-sm text-zinc-400">
+                  <label htmlFor="remember-me" className="ml-2 block text-sm text-zinc-400 cursor-pointer select-none">
                     Remember me
                   </label>
                 </div>

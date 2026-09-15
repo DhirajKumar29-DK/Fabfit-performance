@@ -87,12 +87,12 @@ export function Hero() {
                 <video
                   src={fixImageUrl(slide.src) || undefined}
                   autoPlay muted loop playsInline
-                  className="absolute inset-0 w-full h-full object-cover scale-110 blur-xl opacity-40 brightness-[0.4]"
+                  className="absolute inset-0 w-full h-full object-cover scale-110 blur-xl opacity-40 brightness-[0.5]"
                 />
                 <video
                   src={fixImageUrl(slide.src) || undefined}
                   autoPlay muted loop playsInline
-                  className="relative w-full h-full object-contain object-center z-10 brightness-[0.8]"
+                  className="relative w-full h-full object-contain object-center z-10 brightness-100"
                 />
               </>
             ) : (
@@ -100,19 +100,19 @@ export function Hero() {
                 <img
                   src={fixImageUrl(slide.src) || undefined}
                   alt="Hero Slide Background"
-                  className="absolute inset-0 w-full h-full object-cover scale-110 blur-2xl opacity-30 brightness-[0.3]"
+                  className="absolute inset-0 w-full h-full object-cover scale-110 blur-2xl opacity-40 brightness-[0.4]"
                 />
                 <img
                   src={fixImageUrl(slide.src) || undefined}
                   alt="Hero Slide"
-                  className="relative w-full h-full object-contain object-center z-10 brightness-[0.85] drop-shadow-2xl"
+                  className="relative w-full h-full object-contain object-center z-10 brightness-100 drop-shadow-2xl"
                 />
               </>
             )}
 
-            {/* Extra gradient overlays for vertical blending and text readability */}
-            <div className="absolute inset-0 bg-gradient-to-r from-[#050505]/90 via-[#050505]/50 to-transparent z-10" />
-            <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-transparent to-[#050505]/30 z-10" />
+            {/* Subtle gradient overlays for text readability while keeping the image bright & clear */}
+            <div className="absolute inset-0 bg-gradient-to-r from-[#050505]/85 via-[#050505]/20 to-transparent z-10" />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#050505]/70 via-transparent to-transparent z-10" />
           </div>
         </motion.div>
       </AnimatePresence>

@@ -12,6 +12,9 @@ export const getApiBaseUrl = (): string => {
 
 export const fixImageUrl = (url: string | null | undefined): string => {
   if (!url) return '';
+  if (url.startsWith('http://') || url.startsWith('https://')) {
+    return url;
+  }
   const apiBaseUrl = getApiBaseUrl();
 
   let cleanUrl = url.replace(/\\/g, '/');
