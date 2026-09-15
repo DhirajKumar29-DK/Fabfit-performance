@@ -1,6 +1,5 @@
-import { PrismaClient, PlanStatus } from '@prisma/client';
-
-const prisma = new PrismaClient();
+import { PlanStatus } from '@prisma/client';
+import prisma from '../../config/prisma';
 
 export class MembershipPlanService {
   /**

@@ -1,6 +1,5 @@
-import { PrismaClient, AboutStatus, Prisma } from '@prisma/client';
-
-const prisma = new PrismaClient();
+import { AboutStatus, Prisma } from '@prisma/client';
+import prisma from '../../config/prisma';
 
 export class AboutService {
   static async getActiveAbout() {

@@ -1,8 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
-import { PrismaClient } from '@prisma/client';
+import prisma from '../../config/prisma';
 import { sendSuccess } from '../../utils/response';
-
-const prisma = new PrismaClient();
 
 // In-memory set to track unique visitor IPs
 const trackedIPs = new Set<string>();

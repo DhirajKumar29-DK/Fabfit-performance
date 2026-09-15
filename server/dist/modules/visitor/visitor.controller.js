@@ -1,19 +1,21 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.VisitorController = void 0;
-const client_1 = require("@prisma/client");
+const prisma_1 = __importDefault(require("../../config/prisma"));
 const response_1 = require("../../utils/response");
-const prisma = new client_1.PrismaClient();
 // In-memory set to track unique visitor IPs
 const trackedIPs = new Set();
 class VisitorController {
     static async getDashboardStats(req, res, next) {
         try {
             const [totalAssessments, newAssessments, acceptedClients, statsRecord] = await Promise.all([
-                prisma.assessment.count(),
-                prisma.assessment.count({ where: { status: 'NEW' } }),
-                prisma.assessment.count({ where: { status: 'ACCEPTED' } }),
-                prisma.systemStat.findUnique({ where: { id: 'global_stats' } })
+                prisma_1.default.assessment.count(),
+                prisma_1.default.assessment.count({ where: { status: 'NEW' } }),
+                prisma_1.default.assessment.count({ where: { status: 'ACCEPTED' } }),
+                prisma_1.default.systemStat.findUnique({ where: { id: 'global_stats' } })
             ]);
             const totalVisitors = statsRecord?.totalVisitors || 0;
             return (0, response_1.sendSuccess)(res, 200, 'Stats retrieved', {
@@ -34,7 +36,7 @@ class VisitorController {
             // Only increment if IP has not been tracked yet in current session
             if (!trackedIPs.has(clientIp)) {
                 trackedIPs.add(clientIp);
-                await prisma.systemStat.upsert({
+                await prisma_1.default.systemStat.upsert({
                     where: { id: 'global_stats' },
                     update: { totalVisitors: { increment: 1 } },
                     create: { id: 'global_stats', totalVisitors: 1 }
@@ -48,7 +50,7 @@ class VisitorController {
     }
     static async resetVisitors(req, res, next) {
         try {
-            await prisma.systemStat.upsert({
+            await prisma_1.default.systemStat.upsert({
                 where: { id: 'global_stats' },
                 update: { totalVisitors: 0 },
                 create: { id: 'global_stats', totalVisitors: 0 }

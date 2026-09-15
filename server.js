@@ -23,7 +23,7 @@ if (isHostingerProd) {
 // Fallback critical environment variables to guarantee database & auth availability
 if (!process.env.PORT) process.env.PORT = '3000';
 if (!process.env.DATABASE_URL) {
-  process.env.DATABASE_URL = 'mysql://u963801592_fabfitperforU:fabFitperfor3108@srv1100.hstgr.io:3306/u963801592_fabfitperfor';
+  process.env.DATABASE_URL = 'mysql://u963801592_fabfitperforU:fabFitperfor3108@srv1100.hstgr.io:3306/u963801592_fabfitperfor?connection_limit=5&pool_timeout=20&connect_timeout=15';
 }
 if (!process.env.JWT_SECRET) {
   process.env.JWT_SECRET = 'fabfit_admin_secret_key_15days';

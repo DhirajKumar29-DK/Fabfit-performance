@@ -1,11 +1,13 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.bulkUpdateSections = exports.seedInitialSections = exports.getPageSections = void 0;
-const client_1 = require("@prisma/client");
-const prisma = new client_1.PrismaClient();
+const prisma_1 = __importDefault(require("../../config/prisma"));
 // Get all page sections sorted by order
 const getPageSections = async () => {
-    return await prisma.pageSection.findMany({
+    return await prisma_1.default.pageSection.findMany({
         orderBy: {
             order: 'asc'
         }
@@ -14,7 +16,7 @@ const getPageSections = async () => {
 exports.getPageSections = getPageSections;
 // Seed initial sections if they don't exist
 const seedInitialSections = async () => {
-    const existingCount = await prisma.pageSection.count();
+    const existingCount = await prisma_1.default.pageSection.count();
     if (existingCount === 0) {
         const initialSections = [
             { sectionId: 'home', title: 'HOME', order: 1, isActive: true },
@@ -27,7 +29,7 @@ const seedInitialSections = async () => {
             { sectionId: 'gallery', title: 'GALLERY', order: 8, isActive: true },
             { sectionId: 'contact', title: 'CONTACT', order: 9, isActive: true },
         ];
-        await prisma.pageSection.createMany({
+        await prisma_1.default.pageSection.createMany({
             data: initialSections
         });
         return await (0, exports.getPageSections)();
@@ -38,7 +40,7 @@ exports.seedInitialSections = seedInitialSections;
 // Bulk update the entire structure
 const bulkUpdateSections = async (sections) => {
     // Use a transaction to ensure all updates succeed or fail together
-    const updatePromises = sections.map((section) => prisma.pageSection.update({
+    const updatePromises = sections.map((section) => prisma_1.default.pageSection.update({
         where: { id: section.id },
         data: {
             title: section.title,
@@ -46,7 +48,7 @@ const bulkUpdateSections = async (sections) => {
             isActive: section.isActive
         }
     }));
-    await prisma.$transaction(updatePromises);
+    await prisma_1.default.$transaction(updatePromises);
     return await (0, exports.getPageSections)();
 };
 exports.bulkUpdateSections = bulkUpdateSections;

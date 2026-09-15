@@ -1,11 +1,13 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.MembershipSectionService = void 0;
-const client_1 = require("@prisma/client");
-const prisma = new client_1.PrismaClient();
+const prisma_1 = __importDefault(require("../../config/prisma"));
 class MembershipSectionService {
     async getActiveSection() {
-        return await prisma.membershipSection.findFirst({
+        return await prisma_1.default.membershipSection.findFirst({
             where: {
                 deletedAt: null,
             },
@@ -16,7 +18,7 @@ class MembershipSectionService {
         });
     }
     async createSection(data) {
-        return await prisma.membershipSection.create({
+        return await prisma_1.default.membershipSection.create({
             data: {
                 badge: data.badge,
                 title: data.title,
@@ -26,13 +28,13 @@ class MembershipSectionService {
         });
     }
     async updateSection(id, data) {
-        return await prisma.membershipSection.update({
+        return await prisma_1.default.membershipSection.update({
             where: { id },
             data,
         });
     }
     async deleteSection(id) {
-        return await prisma.membershipSection.update({
+        return await prisma_1.default.membershipSection.update({
             where: { id },
             data: {
                 deletedAt: new Date(),

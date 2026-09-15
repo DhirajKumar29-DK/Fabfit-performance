@@ -1,6 +1,5 @@
-import { PrismaClient, TestimonialStatus } from '@prisma/client';
-
-const prisma = new PrismaClient();
+import { TestimonialStatus } from '@prisma/client';
+import prisma from '../../config/prisma';
 
 export class TestimonialService {
   async getAll(status?: TestimonialStatus) {

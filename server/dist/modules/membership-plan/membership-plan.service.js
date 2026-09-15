@@ -1,8 +1,10 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.MembershipPlanService = void 0;
-const client_1 = require("@prisma/client");
-const prisma = new client_1.PrismaClient();
+const prisma_1 = __importDefault(require("../../config/prisma"));
 class MembershipPlanService {
     /**
      * Retrieves all membership plans, optionally filtering by status.
@@ -10,7 +12,7 @@ class MembershipPlanService {
      */
     async getPlans(status) {
         const where = status ? { status, deletedAt: null } : { deletedAt: null };
-        return prisma.membershipPlan.findMany({
+        return prisma_1.default.membershipPlan.findMany({
             where,
             orderBy: { displayOrder: 'asc' },
             include: {
@@ -25,7 +27,7 @@ class MembershipPlanService {
      * Retrieves a single membership plan by ID.
      */
     async getPlanById(id) {
-        return prisma.membershipPlan.findUnique({
+        return prisma_1.default.membershipPlan.findUnique({
             where: { id, deletedAt: null },
             include: {
                 features: {
@@ -41,7 +43,7 @@ class MembershipPlanService {
     async handlePopularStatus(isPopular, planId) {
         if (isPopular) {
             const where = planId ? { id: { not: planId } } : {};
-            await prisma.membershipPlan.updateMany({
+            await prisma_1.default.membershipPlan.updateMany({
                 where,
                 data: { isPopular: false },
             });
@@ -52,7 +54,7 @@ class MembershipPlanService {
      */
     async createPlan(data) {
         const { features = [], ...planData } = data;
-        return prisma.$transaction(async (tx) => {
+        return prisma_1.default.$transaction(async (tx) => {
             // If this plan is marked as popular, remove popular status from others
             if (planData.isPopular) {
                 await tx.membershipPlan.updateMany({
@@ -83,7 +85,7 @@ class MembershipPlanService {
      */
     async updatePlan(id, data) {
         const { features, ...planData } = data;
-        return prisma.$transaction(async (tx) => {
+        return prisma_1.default.$transaction(async (tx) => {
             // Check if plan exists
             const existingPlan = await tx.membershipPlan.findUnique({
                 where: { id, deletedAt: null },
@@ -159,7 +161,7 @@ class MembershipPlanService {
      * Soft deletes a membership plan and its features.
      */
     async deletePlan(id) {
-        return prisma.$transaction(async (tx) => {
+        return prisma_1.default.$transaction(async (tx) => {
             const deletedAt = new Date();
             await tx.membershipPlanFeature.updateMany({
                 where: { planId: id, deletedAt: null },
@@ -173,13 +175,13 @@ class MembershipPlanService {
     }
     // Individual Feature Endpoints (for future flexibility as requested)
     async getFeaturesByPlanId(planId) {
-        return prisma.membershipPlanFeature.findMany({
+        return prisma_1.default.membershipPlanFeature.findMany({
             where: { planId, deletedAt: null },
             orderBy: { displayOrder: 'asc' },
         });
     }
     async createFeature(planId, data) {
-        return prisma.membershipPlanFeature.create({
+        return prisma_1.default.membershipPlanFeature.create({
             data: {
                 planId,
                 ...data,
@@ -187,23 +189,23 @@ class MembershipPlanService {
         });
     }
     async updateFeature(planId, featureId, data) {
-        const existing = await prisma.membershipPlanFeature.findFirst({
+        const existing = await prisma_1.default.membershipPlanFeature.findFirst({
             where: { id: featureId, planId, deletedAt: null },
         });
         if (!existing)
             throw new Error('Feature not found in this plan');
-        return prisma.membershipPlanFeature.update({
+        return prisma_1.default.membershipPlanFeature.update({
             where: { id: featureId },
             data,
         });
     }
     async deleteFeature(planId, featureId) {
-        const existing = await prisma.membershipPlanFeature.findFirst({
+        const existing = await prisma_1.default.membershipPlanFeature.findFirst({
             where: { id: featureId, planId, deletedAt: null },
         });
         if (!existing)
             throw new Error('Feature not found in this plan');
-        return prisma.membershipPlanFeature.update({
+        return prisma_1.default.membershipPlanFeature.update({
             where: { id: featureId },
             data: { deletedAt: new Date() },
         });
