@@ -36,11 +36,18 @@ if (!process.env.CLOUDINARY_API_KEY) process.env.CLOUDINARY_API_KEY = '421746458
 if (!process.env.CLOUDINARY_API_SECRET) process.env.CLOUDINARY_API_SECRET = '9G4ooxiyafgZtRbyeZlEq1p9VHQ';
 if (!process.env.CLOUDINARY_URL) process.env.CLOUDINARY_URL = 'cloudinary://421746458968346:9G4ooxiyafgZtRbyeZlEq1p9VHQ@oqhdekyw';
 
-if (isHostingerProd && process.env.DATABASE_URL) {
-  // On Hostinger internal servers, connecting to public hostname srv1100.hstgr.io drops packets (hairpin NAT blocked)
-  process.env.DATABASE_URL = process.env.DATABASE_URL
-    .replace(/srv1100\.hstgr\.io/g, '127.0.0.1')
-    .replace(/194\.59\.164\.75/g, '127.0.0.1');
+if (process.env.DATABASE_URL) {
+  if (isHostingerProd) {
+    // On Hostinger internal servers, connecting to public hostname srv1100.hstgr.io drops packets (hairpin NAT blocked)
+    process.env.DATABASE_URL = process.env.DATABASE_URL
+      .replace(/srv1100\.hstgr\.io/g, '127.0.0.1')
+      .replace(/194\.59\.164\.75/g, '127.0.0.1');
+  }
+  // Enforce conservative connection pool parameters to keep Tokio thread count well within shared hosting OS limits
+  process.env.DATABASE_URL = process.env.DATABASE_URL.replace(/connection_limit=\d+/g, 'connection_limit=3');
+  if (!process.env.DATABASE_URL.includes('connection_limit=')) {
+    process.env.DATABASE_URL += (process.env.DATABASE_URL.includes('?') ? '&' : '?') + 'connection_limit=3&pool_timeout=30&connect_timeout=20';
+  }
 }
 
 const PORT = parseInt(process.env.PORT || '3000', 10);
@@ -92,6 +99,27 @@ try {
   }
   process.exit(1);
 }
+
+// ─────────────────────────────────────────────────────────────────────────
+// 3.5 WARM UP PRISMA CLIENT SEQUENTIALLY
+// ─────────────────────────────────────────────────────────────────────────
+// Eagerly connect Prisma so the Rust query engine initializes Tokio threads & timer driver sequentially
+// BEFORE incoming parallel requests bombard the uninitialized engine.
+(async () => {
+  try {
+    const prismaConfig = fs.existsSync(path.join(__dirname, 'server/dist/config/prisma.js'))
+      ? require('./server/dist/config/prisma')
+      : require('./server/src/config/prisma');
+    const prisma = prismaConfig.default || prismaConfig;
+    if (prisma && typeof prisma.$connect === 'function') {
+      console.log('🔄 Initializing Prisma database connection pool...');
+      await prisma.$connect();
+      console.log('✅ Prisma database connection established successfully.');
+    }
+  } catch (dbErr) {
+    console.warn('⚠️ Prisma warm-up non-blocking warning:', dbErr.message);
+  }
+})();
 
 const server = http.createServer(app);
 
